@@ -3,136 +3,196 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>[SHOE PRODUCT NAME] | প্রিমিয়াম ক্যাজুয়াল জুতা</title>
+<title>প্রিমিয়াম ক্যাজুয়াল জুতা | Premium Casual Shoes</title>
+<!-- Google Fonts: Hind Siliguri & Noto Sans Bengali -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
-:root{--bk:#111;--mu:#666;--bd:#e5e5e5;--gr:#f5f5f5;--red:#d9232d}
+:root{
+  --bk:#111111;
+  --mu:#666666;
+  --bd:#e5e5e5;
+  --gr:#f8f9fa;
+  --red:#d9232d;
+  --wa:#25D366;
+  --wa-dark:#128C7E;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'Hind Siliguri','Noto Sans Bengali',sans-serif;color:var(--bk);background:#fff;line-height:1.6;padding-bottom:0}
-img{max-width:100%;display:block;border-radius:14px}
+body{
+  font-family:'Hind Siliguri', 'Noto Sans Bengali', -apple-system, sans-serif;
+  color:var(--bk);
+  background:#fff;
+  line-height:1.6;
+  padding-bottom:0;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;height:auto;display:block;border-radius:14px}
 .wrap{max-width:1140px;margin:0 auto;padding:0 20px}
 section{padding:70px 0}
 .bg-gray{background:var(--gr)}
 .bg-dark{background:var(--bk);color:#fff}
 .bg-dark .muted{color:#bbb}
-.eyebrow{font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--mu);text-align:center;font-weight:600;margin-bottom:8px}
+.eyebrow{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--mu);text-align:center;font-weight:600;margin-bottom:8px}
 .bg-dark .eyebrow{color:#aaa}
-h2.sec-title{font-size:32px;text-align:center;font-weight:700;margin-bottom:10px}
+h2.sec-title{font-size:32px;text-align:center;font-weight:700;margin-bottom:10px;line-height:1.3}
 .rule{width:56px;height:3px;background:var(--bk);margin:0 auto 18px}
 .bg-dark .rule{background:#fff}
 .sec-sub{text-align:center;color:#555;font-size:17px;max-width:620px;margin:0 auto 36px}
-.bg-dark .sec-sub{color:#ddd}
 .grid{display:grid;gap:18px}
 .g2{grid-template-columns:1fr 1fr}
 .g3{grid-template-columns:repeat(3,1fr)}
 .g4{grid-template-columns:repeat(4,1fr)}
-.g5{grid-template-columns:repeat(5,1fr)}
-.card{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:26px;box-shadow:0 4px 18px rgba(0,0,0,.04);transition:transform .2s}
+.card{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:24px;box-shadow:0 4px 18px rgba(0,0,0,.04);transition:transform .2s}
 .card:hover{transform:translateY(-4px)}
 .card-dark{background:#1a1a1a;border:1px solid #2a2a2a;color:#fff}
 .ic{width:50px;height:50px;border-radius:50%;background:var(--bk);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px}
 .card-dark .ic{background:#fff;color:var(--bk)}
 .card h4{font-size:19px;margin-bottom:6px;font-weight:700}
-.card p{font-size:15.5px;color:#555}
+.card p{font-size:15px;color:#555}
 .card-dark p{color:#ccc}
-.btn{display:inline-flex;align-items:center;gap:10px;background:var(--bk);color:#fff;font-weight:700;font-size:19px;padding:17px 36px;border-radius:10px;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.2);border:none;cursor:pointer}
+
+/* বাটন ও লিংক */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--bk);color:#fff;font-weight:700;font-size:18px;padding:15px 30px;border-radius:10px;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.15);border:none;cursor:pointer;transition:background .2s, transform .1s}
+.btn:active{transform:scale(0.98)}
 .btn.light{background:#fff;color:var(--bk)}
-.btn:hover{opacity:.9}
-.btn-wa{background:#111;color:#fff}
+.btn:hover{opacity:.92}
+.btn-wa{background:var(--wa);color:#fff;box-shadow:0 6px 20px rgba(37,211,102,.25)}
+.btn-wa:hover{background:var(--wa-dark);opacity:1}
 .center{text-align:center}
 .left{text-align:left}
 ul.chk{list-style:none}
-ul.chk li{padding:6px 0;font-size:17px;font-weight:500}
-ul.chk li::before{content:"✓ ";font-weight:700}
-.price-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:14px 0}
-.old{text-decoration:line-through;color:#888;font-size:22px}
-.new{font-size:46px;font-weight:700}
-.badge{background:var(--red);color:#fff;font-weight:700;font-size:14px;padding:6px 14px;border-radius:6px}
-table{width:100%;border-collapse:collapse;font-size:16.5px;background:#fff;border-radius:12px;overflow:hidden}
+ul.chk li{padding:6px 0;font-size:16.5px;font-weight:500}
+ul.chk li::before{content:"✓ ";font-weight:700;color:var(--bk)}
+
+/* প্রাইস ডিজাইন ফিক্স */
+.price-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:16px 0}
+.old{
+  color:#888;
+  font-size:24px;
+  font-weight:600;
+  position:relative;
+  display:inline-block;
+}
+.old::after{
+  content:'';
+  position:absolute;
+  left:-4%;
+  top:50%;
+  width:108%;
+  height:2.5px;
+  background:var(--red);
+  transform:rotate(-7deg);
+}
+.new{font-size:42px;font-weight:700;color:var(--bk);letter-spacing:-0.5px}
+.badge{background:var(--red);color:#fff;font-weight:700;font-size:14px;padding:6px 12px;border-radius:6px}
+
+/* সাইজ টেবিল */
+table{width:100%;border-collapse:collapse;font-size:16px;background:#fff;border-radius:12px;overflow:hidden;min-width:380px}
 table th{background:var(--bk);color:#fff;padding:14px;text-align:left}
-table td{padding:14px;border-bottom:1px solid #eee}
+table td{padding:13px 14px;border-bottom:1px solid #eee}
 tr:nth-child(even) td{background:#fafafa}
-.tbl-wrap{overflow-x:auto;max-width:860px;margin:0 auto}
-.stars{color:var(--bk);letter-spacing:2px;font-size:18px}
-.avatar{width:46px;height:46px;border-radius:50%;background:var(--bk);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
-.rev-top{display:flex;align-items:center;gap:12px;margin-top:14px}
-.hero{padding:50px 0 60px}
-.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:860px;margin:0 auto}
+
+.hero{padding:40px 0 60px}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
 .thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
-.thumbs img{border-radius:10px;cursor:pointer;border:2px solid transparent}
+.thumbs img{border-radius:10px;cursor:pointer;border:2px solid transparent;aspect-ratio:1/1;object-fit:cover}
 .thumbs img.active{border-color:var(--bk)}
-h1.hero-h{font-size:42px;line-height:1.25;font-weight:700;margin:8px 0 14px}
-.tag-small{font-size:15px;color:#555;font-weight:600;margin-top:10px}
-.announce{background:var(--bk);color:#fff;text-align:center;font-size:14px;padding:10px 16px}
-.gallery-strip{display:flex;gap:14px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x mandatory}
-.gallery-strip img{flex:0 0 min(78%,320px);scroll-snap-align:center;aspect-ratio:1/1;object-fit:cover;cursor:zoom-in}
-.lookcard img{aspect-ratio:3/4;object-fit:cover}
+h1.hero-h{font-size:38px;line-height:1.25;font-weight:700;margin:8px 0 14px}
+.announce{background:var(--bk);color:#fff;text-align:center;font-size:13.5px;padding:10px 16px;font-weight:500}
+.gallery-strip{display:flex;gap:14px;overflow-x:auto;padding-bottom:12px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.gallery-strip img{flex:0 0 min(78%,290px);scroll-snap-align:center;aspect-ratio:1/1;object-fit:cover;cursor:zoom-in}
 .usecard img{aspect-ratio:4/3;object-fit:cover}
+
+/* অর্ডার ফর্ম স্টাইল */
+form.order{display:grid;gap:15px;max-width:580px;margin:0 auto;background:#fff;border:1px solid var(--bd);border-radius:18px;padding:26px;box-shadow:0 8px 30px rgba(0,0,0,.06)}
+form.order label{font-weight:600;font-size:15px;display:block;margin-bottom:6px;color:#222}
+form.order input,form.order select,form.order textarea{width:100%;padding:13px 14px;border:1px solid #d1d5db;border-radius:8px;font-size:16px;font-family:inherit;background:#fafafa;transition:border-color .2s}
+form.order input:focus,form.order select:focus,form.order textarea:focus{border-color:var(--bk);outline:none;background:#fff}
+.summary-box{background:var(--gr);border:1px solid var(--bd);border-radius:12px;padding:16px 18px;font-size:15.5px}
+.summary-box div{display:flex;justify-content:space-between;padding:5px 0}
+.summary-box .tot{font-weight:700;font-size:19px;border-top:1px solid #ddd;margin-top:6px;padding-top:10px;color:var(--bk)}
+
+/* FAQ স্টাইল */
 details.faq{border:1px solid var(--bd);border-radius:12px;padding:16px 20px;margin-bottom:12px;background:#fff}
-details.faq summary{cursor:pointer;font-weight:700;font-size:17px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+details.faq summary{cursor:pointer;font-weight:700;font-size:16.5px;list-style:none;display:flex;justify-content:space-between;align-items:center}
 details.faq summary::-webkit-details-marker{display:none}
 details.faq summary::after{content:"+";font-size:22px;font-weight:400}
 details.faq[open] summary::after{content:"–"}
-details.faq p{margin-top:12px;color:#444;font-size:16px}
-form.order{display:grid;gap:14px;max-width:560px;margin:0 auto;background:#fff;border:1px solid var(--bd);border-radius:18px;padding:30px;box-shadow:0 6px 24px rgba(0,0,0,.06)}
-form.order label{font-weight:600;font-size:15px;display:block;margin-bottom:6px}
-form.order input,form.order select,form.order textarea{width:100%;padding:13px 14px;border:1px solid var(--bd);border-radius:8px;font-size:16px;font-family:inherit;background:#fafafa}
-.summary-box{background:var(--gr);border-radius:12px;padding:16px 18px;font-size:15.5px}
-.summary-box div{display:flex;justify-content:space-between;padding:4px 0}
-.summary-box .tot{font-weight:700;font-size:18px;border-top:1px solid #ddd;margin-top:6px;padding-top:10px}
-.sticky-cta{position:fixed;left:0;right:0;bottom:0;background:var(--bk);color:#fff;display:none;align-items:center;justify-content:space-between;padding:12px 16px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -4px 16px rgba(0,0,0,.3);z-index:999}
-.sticky-cta b{font-size:24px}
-.sticky-cta a{background:#fff;color:var(--bk);padding:12px 22px;border-radius:8px;font-weight:700;text-decoration:none;font-size:16px}
-.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px}
+details.faq p{margin-top:12px;color:#444;font-size:15px}
+
+/* মোবাইল স্টিকি বার */
+.sticky-cta{position:fixed;left:0;right:0;bottom:0;background:var(--bk);color:#fff;display:none;align-items:center;justify-content:space-between;padding:12px 18px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -4px 16px rgba(0,0,0,.25);z-index:9999}
+.sticky-cta b{font-size:22px}
+.sticky-cta a{background:#fff;color:var(--bk);padding:10px 18px;border-radius:8px;font-weight:700;text-decoration:none;font-size:15px;white-space:nowrap}
+
+/* লাইটবক্স */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:10000;padding:20px}
 .lightbox img{max-width:92vw;max-height:88vh;border-radius:8px}
 .lightbox span{position:absolute;top:20px;right:28px;color:#fff;font-size:34px;cursor:pointer}
+
+/* রেসপনসিভ মোবাইল ভিউ */
 @media(max-width:860px){
-.hero-grid,.g2{grid-template-columns:1fr}
-.g3,.g4,.g5{grid-template-columns:repeat(2,1fr)}
-h1.hero-h{font-size:32px}
-.new{font-size:36px}
-h2.sec-title{font-size:26px}
-section{padding:46px 0}
-body{padding-bottom:70px}
-.sticky-cta{display:flex}
+  .hero-grid,.g2{grid-template-columns:1fr;gap:24px}
+  .g3,.g4{grid-template-columns:repeat(2,1fr);gap:14px}
+  h1.hero-h{font-size:29px}
+  .new{font-size:34px}
+  h2.sec-title{font-size:24px}
+  section{padding:42px 0}
+  body{padding-bottom:72px}
+  .sticky-cta{display:flex}
+  .btn{font-size:17px;padding:13px 22px}
+}
+
+@media(max-width:540px){
+  .wrap{padding:0 14px}
+  .g3,.g4{grid-template-columns:1fr}
+  h1.hero-h{font-size:25px}
+  h2.sec-title{font-size:21px}
+  .card{padding:18px}
+  form.order{padding:18px}
+  .new{font-size:32px}
+  .old{font-size:20px}
+  .hero{padding:20px 0 35px}
 }
 </style>
 </head>
 <body>
 
-<div class="announce"><strong>Cash On Delivery</strong> Available &nbsp;•&nbsp; Home Delivery &nbsp;•&nbsp; Customer Support</div>
+<div class="announce"><strong>Cash On Delivery</strong> সারা দেশে ক্যাশ অন ডেলিভারি সুবিধা • ৩-৫ দিনে হোম ডেলিভারি</div>
 
-<!-- HERO -->
+<!-- HERO SECTION -->
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
-      <img id="mainImg" src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=900&q=80" alt="[SHOE PRODUCT NAME] front view">
+      <img id="mainImg" src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=900&q=80" alt="Casual Shoes">
       <div class="thumbs">
-        <img class="active" onclick="swapMain(this)" src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=300&q=80" alt="Front view">
-        <img onclick="swapMain(this)" src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=300&q=80" alt="Side view">
-        <img onclick="swapMain(this)" src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&q=80" alt="Pair shot">
-        <img onclick="swapMain(this)" src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=300&q=80" alt="Close up detail">
+        <img class="active" onclick="swapMain(this)" src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=300&q=80" alt="View 1">
+        <img onclick="swapMain(this)" src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=300&q=80" alt="View 2">
+        <img onclick="swapMain(this)" src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&q=80" alt="View 3">
+        <img onclick="swapMain(this)" src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=300&q=80" alt="View 4">
       </div>
     </div>
     <div>
       <div class="eyebrow left">Premium Casual · Lifestyle Shoes</div>
       <h1 class="hero-h">স্টাইলিশ লুক, আরামদায়ক ফিট, প্রতিদিনের জন্য পারফেক্ট</h1>
-      <p style="font-size:18px;color:#555">ক্লাস, অফিস কিংবা আড্ডা—প্রতিদিনের সব আয়োজনে style আর আরাম একসাথে চাইলে <strong>[SHOE PRODUCT NAME]</strong> আপনার জন্য।</p>
-      <ul class="chk">
-        <li>স্টাইলিশ ও প্রিমিয়াম লুক</li>
-        <li>সারাদিনের জন্য আরামদায়ক</li>
-        <li>দৈনন্দিন ব্যবহারের উপযোগী</li>
-        <li>বিভিন্ন outfit-এর সাথে সহজে মানিয়ে যায়</li>
-        <li>Lightweight &amp; easy-to-wear feel</li>
+      <p style="font-size:17px;color:#555">ক্লাস, অফিস কিংবা আড্ডা—প্রতিদিনের সব আয়োজনে স্টাইল আর দীর্ঘ সময় চলার আরাম নিশ্চিত করতে এই জুতাটি আপনার জন্য সেরা চয়েজ।</p>
+      <ul class="chk" style="margin-top:10px">
+        <li>স্টাইলিশ ও প্রিমিয়াম ফিনিশিং</li>
+        <li>সারাদিন পরার মতো নরম ও আরামদায়ক</li>
+        <li>দৈনন্দিন যেকোনো জিন্স বা গ্যাবার্ডিনের সাথে মানানসই</li>
+        <li>Lightweight &amp; breathable feel</li>
       </ul>
       <div class="price-row">
-        <span class="old">৳[OLD PRICE]</span>
-        <span class="new">৳[CURRENT PRICE]</span>
-        <span class="badge">[DISCOUNT] OFF</span>
+        <span class="old">৳১,৯৫০</span>
+        <span class="new">৳১,২৯০</span>
+        <span class="badge">৩৪% ছাড়</span>
       </div>
-      <a href="#order-form" class="btn">এখনই অর্ডার করুন →</a>
-      <div class="tag-small">✓ Cash On Delivery Available &nbsp; · &nbsp; Home Delivery &nbsp; · &nbsp; Customer Support</div>
+      <a href="#order-form" class="btn" style="width:100%;max-width:320px">এখনই অর্ডার করুন →</a>
+      <div style="font-size:14px;color:#555;font-weight:600;margin-top:12px">✓ পণ্য হাতে পেয়ে মূল্য পরিশোধ &nbsp; · &nbsp; ✓ সাইজ পরিবর্তনের সুবিধা</div>
     </div>
   </div>
 </section>
@@ -144,33 +204,12 @@ body{padding-bottom:70px}
     <h2 class="sec-title">প্রতিদিনের জুতায় আপনি কি এই সমস্যাগুলো অনুভব করেন?</h2>
     <div class="rule"></div>
     <div class="grid g3">
-      <div class="card"><div class="ic">✕</div><h4>আরাম নেই</h4><p>জুতা দেখতে ভালো, কিন্তু পরলে আরাম লাগে না।</p></div>
-      <div class="card"><div class="ic">✕</div><h4>অল্প হাঁটলেই অস্বস্তি</h4><p>কিছুক্ষণ হাঁটার পরই পায়ে অস্বস্তি শুরু হয়।</p></div>
-      <div class="card"><div class="ic">✕</div><h4>Outfit-এর সাথে মেলে না</h4><p>প্রতিদিনের পোশাকের সাথে জুতা মানানো কঠিন হয়।</p></div>
-      <div class="card"><div class="ic">✕</div><h4>দেখতে সস্তা লাগে</h4><p>পুরো লুকটাই নষ্ট করে দেয় এমন জুতা।</p></div>
-      <div class="card"><div class="ic">✕</div><h4>ভারী অনুভূতি</h4><p>পা যেন টেনে টেনে চলতে হয়—uncomfortable feel।</p></div>
-      <div class="card"><div class="ic">✕</div><h4>Style ও Comfort একসাথে নেই</h4><p>দুটোই দেয় এমন জুতা পাওয়া সত্যিই কঠিন।</p></div>
-    </div>
-    <p class="center" style="margin-top:30px;font-size:22px;font-weight:600">তাই দরকার এমন একটি জুতা, যেটা শুধু দেখতে ভালো নয়, প্রতিদিন পরতেও ভালো লাগে।</p>
-  </div>
-</section>
-
-<!-- INTRO -->
-<section class="bg-dark">
-  <div class="wrap g2 grid" style="align-items:center">
-    <img src="https://images.unsplash.com/photo-1465453869711-7e174808ace9?w=800&q=80" alt="Lifestyle shot">
-    <div>
-      <div class="eyebrow muted left">Meet Your Pair</div>
-      <h2 style="font-size:34px;font-weight:700;margin:6px 0 14px">আপনার Everyday Style-এর জন্য তৈরি</h2>
-      <p class="muted" style="font-size:18px">এই জুতাটি এমনভাবে বেছে নেওয়া, যাতে আপনার প্রতিদিনের style আর আরাম দুটোই একসাথে পাওয়া যায়।</p>
-      <ul class="chk" style="margin-top:14px">
-        <li>Stylish appearance</li>
-        <li>Comfortable everyday use</li>
-        <li>Easy-to-match design</li>
-        <li>Lightweight wearing experience</li>
-        <li>বিভিন্ন occasion-এ ব্যবহারের উপযোগী</li>
-      </ul>
-      <a href="#order-form" class="btn light" style="margin-top:16px">আমার সাইজটি অর্ডার করুন →</a>
+      <div class="card"><div class="ic">✕</div><h4>আরাম নেই</h4><p>জুতা দেখতে সুন্দর হলেও কিছুক্ষণ পরলেই পায়ে অস্বস্তি ও ব্যথা শুরু হয়।</p></div>
+      <div class="card"><div class="ic">✕</div><h4>অল্প হাঁটলেই ক্লান্তি</h4><p>সোল শক্ত হওয়ার কারণে অল্প হাঁটলেই গোড়ালিতে চাপ অনুভব হয়।</p></div>
+      <div class="card"><div class="ic">✕</div><h4>Outfit-এর সাথে মেলে না</h4><p>প্রতিদিনের পোশাকের সাথে সহজে সব জুতা ম্যাচিং করা যায় না।</p></div>
+      <div class="card"><div class="ic">✕</div><h4>ভারী অনুভূতি</h4><p>পা যেন টেনে টেনে চলতে হয়—heavy & uncomfortable feel।</p></div>
+      <div class="card"><div class="ic">✕</div><h4>দেখতে সাধারণ লাগে</h4><p>কয়েকদিন পরলেই শেইপ নষ্ট হয়ে পুরো লুকটাই নষ্ট করে দেয়।</p></div>
+      <div class="card"><div class="ic">✕</div><h4>স্থায়িত্বের অভাব</h4><p>সোলের আঠা দ্রুত খুলে যাওয়া বা চামড়া ফেটে যাওয়ার ঝামেলা।</p></div>
     </div>
   </div>
 </section>
@@ -182,93 +221,26 @@ body{padding-bottom:70px}
     <h2 class="sec-title">কেন এই জুতাটি আপনার পছন্দ হবে?</h2>
     <div class="rule"></div>
     <div class="grid g4">
-      <div class="card"><div class="ic">◆</div><h4>Premium Design</h4><p>দেখতেই প্রিমিয়াম, পরলে আরও স্মার্ট লুক।</p></div>
-      <div class="card"><div class="ic">☁</div><h4>Comfortable Fit</h4><p>দৈনন্দিন ব্যবহারে আরামদায়ক অনুভূতির জন্য তৈরি।</p></div>
-      <div class="card"><div class="ic">➤</div><h4>Lightweight Feel</h4><p>পায়ে অতিরিক্ত ভারী অনুভূতি না দিয়ে সহজে চলাফেরা।</p></div>
-      <div class="card"><div class="ic">☀</div><h4>Everyday Ready</h4><p>ক্লাস, অফিস, শপিং বা casual outing-এর জন্য উপযোগী।</p></div>
-      <div class="card"><div class="ic">◐</div><h4>Easy Styling</h4><p>Jeans, chinos বা casual outfit-এর সাথে সহজেই মানিয়ে যায়।</p></div>
-      <div class="card"><div class="ic">⬢</div><h4>Durable Build</h4><p>দৈনন্দিন ব্যবহারের কথা মাথায় রেখে তৈরি।</p></div>
-      <div class="card"><div class="ic">↯</div><h4>Easy to Wear</h4><p>সহজে পরা ও খোলার সুবিধা।</p></div>
-      <div class="card"><div class="ic">★</div><h4>Modern Look</h4><p>ট্রেন্ডি ডিজাইন appearance আরও polished করে তোলে।</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- USE CASES -->
-<section class="bg-gray">
-  <div class="wrap">
-    <div class="eyebrow">Why You Will Love It</div>
-    <h2 class="sec-title">এক জোড়া জুতা, প্রতিদিনের এত কাজ</h2>
-    <div class="rule"></div>
-    <div class="grid g3">
-      <div class="card usecard" style="padding:14px">
-        <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=600&q=80" alt="Office look">
-        <div style="padding:14px 6px 2px"><h4>অফিসে</h4><p>সিম্পল, স্মার্ট এবং professional-casual look তৈরি করতে সাহায্য করবে।</p></div>
-      </div>
-      <div class="card usecard" style="padding:14px">
-        <img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=600&q=80" alt="University look">
-        <div style="padding:14px 6px 2px"><h4>বিশ্ববিদ্যালয়ে</h4><p>ক্লাস, আড্ডা বা ক্যাম্পাসে everyday style-এর জন্য সহজ choice।</p></div>
-      </div>
-      <div class="card usecard" style="padding:14px">
-        <img src="https://images.unsplash.com/photo-1465453869711-7e174808ace9?w=600&q=80" alt="Outing look">
-        <div style="padding:14px 6px 2px"><h4>বাইরে ঘোরাঘুরিতে</h4><p>Casual outfit-এর সাথে সহজে match করে।</p></div>
-      </div>
-      <div class="card usecard" style="padding:14px">
-        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&q=80" alt="Friends hangout">
-        <div style="padding:14px 6px 2px"><h4>বন্ধুদের সাথে আড্ডায়</h4><p>Comfortable look-এর সাথে নিজের style ধরে রাখুন।</p></div>
-      </div>
-      <div class="card usecard" style="padding:14px">
-        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80" alt="Everyday use">
-        <div style="padding:14px 6px 2px"><h4>প্রতিদিনের ব্যবহারে</h4><p>একটি versatile pair, যা wardrobe-এর বিভিন্ন outfit-এর সাথে ব্যবহার করা যায়।</p></div>
-      </div>
+      <div class="card"><div class="ic">◆</div><h4>Premium Look</h4><p>দেখতেই প্রিমিয়াম, পরলে আরও স্মার্ট ও আত্মবিশ্বাসী লাগবে।</p></div>
+      <div class="card"><div class="ic">☁</div><h4>Cushioned Sole</h4><p>পায়ের পাতা ও গোড়ালির সুরক্ষায় নরম কুশন ইনসোল।</p></div>
+      <div class="card"><div class="ic">➤</div><h4>Lightweight</h4><p>পায়ে অতিরিক্ত ভার লাগে না, সারাদিন সহজেই হাঁটাচলা করা যায়।</p></div>
+      <div class="card"><div class="ic">⬢</div><h4>Durable Outsole</h4><p>হাই-গ্রিপ অ্যান্টি-স্লিপ সোল, যা দীর্ঘস্থায়ী ব্যবহারের জন্য তৈরি।</p></div>
     </div>
   </div>
 </section>
 
 <!-- GALLERY -->
-<section>
+<section class="bg-gray">
   <div class="wrap">
     <div class="eyebrow">Gallery</div>
-    <h2 class="sec-title">এক নজরে জুতাটি দেখুন</h2>
+    <h2 class="sec-title">এক নজরে জুতাটির ছবি দেখুন</h2>
     <div class="rule"></div>
-    <p class="sec-sub">ছবিতে সোয়াইপ করুন বা ট্যাপ করে বড় করে দেখুন।</p>
+    <p class="sec-sub">ছবিতে ট্যাপ করে বড় করে দেখতে পারেন।</p>
     <div class="gallery-strip" id="gallery">
       <img onclick="openLightbox(this.src)" src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=800&q=80" alt="Front view">
       <img onclick="openLightbox(this.src)" src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=800&q=80" alt="Side view">
       <img onclick="openLightbox(this.src)" src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=800&q=80" alt="Back view">
       <img onclick="openLightbox(this.src)" src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&q=80" alt="Top view">
-      <img onclick="openLightbox(this.src)" src="https://images.unsplash.com/photo-1465453869711-7e174808ace9?w=800&q=80" alt="Shoe on model">
-      <img onclick="openLightbox(this.src)" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80" alt="Outdoor use">
-      <img onclick="openLightbox(this.src)" src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80" alt="Close-up detail">
-      <img onclick="openLightbox(this.src)" src="https://images.unsplash.com/photo-1528701800489-20be9c1a1b00?w=800&q=80" alt="Pair shot">
-    </div>
-    <p class="center" style="color:#777;font-size:14px;margin-top:10px">প্রকৃত product ছবি ব্যবহার করুন—রং, আকৃতি, লোগো ও ডিজাইন অপরিবর্তিত রাখুন।</p>
-  </div>
-</section>
-
-<!-- OUTFIT -->
-<section class="bg-gray">
-  <div class="wrap">
-    <div class="eyebrow">Style Guide</div>
-    <h2 class="sec-title">আপনার Style-এর সাথে সহজেই মানিয়ে যাবে</h2>
-    <div class="rule"></div>
-    <div class="grid g4">
-      <div class="card lookcard" style="padding:12px">
-        <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=600&q=80" alt="Casual Everyday">
-        <div style="padding:12px 4px 0"><div class="eyebrow left" style="margin-bottom:2px">LOOK 01</div><h4>Casual Everyday</h4><p>Jeans + T-shirt + Shoes</p></div>
-      </div>
-      <div class="card lookcard" style="padding:12px">
-        <img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=600&q=80" alt="Smart Casual">
-        <div style="padding:12px 4px 0"><div class="eyebrow left" style="margin-bottom:2px">LOOK 02</div><h4>Smart Casual</h4><p>Chinos + Shirt + Shoes</p></div>
-      </div>
-      <div class="card lookcard" style="padding:12px">
-        <img src="https://images.unsplash.com/photo-1465453869711-7e174808ace9?w=600&q=80" alt="Campus Look">
-        <div style="padding:12px 4px 0"><div class="eyebrow left" style="margin-bottom:2px">LOOK 03</div><h4>Campus Look</h4><p>Denim + Casual Top + Shoes</p></div>
-      </div>
-      <div class="card lookcard" style="padding:12px">
-        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80" alt="Weekend Look">
-        <div style="padding:12px 4px 0"><div class="eyebrow left" style="margin-bottom:2px">LOOK 04</div><h4>Weekend Look</h4><p>Casual Pants + Polo/T-shirt + Shoes</p></div>
-      </div>
     </div>
   </div>
 </section>
@@ -277,156 +249,93 @@ body{padding-bottom:70px}
 <section>
   <div class="wrap" style="max-width:860px">
     <div class="eyebrow">Size Guide</div>
-    <h2 class="sec-title">সঠিক Size বেছে নিন</h2>
+    <h2 class="sec-title">আপনার সঠিক সাইজ বেছে নিন</h2>
     <div class="rule"></div>
-    <p class="sec-sub">আপনার পায়ের দৈর্ঘ্য মেপে Size নির্বাচন করুন।</p>
+    <p class="sec-sub">আপনার রেগুলার জুতার সাইজ অনুযায়ী নির্বাচন করুন।</p>
     <div class="tbl-wrap">
       <table>
-        <tr><th>EU Size</th><th>Foot Length</th><th>Recommended Size</th></tr>
-        <tr><td>[EU SIZE]</td><td>[SIZE DATA TO BE PROVIDED]</td><td>[SIZE DATA TO BE PROVIDED]</td></tr>
-        <tr><td>[EU SIZE]</td><td>[SIZE DATA TO BE PROVIDED]</td><td>[SIZE DATA TO BE PROVIDED]</td></tr>
-        <tr><td>[EU SIZE]</td><td>[SIZE DATA TO BE PROVIDED]</td><td>[SIZE DATA TO BE PROVIDED]</td></tr>
-        <tr><td>[EU SIZE]</td><td>[SIZE DATA TO BE PROVIDED]</td><td>[SIZE DATA TO BE PROVIDED]</td></tr>
-        <tr><td>[EU SIZE]</td><td>[SIZE DATA TO BE PROVIDED]</td><td>[SIZE DATA TO BE PROVIDED]</td></tr>
-        <tr><td>[EU SIZE]</td><td>[SIZE DATA TO BE PROVIDED]</td><td>[SIZE DATA TO BE PROVIDED]</td></tr>
-      </table>
-    </div>
-    <div class="card" style="background:var(--bk);color:#fff;text-align:center;margin-top:30px">
-      <h4 style="font-size:24px">Size নিয়ে Confused?</h4>
-      <p style="color:#ddd;margin:8px 0 18px">চিন্তা নেই—আপনার পায়ের মাপ জানালে আমরা সঠিক Size বেছে নিতে সাহায্য করব।</p>
-      <a href="https://wa.me/8801XXXXXXXXX" class="btn light">Size Help নিন (WhatsApp)</a>
-    </div>
-  </div>
-</section>
-
-<!-- TRUST -->
-<section class="bg-gray">
-  <div class="wrap">
-    <div class="eyebrow">Why Choose Us</div>
-    <h2 class="sec-title">শুধু জুতা নয়, আমরা দিচ্ছি নিশ্চিন্ত কেনাকাটা</h2>
-    <div class="rule"></div>
-    <div class="grid g4">
-      <div class="card"><div class="ic">✓</div><h4>Quality Checked</h4><p>Dispatch করার আগে product checking process।</p></div>
-      <div class="card"><div class="ic">✓</div><h4>Secure Ordering</h4><p>আপনার order information নিরাপদভাবে নেওয়া হবে।</p></div>
-      <div class="card"><div class="ic">✓</div><h4>Cash On Delivery</h4><p>Product হাতে পেয়ে payment করার সুবিধা।</p></div>
-      <div class="card"><div class="ic">✓</div><h4>Customer Support</h4><p>Order বা size সংক্রান্ত প্রয়োজনে support।</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- COMPARISON -->
-<section>
-  <div class="wrap" style="max-width:900px">
-    <div class="eyebrow">Comparison</div>
-    <h2 class="sec-title">এক নজরে পার্থক্য</h2>
-    <div class="rule"></div>
-    <div class="tbl-wrap">
-      <table>
-        <tr><th>বিষয়</th><th>Our Shoe</th><th>Ordinary Generic Shoe</th></tr>
-        <tr><td><b>Design</b></td><td>✓ Premium, modern look</td><td style="color:#888">সাধারণ ডিজাইন</td></tr>
-        <tr><td><b>Comfort</b></td><td>✓ প্রতিদিনের আরামের কথা ভেবে তৈরি</td><td style="color:#888">সব সময় নিশ্চিত নয়</td></tr>
-        <tr><td><b>Everyday Styling</b></td><td>✓ বিভিন্ন outfit-এর সাথে মানানসই</td><td style="color:#888">সীমিত styling option</td></tr>
-        <tr><td><b>Versatility</b></td><td>✓ ক্লাস, অফিস, আড্ডা—সবখানে</td><td style="color:#888">নির্দিষ্ট ব্যবহারে সীমাবদ্ধ</td></tr>
-        <tr><td><b>Overall Look</b></td><td>✓ Polished ও স্মার্ট</td><td style="color:#888">সাধারণ লুক</td></tr>
-        <tr><td><b>Buying Experience</b></td><td>✓ সহজ COD অর্ডার, support সহ</td><td style="color:#888">অনিশ্চিত</td></tr>
-        <tr><td><b>Quality Checking</b></td><td>✓ Dispatch-এর আগে checking</td><td style="color:#888">অনিশ্চিত</td></tr>
+        <tr><th>EU Size</th><th>পায়ের মাপ (Foot Length)</th><th>বাংলাদেশি সাধারণ মাপ</th></tr>
+        <tr><td><strong>EU 39</strong></td><td>24.5 cm</td><td>৩৯ সাইজ</td></tr>
+        <tr><td><strong>EU 40</strong></td><td>25.0 cm</td><td>৪০ সাইজ</td></tr>
+        <tr><td><strong>EU 41</strong></td><td>25.5 cm</td><td>৪১ সাইজ</td></tr>
+        <tr><td><strong>EU 42</strong></td><td>26.0 cm</td><td>৪২ সাইজ</td></tr>
+        <tr><td><strong>EU 43</strong></td><td>26.5 cm</td><td>৪৩ সাইজ</td></tr>
+        <tr><td><strong>EU 44</strong></td><td>27.0 cm</td><td>৪৪ সাইজ</td></tr>
       </table>
     </div>
   </div>
 </section>
 
-<!-- REVIEWS -->
-<section class="bg-gray">
-  <div class="wrap">
-    <div class="eyebrow">Reviews</div>
-    <h2 class="sec-title">যারা পরেছেন, তারা কী বলছেন?</h2>
-    <div class="rule"></div>
-    <div class="grid g3">
-      <div class="card"><div class="stars">★★★★★</div><p style="margin-top:8px;color:#222">[বাস্তব Customer Review এখানে বসবে]</p><div class="rev-top"><div class="avatar">কন</div><div><b>[Customer Name]</b><div style="font-size:13px;color:#888">[Area] · Size: [Size]</div></div></div></div>
-      <div class="card"><div class="stars">★★★★★</div><p style="margin-top:8px;color:#222">[বাস্তব Customer Review এখানে বসবে]</p><div class="rev-top"><div class="avatar">রহ</div><div><b>[Customer Name]</b><div style="font-size:13px;color:#888">[Area] · Size: [Size]</div></div></div></div>
-      <div class="card"><div class="stars">★★★★★</div><p style="margin-top:8px;color:#222">[বাস্তব Customer Review এখানে বসবে]</p><div class="rev-top"><div class="avatar">সা</div><div><b>[Customer Name]</b><div style="font-size:13px;color:#888">[Area] · Size: [Size]</div></div></div></div>
-      <div class="card"><div class="stars">★★★★★</div><p style="margin-top:8px;color:#222">[বাস্তব Customer Review এখানে বসবে]</p><div class="rev-top"><div class="avatar">মি</div><div><b>[Customer Name]</b><div style="font-size:13px;color:#888">[Area] · Size: [Size]</div></div></div></div>
-      <div class="card"><div class="stars">★★★★★</div><p style="margin-top:8px;color:#222">[বাস্তব Customer Review এখানে বসবে]</p><div class="rev-top"><div class="avatar">তা</div><div><b>[Customer Name]</b><div style="font-size:13px;color:#888">[Area] · Size: [Size]</div></div></div></div>
-      <div class="card"><div class="stars">★★★★★</div><p style="margin-top:8px;color:#222">[বাস্তব Customer Review এখানে বসবে]</p><div class="rev-top"><div class="avatar">আ</div><div><b>[Customer Name]</b><div style="font-size:13px;color:#888">[Area] · Size: [Size]</div></div></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- OFFER -->
-<section class="bg-dark center">
-  <div class="wrap">
-    <div class="eyebrow muted">Special Offer</div>
-    <h2 class="sec-title">আজকের বিশেষ অফার</h2>
-    <div class="rule" style="background:#fff"></div>
-    <div class="grid g3" style="max-width:800px;margin:0 auto">
-      <div class="card card-dark"><p class="muted">Regular Price</p><p class="old" style="color:#999">৳[OLD PRICE]</p></div>
-      <div class="card" style="background:#fff;color:var(--bk)"><p style="color:#666">Offer Price</p><p class="new" style="font-size:38px">৳[CURRENT PRICE]</p></div>
-      <div class="card card-dark"><p class="muted">আপনার সাশ্রয়</p><p class="new" style="font-size:34px">৳[SAVING]</p></div>
-    </div>
-    <p class="muted" style="margin-top:22px">✓ Cash On Delivery Available &nbsp; · &nbsp; ✓ Home Delivery Available</p>
-    <p class="muted">স্টক শেষ হওয়ার আগেই আপনার Size নিশ্চিত করুন।</p>
-    <a href="#order-form" class="btn light" style="margin-top:20px">অফারে অর্ডার করুন →</a>
-  </div>
-</section>
-
-<!-- HOW TO ORDER -->
-<section>
-  <div class="wrap">
-    <div class="eyebrow">How To Order</div>
-    <h2 class="sec-title">মাত্র ৩টি সহজ ধাপে অর্ডার</h2>
-    <div class="rule"></div>
-    <div class="grid g3">
-      <div class="card center"><div class="ic" style="margin:0 auto 14px">১</div><h4>তথ্য দিন</h4><p>নাম, মোবাইল নম্বর, ঠিকানা ও Size দিন।</p></div>
-      <div class="card center"><div class="ic" style="margin:0 auto 14px">২</div><h4>অর্ডার কনফার্ম করুন</h4><p>নিচের বাটনে ক্লিক করে অর্ডার সম্পন্ন করুন।</p></div>
-      <div class="card center"><div class="ic" style="margin:0 auto 14px">৩</div><h4>হাতে পেয়ে Payment করুন</h4><p>Cash On Delivery-তে পণ্য হাতে পেয়ে টাকা দিন।</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ORDER FORM -->
+<!-- ORDER FORM SECTION (CONNECTED TO FORMSPREE & WHATSAPP) -->
 <section class="bg-gray" id="order-form">
-  <div class="wrap" style="max-width:640px">
-    <div class="eyebrow">Order Now</div>
-    <h2 class="sec-title">আপনার অর্ডারটি কনফার্ম করতে নিচের তথ্য দিন</h2>
+  <div class="wrap" style="max-width:620px">
+    <div class="eyebrow">Cash On Delivery</div>
+    <h2 class="sec-title">অর্ডার করতে নিচের তথ্যগুলো দিন</h2>
     <div class="rule"></div>
-    <p class="sec-sub">ফর্মটি পূরণ করতে মাত্র কয়েক সেকেন্ড সময় লাগবে।</p>
-    <form class="order" onsubmit="return confirmOrder(event)">
+    <p class="sec-sub" style="margin-bottom:20px">পণ্য হাতে পেয়ে টাকা পরিশোধ করার সুবিধা।</p>
+    
+    <!-- FORMSPREE ACTION ENDPOINT -->
+    <form class="order" id="shoeOrderForm" action="https://formspree.io/f/xljdvvzp" method="POST">
       <div>
-        <label>আপনার নাম</label>
-        <input type="text" required placeholder="যেমনঃ রহিম উদ্দিন">
+        <label>আপনার সম্পূর্ণ নাম *</label>
+        <input type="text" id="custName" name="Customer_Name" required placeholder="যেমনঃ মোঃ আব্দুল্লাহ">
       </div>
       <div>
-        <label>মোবাইল নম্বর</label>
-        <input type="tel" required placeholder="01XXXXXXXXX">
+        <label>মোবাইল নম্বর *</label>
+        <input type="tel" id="custPhone" name="Mobile_Number" required placeholder="01XXXXXXXXX" pattern="[0-9]{11}" title="দয়া করে ১১ ডিজিটের সঠিক মোবাইল নম্বর দিন">
       </div>
       <div>
-        <label>সম্পূর্ণ ঠিকানা</label>
-        <textarea rows="3" required placeholder="বাসা/হোল্ডিং, রোড, থানা, জেলা"></textarea>
+        <label>ডেলিভারির সম্পূর্ণ ঠিকানা *</label>
+        <textarea id="custAddress" name="Delivery_Address" rows="3" required placeholder="বাসা/হোল্ডিং নং, রোড, এলাকা/থানা এবং জেলার নাম"></textarea>
       </div>
       <div class="grid g2">
         <div>
-          <label>Size নির্বাচন করুন</label>
-          <select id="sizeSel" onchange="updateSummary()">
-            <option>[Size 1]</option><option>[Size 2]</option><option>[Size 3]</option><option>[Size 4]</option>
+          <label>সাইজ নির্বাচন করুন *</label>
+          <select id="sizeSel" name="Shoe_Size" required onchange="updateSummary()">
+            <option value="" disabled>সাইজ বাছাই করুন</option>
+            <option value="39 (EU 39)">39 (EU 39)</option>
+            <option value="40 (EU 40)" selected>40 (EU 40)</option>
+            <option value="41 (EU 41)">41 (EU 41)</option>
+            <option value="42 (EU 42)">42 (EU 42)</option>
+            <option value="43 (EU 43)">43 (EU 43)</option>
+            <option value="44 (EU 44)">44 (EU 44)</option>
           </select>
         </div>
         <div>
-          <label>Quantity</label>
-          <select id="qtySel" onchange="updateSummary()">
-            <option>1</option><option>2</option><option>3</option>
+          <label>পরিমাণ (Quantity) *</label>
+          <select id="qtySel" name="Quantity" required onchange="updateSummary()">
+            <option value="1">1 জোড়া</option>
+            <option value="2">2 জোড়া</option>
+            <option value="3">3 জোড়া</option>
           </select>
         </div>
       </div>
+
+      <!-- Hidden inputs for Formspree reporting -->
+      <input type="hidden" name="Product_Name" value="প্রিমিয়াম ক্যাজুয়াল জুতা">
+      <input type="hidden" id="hiddenTotal" name="Total_Amount" value="৳১,৩৭০">
+
+      <!-- Summary Box -->
       <div class="summary-box">
-        <div><span>Product</span><span>[SHOE PRODUCT NAME]</span></div>
-        <div><span>Size</span><span id="sSize">[Size 1]</span></div>
-        <div><span>Quantity</span><span id="sQty">1</span></div>
-        <div><span>Offer Price</span><span>৳[CURRENT PRICE]</span></div>
-        <div><span>Delivery Charge</span><span>৳[DELIVERY CHARGE]</span></div>
-        <div class="tot"><span>Total</span><span id="sTotal">৳[TOTAL]</span></div>
+        <div><span>প্রোডাক্ট</span><span>প্রিমিয়াম ক্যাজুয়াল জুতা</span></div>
+        <div><span>সাইজ</span><span id="sSize">40 (EU 40)</span></div>
+        <div><span>পরিমাণ</span><span id="sQty">1 জোড়া</span></div>
+        <div><span>দাম</span><span id="sPrice">৳১,২৯০</span></div>
+        <div><span>ডেলিভারি চার্জ</span><span>৳৮০</span></div>
+        <div class="tot"><span>সর্বমোট বিল</span><span id="sTotal">৳১,৩৭০</span></div>
       </div>
-      <button type="submit" class="btn" style="justify-content:center;width:100%">অর্ডার কনফার্ম করুন</button>
-      <p class="center" style="font-size:14px;color:#555">Cash On Delivery &nbsp;·&nbsp; আপনার তথ্য নিরাপদ রাখা হবে</p>
+      
+      <!-- Submit to Formspree -->
+      <button type="submit" class="btn" style="width:100%">অর্ডার কনফার্ম করুন (ক্যাশ অন ডেলিভারি)</button>
+      
+      <div style="text-align:center;margin:4px 0;font-weight:600;color:#777">— অথবা —</div>
+      
+      <!-- Direct WhatsApp Order Button -->
+      <button type="button" onclick="sendViaWhatsApp()" class="btn btn-wa" style="width:100%">
+        💬 হোয়াটসঅ্যাপে সরাসরি অর্ডার পাঠান
+      </button>
+
+      <p class="center" style="font-size:13.5px;color:#666;margin-top:6px">✓ আপনার সব তথ্য নিরাপদ থাকবে। আমরা কল করে অর্ডার কনফার্ম করব।</p>
     </form>
   </div>
 </section>
@@ -435,56 +344,21 @@ body{padding-bottom:70px}
 <section>
   <div class="wrap" style="max-width:800px">
     <div class="eyebrow">FAQ</div>
-    <h2 class="sec-title">আপনার প্রশ্নের উত্তর</h2>
+    <h2 class="sec-title">সাধারণ কিছু প্রশ্নোত্তর</h2>
     <div class="rule"></div>
-    <details class="faq"><summary>কোন কোন Size available?</summary><p>[এখানে সঠিক তথ্য বসান]</p></details>
-    <details class="faq"><summary>কীভাবে সঠিক Size নির্বাচন করব?</summary><p>পায়ের দৈর্ঘ্য মেপে উপরের Size Chart দেখুন। দ্বিধা থাকলে Size Help বাটনে যোগাযোগ করুন।</p></details>
-    <details class="faq"><summary>Product হাতে পাওয়ার পর payment করা যাবে?</summary><p>[এখানে সঠিক তথ্য বসান]</p></details>
-    <details class="faq"><summary>Delivery কতদিন সময় নিতে পারে?</summary><p>[এখানে সঠিক তথ্য বসান]</p></details>
-    <details class="faq"><summary>সারাদেশে Delivery হয়?</summary><p>[এখানে সঠিক তথ্য বসান]</p></details>
-    <details class="faq"><summary>Size ভুল হলে কী করা যাবে?</summary><p>[এখানে সঠিক তথ্য বসান]</p></details>
-    <details class="faq"><summary>Product-এর ছবি কি বাস্তব?</summary><p>[এখানে সঠিক তথ্য বসান]</p></details>
-    <details class="faq"><summary>কীভাবে order tracking করব?</summary><p>[এখানে সঠিক তথ্য বসান]</p></details>
-    <details class="faq"><summary>একাধিক pair order করা যাবে?</summary><p>[এখানে সঠিক তথ্য বসান]</p></details>
-    <details class="faq"><summary>Order করার পর কীভাবে confirmation পাব?</summary><p>[এখানে সঠিক তথ্য বসান]</p></details>
-  </div>
-</section>
-
-<!-- OBJECTIONS -->
-<section class="bg-gray">
-  <div class="wrap">
-    <div class="eyebrow">Still Thinking?</div>
-    <h2 class="sec-title">এখনও ভাবছেন?</h2>
-    <div class="rule"></div>
-    <div class="grid g4">
-      <div class="card"><h4>দাম কি ঠিক আছে?</h4><p>Style, আরাম আর প্রতিদিনের ব্যবহার—সব মিলিয়ে এটি একটি value-for-money choice।</p></div>
-      <div class="card"><h4>Size ঠিক হবে তো?</h4><p>Size Chart দেখুন, আর দ্বিধা থাকলে Size Help-এ জানান।</p></div>
-      <div class="card"><h4>ছবির মতোই পাব তো?</h4><p>[এখানে সঠিক তথ্য বসান—শুধু সত্য হলে]</p></div>
-      <div class="card"><h4>আগে টাকা দিতে হবে?</h4><p>না, Cash On Delivery সুবিধা আছে।</p></div>
-    </div>
-    <p class="center" style="margin-top:30px;font-size:22px;font-weight:600">আপনার পছন্দের Size available থাকা অবস্থাতেই order করুন।</p>
-    <div class="center" style="margin-top:16px"><a href="#order-form" class="btn">এখনই অর্ডার করুন →</a></div>
-  </div>
-</section>
-
-<!-- FINAL CTA -->
-<section class="bg-dark center" style="padding:90px 0 120px">
-  <div class="wrap">
-    <div class="eyebrow muted">Order Today</div>
-    <h2 class="sec-title">আপনার Everyday Look-এ নতুন কিছু যোগ করার সময় এখনই</h2>
-    <div class="rule" style="background:#fff"></div>
-    <p class="muted" style="font-size:18px;max-width:560px;margin:14px auto">স্টাইল, comfort এবং everyday versatility-এর জন্য আপনার পছন্দের pairটি আজই অর্ডার করুন।</p>
-    <p class="old" style="color:#999">৳[OLD PRICE]</p>
-    <p class="new" style="color:#fff">৳[CURRENT PRICE]</p>
-    <a href="#order-form" class="btn light" style="margin-top:10px">অর্ডার করতে নিচের ফর্মটি পূরণ করুন ↓</a>
-    <p class="muted" style="margin-top:16px;font-size:14px">✓ Cash On Delivery Available &nbsp;·&nbsp; ✓ Secure Order &nbsp;·&nbsp; ✓ Customer Support Available</p>
+    <details class="faq"><summary>ডেলিভারি পেতে কতদিন সময় লাগবে?</summary><p>ঢাকার ভেতরে ২৪-৪৮ ঘণ্টা এবং ঢাকার বাইরে ২-৪ দিনের মধ্যে ডেলিভারি পাবেন।</p></details>
+    <details class="faq"><summary>সাইজে সমস্যা হলে কি এক্সচেঞ্জ করা যাবে?</summary><p>জি, ডেলিভারির পর সাইজে কোনো সমস্যা হলে সহজেই সাইজ পরিবর্তন করে নিতে পারবেন।</p></details>
+    <details class="faq"><summary>অগ্রিম টাকা দিতে হবে?</summary><p>না, কোনো প্রকার অগ্রিম টাকা দিতে হবে না। জুতা হাতে পেয়ে সম্পূর্ণ ক্যাশ অন ডেলিভারিতে টাকা পরিশোধ করবেন।</p></details>
   </div>
 </section>
 
 <!-- STICKY MOBILE CTA -->
 <div class="sticky-cta" id="stickyBar">
-  <b>৳[CURRENT PRICE]</b>
-  <a href="#order-form">এখনই অর্ডার করুন</a>
+  <div>
+    <span style="font-size:11px;display:block;color:#bbb;line-height:1">অফার মূল্য</span>
+    <b>৳১,২৯০</b>
+  </div>
+  <a href="#order-form">অর্ডার করুন</a>
 </div>
 
 <!-- LIGHTBOX -->
@@ -494,24 +368,78 @@ body{padding-bottom:70px}
 </div>
 
 <script>
+// প্রাইস কনফিগারেশন
+const UNIT_PRICE = 1290;
+const DELIVERY_CHARGE = 80;
+
+// বাংলা সংখ্যায় কনভার্ট করার ফাংশন
+function toBanglaNum(num) {
+  const bn = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+  return num.toString().replace(/\d/g, d => bn[d]);
+}
+
 function swapMain(el){
   document.getElementById('mainImg').src = el.src.replace('w=300','w=900');
   document.querySelectorAll('.thumbs img').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
 }
+
 function openLightbox(src){
   document.getElementById('lightboxImg').src = src;
   document.getElementById('lightbox').style.display = 'flex';
 }
+
 function updateSummary(){
-  document.getElementById('sSize').textContent = document.getElementById('sizeSel').value;
-  document.getElementById('sQty').textContent = document.getElementById('qtySel').value;
+  const size = document.getElementById('sizeSel').value || 'সিলেক্ট করা হয়নি';
+  const qty = parseInt(document.getElementById('qtySel').value, 10) || 1;
+  
+  document.getElementById('sSize').textContent = size;
+  document.getElementById('sQty').textContent = toBanglaNum(qty) + ' জোড়া';
+  
+  const subtotal = UNIT_PRICE * qty;
+  const grandTotal = subtotal + DELIVERY_CHARGE;
+  
+  const priceFormatted = '৳' + toBanglaNum(subtotal);
+  const totalFormatted = '৳' + toBanglaNum(grandTotal);
+  
+  document.getElementById('sPrice').textContent = priceFormatted;
+  document.getElementById('sTotal').textContent = totalFormatted;
+  document.getElementById('hiddenTotal').value = totalFormatted;
 }
-function confirmOrder(e){
-  e.preventDefault();
-  alert('ধন্যবাদ! আপনার অর্ডার তথ্য গ্রহণ করা হয়েছে। (এই ফর্মটি আপনার WooCommerce/CartFlows checkout-এর সাথে সংযুক্ত করুন।)');
-  return false;
+
+// হোয়াটসঅ্যাপে সরাসরি অর্ডার পাঠানোর ফাংশন
+function sendViaWhatsApp() {
+  const form = document.getElementById('shoeOrderForm');
+  if(!form.checkValidity()){
+    form.reportValidity();
+    return;
+  }
+
+  const name = document.getElementById('custName').value.trim();
+  const phone = document.getElementById('custPhone').value.trim();
+  const address = document.getElementById('custAddress').value.trim();
+  const size = document.getElementById('sizeSel').value;
+  const qty = document.getElementById('qtySel').value;
+  const total = document.getElementById('hiddenTotal').value;
+
+  // এখানে আপনার WhatsApp নম্বর দিন (কান্ট্রি কোড সহ, যেমন: 8801XXXXXXXXX)
+  const myWhatsAppNumber = "8801700000000"; 
+
+  const message = `*নতুন জুতার অর্ডার (Website Order)*%0A` +
+                  `----------------------------%0A` +
+                  `*নাম:* ${encodeURIComponent(name)}%0A` +
+                  `*মোবাইল:* ${encodeURIComponent(phone)}%0A` +
+                  `*ঠিকানা:* ${encodeURIComponent(address)}%0A` +
+                  `*সাইজ:* ${encodeURIComponent(size)}%0A` +
+                  `*পরিমাণ:* ${encodeURIComponent(qty)} জোড়া%0A` +
+                  `*সর্বমোট বিল:* ${encodeURIComponent(total)} (Cash On Delivery)%0A` +
+                  `----------------------------%0A` +
+                  `অর্ডারটি দ্রুত কনফার্ম করুন।`;
+
+  const waURL = `https://api.whatsapp.com/send?phone=${myWhatsAppNumber}&text=${message}`;
+  window.open(waURL, '_blank');
 }
 </script>
+
 </body>
 </html>
