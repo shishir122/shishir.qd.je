@@ -175,7 +175,7 @@ details p{color:var(--mu);margin-top:12px;max-width:62ch;animation:up .5s both}
 .vr{aspect-ratio:9/16}.vr:before,.vr:after{display:none}
 .vr .pl{width:60px;height:60px;font-size:20px}
 .vr em{bottom:14px;left:14px}
-dialog.v{width:min(380px,94vw,calc(78vh*9/16))}.v .vb{aspect-ratio:9/16}
+dialog.v{width:min(420px,94vw,calc(86vh*9/16));width:min(420px,94vw,calc(86dvh*9/16))}.v .vb{aspect-ratio:9/16}
 .ic{width:1.1em;height:1.1em;vertical-align:-.18em;margin-right:10px;flex:none}
 .btn .ic{margin-right:8px;vertical-align:-.2em}
 .ib{display:inline-grid;place-items:center;width:46px;height:46px;border-radius:12px;background:#ffd23f1a;color:var(--y);margin-right:14px;vertical-align:middle;transition:.3s}
@@ -208,6 +208,15 @@ input:-webkit-autofill{-webkit-box-shadow:0 0 0 100px #1f2432 inset;-webkit-text
 .row,.two,.ct{grid-template-columns:1fr;gap:14px}.two,.ct{gap:56px}
 section{padding:68px 0}
 .hero .w{grid-template-columns:1fr}.pf{max-width:320px}.rr{grid-template-columns:1fr 1fr}.rr .main{aspect-ratio:16/10;grid-column:1/-1;order:-1}.ba{aspect-ratio:4/3}.tl{--o:14px}.tk:before{display:none}.tk span{font-size:11px;padding:0 6px}}
+dialog{border-radius:16px;box-shadow:0 30px 90px #000c,0 0 0 1px #ffffff1f}
+dialog::backdrop{background:#000c;backdrop-filter:blur(10px)}
+.vb{border-radius:15px}
+.x{top:-52px;right:0;padding:8px 16px;border-radius:99px;background:#ffffff1f;border:1px solid #ffffff33;backdrop-filter:blur(10px);transition:.2s}
+.x:hover{background:var(--y);color:var(--ink);border-color:var(--y)}
+html:has(dialog[open]){overflow:hidden}
+.vr:after{display:block;height:45%;top:auto;background:linear-gradient(transparent,#000d)}
+.vr em{font:700 15px var(--d);color:#fff;letter-spacing:0}
+@media(max-width:780px){dialog.v{width:100vw;max-width:none;height:100vh;height:100dvh;max-height:none;border:0;border-radius:0;box-shadow:none}.v .vb{aspect-ratio:auto;height:100%;border-radius:0}.v .x{top:max(14px,env(safe-area-inset-top));left:14px;right:auto;z-index:5}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}.rv{opacity:1!important;transform:none!important}.mq div{animation:mq 45s linear infinite!important}.mq .r{animation:mq 55s linear infinite reverse!important}}
 </style>
 </head>
