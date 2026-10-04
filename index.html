@@ -1,444 +1,277 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>প্রিমিয়াম ক্যাজুয়াল জুতা | Premium Casual Shoes</title>
-<!-- Google Fonts: Hind Siliguri & Noto Sans Bengali -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ebadul Islam Shishir | Video Editor</title>
+<meta name="description" content="Ebadul Islam Shishir is a video editor with 3+ years of experience cutting YouTube videos, Reels, ads and brand films.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- TO EDIT: scroll to the bottom of this file. Change CFG (contact links) and WORKS (your videos). -->
 <style>
-:root{
-  --bk:#111111;
-  --mu:#666666;
-  --bd:#e5e5e5;
-  --gr:#f8f9fa;
-  --red:#d9232d;
-  --wa:#25D366;
-  --wa-dark:#128C7E;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-  font-family:'Hind Siliguri', 'Noto Sans Bengali', -apple-system, sans-serif;
-  color:var(--bk);
-  background:#fff;
-  line-height:1.6;
-  padding-bottom:0;
-  -webkit-font-smoothing:antialiased;
-}
-img{max-width:100%;height:auto;display:block;border-radius:14px}
-.wrap{max-width:1140px;margin:0 auto;padding:0 20px}
-section{padding:70px 0}
-.bg-gray{background:var(--gr)}
-.bg-dark{background:var(--bk);color:#fff}
-.bg-dark .muted{color:#bbb}
-.eyebrow{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--mu);text-align:center;font-weight:600;margin-bottom:8px}
-.bg-dark .eyebrow{color:#aaa}
-h2.sec-title{font-size:32px;text-align:center;font-weight:700;margin-bottom:10px;line-height:1.3}
-.rule{width:56px;height:3px;background:var(--bk);margin:0 auto 18px}
-.bg-dark .rule{background:#fff}
-.sec-sub{text-align:center;color:#555;font-size:17px;max-width:620px;margin:0 auto 36px}
-.grid{display:grid;gap:18px}
-.g2{grid-template-columns:1fr 1fr}
-.g3{grid-template-columns:repeat(3,1fr)}
-.g4{grid-template-columns:repeat(4,1fr)}
-.card{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:24px;box-shadow:0 4px 18px rgba(0,0,0,.04);transition:transform .2s}
-.card:hover{transform:translateY(-4px)}
-.card-dark{background:#1a1a1a;border:1px solid #2a2a2a;color:#fff}
-.ic{width:50px;height:50px;border-radius:50%;background:var(--bk);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px}
-.card-dark .ic{background:#fff;color:var(--bk)}
-.card h4{font-size:19px;margin-bottom:6px;font-weight:700}
-.card p{font-size:15px;color:#555}
-.card-dark p{color:#ccc}
+:root{--bg:#161a24;--pn:#1f2432;--ln:#343b4f;--tx:#eef0f6;--mu:#a3abc0;--y:#ffd23f;--m:#f72585;--cy:#4cc9f0;--g:#7ae582;--ink:#10131b;--d:'Bricolage Grotesque',system-ui,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{background:var(--bg);color:var(--tx);font:17px/1.6 'Instrument Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--y);outline-offset:3px}
+.w{max-width:1120px;margin:auto;padding:0 24px}
+section{padding:96px 0;border-top:1px solid var(--ln)}
+h1,h2,h3{font-family:var(--d);line-height:1.05;letter-spacing:-.02em}
+h2{font-size:clamp(30px,4.4vw,48px);font-weight:700;margin-bottom:14px}
+.sub{color:var(--mu);max-width:54ch}
+.btn{display:inline-block;padding:13px 24px;border-radius:8px;border:1px solid var(--ln);background:none;color:var(--tx);font:600 16px 'Instrument Sans',sans-serif;cursor:pointer}
+.btn:hover{border-color:var(--y)}
+.pri{background:var(--y);border-color:var(--y);color:var(--ink)}
+.pri:hover{background:#ffe07a}
+nav{position:sticky;top:0;z-index:20;background:#161a24ee;backdrop-filter:blur(10px);border-bottom:1px solid var(--ln)}
+nav .w{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{font:800 22px var(--d)}
+.links{display:flex;gap:30px;align-items:center;color:var(--mu);font-size:15px}
+.links a:hover{color:var(--tx)}
+.links .btn{padding:9px 18px;font-size:15px;color:var(--ink)}
+.links .btn:hover{color:var(--ink)}
+.bg{display:none;background:none;border:0;color:var(--tx);font-size:26px;cursor:pointer}
+.hero{padding:84px 0 76px}
 
-/* বাটন ও লিংক */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--bk);color:#fff;font-weight:700;font-size:18px;padding:15px 30px;border-radius:10px;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.15);border:none;cursor:pointer;transition:background .2s, transform .1s}
-.btn:active{transform:scale(0.98)}
-.btn.light{background:#fff;color:var(--bk)}
-.btn:hover{opacity:.92}
-.btn-wa{background:var(--wa);color:#fff;box-shadow:0 6px 20px rgba(37,211,102,.25)}
-.btn-wa:hover{background:var(--wa-dark);opacity:1}
-.center{text-align:center}
-.left{text-align:left}
-ul.chk{list-style:none}
-ul.chk li{padding:6px 0;font-size:16.5px;font-weight:500}
-ul.chk li::before{content:"✓ ";font-weight:700;color:var(--bk)}
-
-/* প্রাইস ডিজাইন ফিক্স */
-.price-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:16px 0}
-.old{
-  color:#888;
-  font-size:24px;
-  font-weight:600;
-  position:relative;
-  display:inline-block;
-}
-.old::after{
-  content:'';
-  position:absolute;
-  left:-4%;
-  top:50%;
-  width:108%;
-  height:2.5px;
-  background:var(--red);
-  transform:rotate(-7deg);
-}
-.new{font-size:42px;font-weight:700;color:var(--bk);letter-spacing:-0.5px}
-.badge{background:var(--red);color:#fff;font-weight:700;font-size:14px;padding:6px 12px;border-radius:6px}
-
-/* সাইজ টেবিল */
-table{width:100%;border-collapse:collapse;font-size:16px;background:#fff;border-radius:12px;overflow:hidden;min-width:380px}
-table th{background:var(--bk);color:#fff;padding:14px;text-align:left}
-table td{padding:13px 14px;border-bottom:1px solid #eee}
-tr:nth-child(even) td{background:#fafafa}
-.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:860px;margin:0 auto}
-
-.hero{padding:40px 0 60px}
-.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
-.thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
-.thumbs img{border-radius:10px;cursor:pointer;border:2px solid transparent;aspect-ratio:1/1;object-fit:cover}
-.thumbs img.active{border-color:var(--bk)}
-h1.hero-h{font-size:38px;line-height:1.25;font-weight:700;margin:8px 0 14px}
-.announce{background:var(--bk);color:#fff;text-align:center;font-size:13.5px;padding:10px 16px;font-weight:500}
-.gallery-strip{display:flex;gap:14px;overflow-x:auto;padding-bottom:12px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
-.gallery-strip img{flex:0 0 min(78%,290px);scroll-snap-align:center;aspect-ratio:1/1;object-fit:cover;cursor:zoom-in}
-.usecard img{aspect-ratio:4/3;object-fit:cover}
-
-/* অর্ডার ফর্ম স্টাইল */
-form.order{display:grid;gap:15px;max-width:580px;margin:0 auto;background:#fff;border:1px solid var(--bd);border-radius:18px;padding:26px;box-shadow:0 8px 30px rgba(0,0,0,.06)}
-form.order label{font-weight:600;font-size:15px;display:block;margin-bottom:6px;color:#222}
-form.order input,form.order select,form.order textarea{width:100%;padding:13px 14px;border:1px solid #d1d5db;border-radius:8px;font-size:16px;font-family:inherit;background:#fafafa;transition:border-color .2s}
-form.order input:focus,form.order select:focus,form.order textarea:focus{border-color:var(--bk);outline:none;background:#fff}
-.summary-box{background:var(--gr);border:1px solid var(--bd);border-radius:12px;padding:16px 18px;font-size:15.5px}
-.summary-box div{display:flex;justify-content:space-between;padding:5px 0}
-.summary-box .tot{font-weight:700;font-size:19px;border-top:1px solid #ddd;margin-top:6px;padding-top:10px;color:var(--bk)}
-
-/* FAQ স্টাইল */
-details.faq{border:1px solid var(--bd);border-radius:12px;padding:16px 20px;margin-bottom:12px;background:#fff}
-details.faq summary{cursor:pointer;font-weight:700;font-size:16.5px;list-style:none;display:flex;justify-content:space-between;align-items:center}
-details.faq summary::-webkit-details-marker{display:none}
-details.faq summary::after{content:"+";font-size:22px;font-weight:400}
-details.faq[open] summary::after{content:"–"}
-details.faq p{margin-top:12px;color:#444;font-size:15px}
-
-/* মোবাইল স্টিকি বার */
-.sticky-cta{position:fixed;left:0;right:0;bottom:0;background:var(--bk);color:#fff;display:none;align-items:center;justify-content:space-between;padding:12px 18px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -4px 16px rgba(0,0,0,.25);z-index:9999}
-.sticky-cta b{font-size:22px}
-.sticky-cta a{background:#fff;color:var(--bk);padding:10px 18px;border-radius:8px;font-weight:700;text-decoration:none;font-size:15px;white-space:nowrap}
-
-/* লাইটবক্স */
-.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:10000;padding:20px}
-.lightbox img{max-width:92vw;max-height:88vh;border-radius:8px}
-.lightbox span{position:absolute;top:20px;right:28px;color:#fff;font-size:34px;cursor:pointer}
-
-/* রেসপনসিভ মোবাইল ভিউ */
-@media(max-width:860px){
-  .hero-grid,.g2{grid-template-columns:1fr;gap:24px}
-  .g3,.g4{grid-template-columns:repeat(2,1fr);gap:14px}
-  h1.hero-h{font-size:29px}
-  .new{font-size:34px}
-  h2.sec-title{font-size:24px}
-  section{padding:42px 0}
-  body{padding-bottom:72px}
-  .sticky-cta{display:flex}
-  .btn{font-size:17px;padding:13px 22px}
-}
-
-@media(max-width:540px){
-  .wrap{padding:0 14px}
-  .g3,.g4{grid-template-columns:1fr}
-  h1.hero-h{font-size:25px}
-  h2.sec-title{font-size:21px}
-  .card{padding:18px}
-  form.order{padding:18px}
-  .new{font-size:32px}
-  .old{font-size:20px}
-  .hero{padding:20px 0 35px}
-}
+.lead{font-size:clamp(19px,2.2vw,24px);max-width:34em;margin:26px 0 34px;color:#d5d9e6}
+.lead b{color:var(--tx)}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:56px}
+.tl{--o:56px;position:relative;border:1px solid var(--ln);border-radius:10px;background:var(--pn);padding:14px 14px 16px var(--o);cursor:ew-resize;touch-action:pan-y;user-select:none;overflow:hidden}
+.rl{display:flex;justify-content:space-between;font:12px var(--mono);color:var(--mu);padding-bottom:8px;border-bottom:1px solid var(--ln)}
+.tk{display:flex;gap:4px;height:34px;margin-top:8px;position:relative}
+.tk:before{content:attr(data-n);position:absolute;left:-44px;top:0;line-height:34px;font:600 12px var(--mono);color:var(--mu)}
+.tk span{border-radius:5px;background:var(--tc);color:var(--ink);font:600 13px/34px 'Instrument Sans',sans-serif;padding:0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ph{position:absolute;top:0;bottom:0;left:var(--o);width:2px;background:var(--y);pointer-events:none}
+.ph b{position:absolute;top:5px;left:50%;transform:translateX(-50%);background:var(--y);color:var(--ink);font:700 12px var(--mono);padding:2px 7px;border-radius:4px;white-space:nowrap}
+.hd{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:34px}
+.fl{display:flex;gap:22px;flex-wrap:wrap}
+.fl button{background:none;border:0;border-bottom:2px solid transparent;color:var(--mu);font:500 16px 'Instrument Sans',sans-serif;padding:6px 0;cursor:pointer}
+.fl button.on{color:var(--tx);border-color:var(--y)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:34px 22px}
+.card{cursor:pointer;display:block}
+.th{aspect-ratio:16/9;border-radius:6px;background:#242b3e center/cover;position:relative;display:grid;place-items:center;overflow:hidden;transition:transform .3s}
+.card:hover .th{transform:scale(1.02)}
+.th.e:before{content:"";position:absolute;inset:0 0 auto;height:9px;background:linear-gradient(90deg,#c0c0c0 0 14.3%,#c0c000 0 28.6%,#00c0c0 0 42.9%,#00c000 0 57.1%,#c000c0 0 71.4%,#c00000 0 85.7%,#0000c0 0)}
+.pl{width:54px;height:54px;border-radius:50%;background:var(--y);color:var(--ink);display:grid;place-items:center;padding-left:4px;font-size:18px}
+.card small{display:flex;align-items:center;gap:8px;color:var(--mu);font-size:14px;margin-top:14px}
+.card small i{width:9px;height:9px;border-radius:50%;background:var(--k)}
+.card h3{font-size:21px;margin:4px 0}
+.card p{color:var(--mu);font-size:15px}
+.row{display:grid;grid-template-columns:1fr 1.5fr;gap:12px 40px;padding:26px 0;border-top:1px solid var(--ln)}
+.row:last-child{border-bottom:1px solid var(--ln)}
+.row h3{font-size:24px;font-weight:700}
+.row p{color:var(--mu)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+.two h2{margin-bottom:22px}
+ol{list-style:none;padding:0;counter-reset:s}
+ol li{counter-increment:s;display:grid;grid-template-columns:44px 1fr;padding:18px 0;border-top:1px solid var(--ln)}
+ol li:before{content:counter(s);font:700 26px/1.2 var(--d);color:var(--y)}
+li b,.cm b{display:block;font:700 19px var(--d);margin-bottom:2px}
+li span,.cm span{color:var(--mu);font-size:16px}
+.cm div{padding:18px 0;border-top:1px solid var(--ln)}
+.tools{margin-top:34px;color:var(--mu);font-size:15px}
+.ct{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.lk{margin-top:26px;max-width:420px}
+.lk a{display:block;padding:12px 0;border-top:1px solid var(--ln);font-weight:500}
+.lk a:last-child{border-bottom:1px solid var(--ln)}
+.lk a:hover{color:var(--y)}
+form{display:grid;gap:14px}
+input,textarea{width:100%;padding:14px 16px;border-radius:8px;border:1px solid var(--ln);background:var(--pn);color:var(--tx);font:inherit}
+input::placeholder,textarea::placeholder{color:#7f879c}
+footer{border-top:1px solid var(--ln);padding:28px 0;color:var(--mu);font-size:15px}
+footer .w{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+dialog{width:min(940px,94vw);border:1px solid var(--ln);border-radius:10px;background:#000;padding:0;overflow:visible}
+dialog::backdrop{background:#000b}
+.vb{aspect-ratio:16/9;display:grid;place-items:center;text-align:center;padding:28px;color:var(--mu);border-radius:10px;overflow:hidden}
+.vb iframe,.vb video{width:100%;height:100%;border:0;background:#000}
+.x{position:absolute;right:0;top:-46px;background:none;border:0;color:#fff;font:600 15px 'Instrument Sans',sans-serif;cursor:pointer;padding:8px}
+body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(650px 420px at var(--mx,72%) var(--my,12%),#ffd23f1f,transparent 60%),radial-gradient(700px 500px at 0 100%,#f7258524,transparent 60%)}
+.hero .w{display:grid;grid-template-columns:1.25fr .75fr;gap:48px;align-items:center}
+.hero .tl{grid-column:1/-1}.hero .cta{margin-bottom:0}
+.ht>*{animation:up .9s cubic-bezier(.2,.7,.2,1) both}.ht>:nth-child(2){animation-delay:.12s}.ht>:nth-child(3){animation-delay:.24s}
+.hero h1{font-size:clamp(42px,7.2vw,88px);font-weight:800;background:linear-gradient(100deg,#fff 35%,var(--y) 50%,#fff 65%) 100%/250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:up .9s cubic-bezier(.2,.7,.2,1) both,sh 7s linear infinite}
+@keyframes up{from{opacity:0;transform:translateY(28px)}}
+@keyframes sh{to{background-position:-100% 0}}
+@keyframes fl{50%{transform:translateY(-10px)}}
+@keyframes bl{50%{opacity:.15}}
+@keyframes pu{to{transform:scale(1.7);opacity:0}}
+@keyframes gs{50%{background-position:100% 50%}}
+@keyframes mq{to{transform:translateX(-50%)}}
+.pf{position:relative;aspect-ratio:4/5;border-radius:14px;background:linear-gradient(160deg,#2b3350,#1b2030);border:1px solid var(--ln);animation:fl 7s ease-in-out infinite}
+.pf img{width:100%;height:100%;object-fit:cover;border-radius:14px;display:block}
+.ini{position:absolute;inset:0;display:grid;place-items:center;font:800 130px var(--d);color:#ffffff14}
+.pf:before,.pf:after{content:"";position:absolute;width:28px;height:28px;border:3px solid var(--y);pointer-events:none}
+.pf:before{top:-8px;left:-8px;border-right:0;border-bottom:0}.pf:after{bottom:-8px;right:-8px;border-left:0;border-top:0}
+.rec{position:absolute;top:14px;left:14px;display:flex;gap:8px;align-items:center;font:600 12px var(--mono);background:#10131bcc;padding:5px 11px;border-radius:99px}
+.rec i{width:8px;height:8px;border-radius:50%;background:#ff3b30;animation:bl 1.2s infinite}
+.chip{position:absolute;z-index:2;background:var(--pn);border:1px solid var(--ln);padding:9px 15px;border-radius:10px;font:600 14px 'Instrument Sans',sans-serif;box-shadow:0 14px 34px #0008;animation:fl 5s ease-in-out infinite}
+.chip i{display:inline-block;width:8px;height:8px;border-radius:50%;background:#3ddc84;margin-right:8px}
+.mq{overflow:hidden;border-block:1px solid var(--ln);padding:20px 0;background:#10131b88}
+.mq div{display:flex;width:max-content;animation:mq 32s linear infinite;font:700 30px var(--d);white-space:nowrap}
+.mq span{padding-right:40px}
+.th.e{background:linear-gradient(120deg,#242b3e,#3a2b55,#1f3a4d,#242b3e) 0 50%/300% 300%;animation:gs 9s ease infinite}
+.pl{position:relative}.pl:after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--y);animation:pu 2s infinite}
+.th{will-change:transform}
+.rv{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}.rv.in{opacity:1;transform:none}
+.ba{position:relative;aspect-ratio:16/8;border-radius:12px;overflow:hidden;border:1px solid var(--ln);--s:50%}
+.ba>div{position:absolute;inset:0;background:center/cover}
+.b2{background-image:linear-gradient(120deg,#ff5a36,#f72585 45%,#4cc9f0)}
+.b1{background-image:linear-gradient(120deg,#5a5a5a,#7a7a7a 50%,#666);filter:grayscale(1) contrast(.75);clip-path:inset(0 calc(100% - var(--s)) 0 0)}
+.ba:after{content:"";position:absolute;top:0;bottom:0;left:var(--s);width:3px;background:var(--y);box-shadow:0 0 22px var(--y)}
+.ba i,.ba u{position:absolute;z-index:2;top:14px;font:600 12px var(--mono);background:#10131bcc;padding:4px 11px;border-radius:99px;text-decoration:none}
+.ba i{left:14px;font-style:normal}.ba u{right:14px}
+.ba input{position:absolute;inset:0;z-index:3;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+@media(max-width:780px){
+.links{display:none;position:absolute;top:68px;left:0;right:0;flex-direction:column;align-items:flex-start;gap:18px;background:var(--bg);padding:22px 24px;border-bottom:1px solid var(--ln)}
+.open .links{display:flex}.bg{display:block}
+.row,.two,.ct{grid-template-columns:1fr;gap:14px}.two,.ct{gap:56px}
+section{padding:68px 0}
+.hero .w{grid-template-columns:1fr}.pf{max-width:320px}.ba{aspect-ratio:4/3}.tl{--o:14px}.tk:before{display:none}.tk span{font-size:11px;padding:0 6px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}.rv{opacity:1!important;transform:none!important}}
 </style>
 </head>
 <body>
+<nav><div class="w">
+<a class="logo" href="#top">Shishir</a>
+<div class="links"><a href="#work">Work</a><a href="#services">Services</a><a href="#process">How I work</a><a class="btn pri" href="#contact">Hire me</a></div>
+<button class="bg" aria-label="Menu" onclick="document.body.classList.toggle('open')">&#9776;</button>
+</div></nav>
 
-<div class="announce"><strong>Cash On Delivery</strong> সারা দেশে ক্যাশ অন ডেলিভারি সুবিধা • ৩-৫ দিনে হোম ডেলিভারি</div>
+<header class="hero" id="top"><div class="w">
+<div class="ht"><h1>Ebadul Islam<br>Shishir</h1>
+<p class="lead"><b>Video editor, 3+ years in.</b> I turn raw footage into clean, well-paced videos for YouTubers, brands and agencies, delivered on time and ready to publish.</p>
+<div class="cta"><a class="btn pri" href="#work">See my work</a><button class="btn" onclick="play(CFG.showreel,'Showreel')">&#9654; Watch showreel</button></div></div>
+<div class="pf" id="pf"><div class="ini">ES</div><span class="rec"><i></i>REC</span><span class="chip" style="left:-22px;bottom:34px">3+ years editing</span><span class="chip" style="right:-12px;top:70px;animation-delay:-2s"><i></i>Open for projects</span></div>
+<div class="tl" id="tl" role="img" aria-label="Editing timeline showing my skills. Move your cursor across it to scrub."></div>
+</div></header>
 
-<!-- HERO SECTION -->
-<section class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <img id="mainImg" src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=900&q=80" alt="Casual Shoes">
-      <div class="thumbs">
-        <img class="active" onclick="swapMain(this)" src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=300&q=80" alt="View 1">
-        <img onclick="swapMain(this)" src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=300&q=80" alt="View 2">
-        <img onclick="swapMain(this)" src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&q=80" alt="View 3">
-        <img onclick="swapMain(this)" src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=300&q=80" alt="View 4">
-      </div>
-    </div>
-    <div>
-      <div class="eyebrow left">Premium Casual · Lifestyle Shoes</div>
-      <h1 class="hero-h">স্টাইলিশ লুক, আরামদায়ক ফিট, প্রতিদিনের জন্য পারফেক্ট</h1>
-      <p style="font-size:17px;color:#555">ক্লাস, অফিস কিংবা আড্ডা—প্রতিদিনের সব আয়োজনে স্টাইল আর দীর্ঘ সময় চলার আরাম নিশ্চিত করতে এই জুতাটি আপনার জন্য সেরা চয়েজ।</p>
-      <ul class="chk" style="margin-top:10px">
-        <li>স্টাইলিশ ও প্রিমিয়াম ফিনিশিং</li>
-        <li>সারাদিন পরার মতো নরম ও আরামদায়ক</li>
-        <li>দৈনন্দিন যেকোনো জিন্স বা গ্যাবার্ডিনের সাথে মানানসই</li>
-        <li>Lightweight &amp; breathable feel</li>
-      </ul>
-      <div class="price-row">
-        <span class="old">৳১,৯৫০</span>
-        <span class="new">৳১,২৯০</span>
-        <span class="badge">৩৪% ছাড়</span>
-      </div>
-      <a href="#order-form" class="btn" style="width:100%;max-width:320px">এখনই অর্ডার করুন →</a>
-      <div style="font-size:14px;color:#555;font-weight:600;margin-top:12px">✓ পণ্য হাতে পেয়ে মূল্য পরিশোধ &nbsp; · &nbsp; ✓ সাইজ পরিবর্তনের সুবিধা</div>
-    </div>
-  </div>
-</section>
+<div class="mq" aria-hidden="true"><div id="mq"></div></div>
 
-<!-- PAIN POINTS -->
-<section class="bg-gray">
-  <div class="wrap">
-    <div class="eyebrow">The Problem</div>
-    <h2 class="sec-title">প্রতিদিনের জুতায় আপনি কি এই সমস্যাগুলো অনুভব করেন?</h2>
-    <div class="rule"></div>
-    <div class="grid g3">
-      <div class="card"><div class="ic">✕</div><h4>আরাম নেই</h4><p>জুতা দেখতে সুন্দর হলেও কিছুক্ষণ পরলেই পায়ে অস্বস্তি ও ব্যথা শুরু হয়।</p></div>
-      <div class="card"><div class="ic">✕</div><h4>অল্প হাঁটলেই ক্লান্তি</h4><p>সোল শক্ত হওয়ার কারণে অল্প হাঁটলেই গোড়ালিতে চাপ অনুভব হয়।</p></div>
-      <div class="card"><div class="ic">✕</div><h4>Outfit-এর সাথে মেলে না</h4><p>প্রতিদিনের পোশাকের সাথে সহজে সব জুতা ম্যাচিং করা যায় না।</p></div>
-      <div class="card"><div class="ic">✕</div><h4>ভারী অনুভূতি</h4><p>পা যেন টেনে টেনে চলতে হয়—heavy & uncomfortable feel।</p></div>
-      <div class="card"><div class="ic">✕</div><h4>দেখতে সাধারণ লাগে</h4><p>কয়েকদিন পরলেই শেইপ নষ্ট হয়ে পুরো লুকটাই নষ্ট করে দেয়।</p></div>
-      <div class="card"><div class="ic">✕</div><h4>স্থায়িত্বের অভাব</h4><p>সোলের আঠা দ্রুত খুলে যাওয়া বা চামড়া ফেটে যাওয়ার ঝামেলা।</p></div>
-    </div>
-  </div>
-</section>
+<section id="work"><div class="w">
+<div class="hd"><div><h2>Selected work</h2><p class="sub">Click any project to watch it.</p></div><div class="fl" id="fl"></div></div>
+<div class="grid" id="grid"></div>
+</div></section>
 
-<!-- FEATURES -->
-<section>
-  <div class="wrap">
-    <div class="eyebrow">Features</div>
-    <h2 class="sec-title">কেন এই জুতাটি আপনার পছন্দ হবে?</h2>
-    <div class="rule"></div>
-    <div class="grid g4">
-      <div class="card"><div class="ic">◆</div><h4>Premium Look</h4><p>দেখতেই প্রিমিয়াম, পরলে আরও স্মার্ট ও আত্মবিশ্বাসী লাগবে।</p></div>
-      <div class="card"><div class="ic">☁</div><h4>Cushioned Sole</h4><p>পায়ের পাতা ও গোড়ালির সুরক্ষায় নরম কুশন ইনসোল।</p></div>
-      <div class="card"><div class="ic">➤</div><h4>Lightweight</h4><p>পায়ে অতিরিক্ত ভার লাগে না, সারাদিন সহজেই হাঁটাচলা করা যায়।</p></div>
-      <div class="card"><div class="ic">⬢</div><h4>Durable Outsole</h4><p>হাই-গ্রিপ অ্যান্টি-স্লিপ সোল, যা দীর্ঘস্থায়ী ব্যবহারের জন্য তৈরি।</p></div>
-    </div>
-  </div>
-</section>
+<section id="grade"><div class="w">
+<h2>Before and after</h2><p class="sub" style="margin-bottom:30px">Drag across the frame to see what color grading and finishing add to raw footage.</p>
+<div class="ba" id="ba"><div class="b2" id="b2"></div><div class="b1" id="b1"></div><i>Raw</i><u>Graded</u><input type="range" min="0" max="100" value="50" id="rg" aria-label="Before and after slider"></div>
+</div></section>
 
-<!-- GALLERY -->
-<section class="bg-gray">
-  <div class="wrap">
-    <div class="eyebrow">Gallery</div>
-    <h2 class="sec-title">এক নজরে জুতাটির ছবি দেখুন</h2>
-    <div class="rule"></div>
-    <p class="sec-sub">ছবিতে ট্যাপ করে বড় করে দেখতে পারেন।</p>
-    <div class="gallery-strip" id="gallery">
-      <img onclick="openLightbox(this.src)" src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=800&q=80" alt="Front view">
-      <img onclick="openLightbox(this.src)" src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=800&q=80" alt="Side view">
-      <img onclick="openLightbox(this.src)" src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=800&q=80" alt="Back view">
-      <img onclick="openLightbox(this.src)" src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&q=80" alt="Top view">
-    </div>
-  </div>
-</section>
+<section id="services"><div class="w">
+<h2>What I can edit for you</h2>
+<p class="sub" style="margin-bottom:34px">Whatever the platform, the goal is the same: a video that holds attention and looks professional.</p>
+<div id="sv"></div>
+</div></section>
 
-<!-- SIZE GUIDE -->
-<section>
-  <div class="wrap" style="max-width:860px">
-    <div class="eyebrow">Size Guide</div>
-    <h2 class="sec-title">আপনার সঠিক সাইজ বেছে নিন</h2>
-    <div class="rule"></div>
-    <p class="sec-sub">আপনার রেগুলার জুতার সাইজ অনুযায়ী নির্বাচন করুন।</p>
-    <div class="tbl-wrap">
-      <table>
-        <tr><th>EU Size</th><th>পায়ের মাপ (Foot Length)</th><th>বাংলাদেশি সাধারণ মাপ</th></tr>
-        <tr><td><strong>EU 39</strong></td><td>24.5 cm</td><td>৩৯ সাইজ</td></tr>
-        <tr><td><strong>EU 40</strong></td><td>25.0 cm</td><td>৪০ সাইজ</td></tr>
-        <tr><td><strong>EU 41</strong></td><td>25.5 cm</td><td>৪১ সাইজ</td></tr>
-        <tr><td><strong>EU 42</strong></td><td>26.0 cm</td><td>৪২ সাইজ</td></tr>
-        <tr><td><strong>EU 43</strong></td><td>26.5 cm</td><td>৪৩ সাইজ</td></tr>
-        <tr><td><strong>EU 44</strong></td><td>27.0 cm</td><td>৪৪ সাইজ</td></tr>
-      </table>
-    </div>
-  </div>
-</section>
+<section id="process"><div class="w two">
+<div><h2>How a project runs</h2><ol id="st"></ol></div>
+<div><h2>What you can count on</h2><div class="cm" id="cm"></div>
+<p class="tools">Tools: Adobe Premiere Pro, After Effects, DaVinci Resolve, Photoshop and Audition.</p></div>
+</div></section>
 
-<!-- ORDER FORM SECTION (CONNECTED TO FORMSPREE & WHATSAPP) -->
-<section class="bg-gray" id="order-form">
-  <div class="wrap" style="max-width:620px">
-    <div class="eyebrow">Cash On Delivery</div>
-    <h2 class="sec-title">অর্ডার করতে নিচের তথ্যগুলো দিন</h2>
-    <div class="rule"></div>
-    <p class="sec-sub" style="margin-bottom:20px">পণ্য হাতে পেয়ে টাকা পরিশোধ করার সুবিধা।</p>
-    
-    <!-- FORMSPREE ACTION ENDPOINT -->
-    <form class="order" id="shoeOrderForm" action="https://formspree.io/f/xljdvvzp" method="POST">
-      <div>
-        <label>আপনার সম্পূর্ণ নাম *</label>
-        <input type="text" id="custName" name="Customer_Name" required placeholder="যেমনঃ মোঃ আব্দুল্লাহ">
-      </div>
-      <div>
-        <label>মোবাইল নম্বর *</label>
-        <input type="tel" id="custPhone" name="Mobile_Number" required placeholder="01XXXXXXXXX" pattern="[0-9]{11}" title="দয়া করে ১১ ডিজিটের সঠিক মোবাইল নম্বর দিন">
-      </div>
-      <div>
-        <label>ডেলিভারির সম্পূর্ণ ঠিকানা *</label>
-        <textarea id="custAddress" name="Delivery_Address" rows="3" required placeholder="বাসা/হোল্ডিং নং, রোড, এলাকা/থানা এবং জেলার নাম"></textarea>
-      </div>
-      <div class="grid g2">
-        <div>
-          <label>সাইজ নির্বাচন করুন *</label>
-          <select id="sizeSel" name="Shoe_Size" required onchange="updateSummary()">
-            <option value="" disabled>সাইজ বাছাই করুন</option>
-            <option value="39 (EU 39)">39 (EU 39)</option>
-            <option value="40 (EU 40)" selected>40 (EU 40)</option>
-            <option value="41 (EU 41)">41 (EU 41)</option>
-            <option value="42 (EU 42)">42 (EU 42)</option>
-            <option value="43 (EU 43)">43 (EU 43)</option>
-            <option value="44 (EU 44)">44 (EU 44)</option>
-          </select>
-        </div>
-        <div>
-          <label>পরিমাণ (Quantity) *</label>
-          <select id="qtySel" name="Quantity" required onchange="updateSummary()">
-            <option value="1">1 জোড়া</option>
-            <option value="2">2 জোড়া</option>
-            <option value="3">3 জোড়া</option>
-          </select>
-        </div>
-      </div>
+<section id="contact"><div class="w ct">
+<div><h2>Have footage that needs a story?</h2>
+<p class="sub">Send me a few details about your video, its length and your deadline. I'll reply with how I would approach it.</p>
+<div class="lk" id="lk"></div></div>
+<form id="f">
+<input id="n" placeholder="Your name" required aria-label="Your name">
+<input id="e" type="email" placeholder="Your email" required aria-label="Your email">
+<textarea id="m" rows="6" placeholder="Tell me about your project" required aria-label="Project details"></textarea>
+<button class="btn pri" type="submit">Send message</button>
+</form>
+</div></section>
 
-      <!-- Hidden inputs for Formspree reporting -->
-      <input type="hidden" name="Product_Name" value="প্রিমিয়াম ক্যাজুয়াল জুতা">
-      <input type="hidden" id="hiddenTotal" name="Total_Amount" value="৳১,৩৭০">
+<footer><div class="w"><span>&copy; <span id="y"></span> Ebadul Islam Shishir. Video editor.</span><a href="#top">Back to top</a></div></footer>
 
-      <!-- Summary Box -->
-      <div class="summary-box">
-        <div><span>প্রোডাক্ট</span><span>প্রিমিয়াম ক্যাজুয়াল জুতা</span></div>
-        <div><span>সাইজ</span><span id="sSize">40 (EU 40)</span></div>
-        <div><span>পরিমাণ</span><span id="sQty">1 জোড়া</span></div>
-        <div><span>দাম</span><span id="sPrice">৳১,২৯০</span></div>
-        <div><span>ডেলিভারি চার্জ</span><span>৳৮০</span></div>
-        <div class="tot"><span>সর্বমোট বিল</span><span id="sTotal">৳১,৩৭০</span></div>
-      </div>
-      
-      <!-- Submit to Formspree -->
-      <button type="submit" class="btn" style="width:100%">অর্ডার কনফার্ম করুন (ক্যাশ অন ডেলিভারি)</button>
-      
-      <div style="text-align:center;margin:4px 0;font-weight:600;color:#777">— অথবা —</div>
-      
-      <!-- Direct WhatsApp Order Button -->
-      <button type="button" onclick="sendViaWhatsApp()" class="btn btn-wa" style="width:100%">
-        💬 হোয়াটসঅ্যাপে সরাসরি অর্ডার পাঠান
-      </button>
-
-      <p class="center" style="font-size:13.5px;color:#666;margin-top:6px">✓ আপনার সব তথ্য নিরাপদ থাকবে। আমরা কল করে অর্ডার কনফার্ম করব।</p>
-    </form>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section>
-  <div class="wrap" style="max-width:800px">
-    <div class="eyebrow">FAQ</div>
-    <h2 class="sec-title">সাধারণ কিছু প্রশ্নোত্তর</h2>
-    <div class="rule"></div>
-    <details class="faq"><summary>ডেলিভারি পেতে কতদিন সময় লাগবে?</summary><p>ঢাকার ভেতরে ২৪-৪৮ ঘণ্টা এবং ঢাকার বাইরে ২-৪ দিনের মধ্যে ডেলিভারি পাবেন।</p></details>
-    <details class="faq"><summary>সাইজে সমস্যা হলে কি এক্সচেঞ্জ করা যাবে?</summary><p>জি, ডেলিভারির পর সাইজে কোনো সমস্যা হলে সহজেই সাইজ পরিবর্তন করে নিতে পারবেন।</p></details>
-    <details class="faq"><summary>অগ্রিম টাকা দিতে হবে?</summary><p>না, কোনো প্রকার অগ্রিম টাকা দিতে হবে না। জুতা হাতে পেয়ে সম্পূর্ণ ক্যাশ অন ডেলিভারিতে টাকা পরিশোধ করবেন।</p></details>
-  </div>
-</section>
-
-<!-- STICKY MOBILE CTA -->
-<div class="sticky-cta" id="stickyBar">
-  <div>
-    <span style="font-size:11px;display:block;color:#bbb;line-height:1">অফার মূল্য</span>
-    <b>৳১,২৯০</b>
-  </div>
-  <a href="#order-form">অর্ডার করুন</a>
-</div>
-
-<!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" onclick="this.style.display='none'">
-  <span onclick="this.parentElement.style.display='none'">&times;</span>
-  <img id="lightboxImg" src="" alt="">
-</div>
+<dialog id="dl"><button class="x" onclick="dl.close()">Close &#10005;</button><div class="vb" id="vb"></div></dialog>
 
 <script>
-// প্রাইস কনফিগারেশন
-const UNIT_PRICE = 1290;
-const DELIVERY_CHARGE = 80;
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 
-// বাংলা সংখ্যায় কনভার্ট করার ফাংশন
-function toBanglaNum(num) {
-  const bn = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
-  return num.toString().replace(/\d/g, d => bn[d]);
+/* ================= EDIT YOUR DETAILS HERE ================= */
+const CFG={
+  photo:'',                         // your photo: file name like 'me.jpg' (same folder) or an image link
+  before:'', after:'',              // before / after color-grade pictures
+
+  email:'hello@example.com',        // your email
+  whatsapp:'8801XXXXXXXXX',         // WhatsApp number with country code, no + or spaces
+  facebook:'#', linkedin:'#', youtube:'#',   // profile links (leave '#' to hide)
+  showreel:''                       // YouTube / Vimeo / .mp4 link of your showreel
+};
+// u = video link (YouTube, Vimeo or .mp4). img = optional thumbnail picture, e.g. img:'thumb1.jpg'. YouTube thumbnails load automatically.
+const WORKS=[
+{t:'Travel vlog, cinematic edit',c:'YouTube',u:'',d:'Story-first pacing, smooth transitions and color grade.'},
+{t:'Product launch ad',c:'Ads',u:'',d:'A 30-second promo with motion graphics and a strong hook.'},
+{t:'Fitness reel series',c:'Shorts & Reels',u:'',d:'Fast cuts, animated captions and beat-matched music.'},
+{t:'Company brand film',c:'Corporate',u:'',d:'Interviews, b-roll and a clean, consistent grade.'},
+{t:'Gaming highlights',c:'YouTube',u:'',d:'High-energy edit with zooms, sound effects and overlays.'},
+{t:'Short-form promo pack',c:'Shorts & Reels',u:'',d:'Vertical edits made for Instagram, TikTok and Shorts.'}
+];
+/* ========================================================== */
+
+const SV=[['YouTube editing','Long-form videos with tight pacing, captions, b-roll and sound, built to keep viewers watching.'],['Reels, Shorts and TikTok','Vertical edits with strong hooks, animated subtitles and a rhythm that fits the platform.'],['Ads and promos','Short, persuasive cuts for products and campaigns on Facebook, Instagram and YouTube.'],['Corporate and brand films','Interviews, events and company stories, edited cleanly in the formats you need.'],['Motion graphics','Titles, lower thirds, logo reveals and animated text that match your brand.'],['Color and sound','Color correction and grading, audio cleanup, music sync and sound effects.']];
+const ST=[['Brief','You send footage, references and the goal. I confirm length, format and deadline.'],['Rough cut','You get a first version quickly, so we agree on the direction early.'],['Revisions','I apply your feedback fast and keep every change organized.'],['Delivery','Final export in the right resolution and format, ready to upload.']];
+const CM=[['On-time delivery','I agree a deadline up front and keep to it.'],['Clear communication','Regular updates and quick replies, start to finish.'],['Consistent quality','Clean cuts, balanced audio and matched color on every export.'],['Private by default','Your raw footage and unreleased videos stay confidential.']];
+$('#sv').innerHTML=SV.map(([t,d])=>`<div class="row"><h3>${t}</h3><p>${d}</p></div>`).join('');
+$('#st').innerHTML=ST.map(([t,d])=>`<li><div><b>${t}</b><span>${d}</span></div></li>`).join('');
+$('#cm').innerHTML=CM.map(([t,d])=>`<div><b>${t}</b><span>${d}</span></div>`).join('');
+
+/* Timeline: shows skills as clips, scrub with the cursor */
+const TR=[['V2','var(--m)',[['Titles',3],['Captions',4],['Lower thirds',3],['Logo reveal',2]]],['V1','var(--cy)',[['Hook',2],['Rough cut',4],['Pacing',3],['Color grade',3],['Final cut',2]]],['A1','var(--g)',[['Music sync',4],['Voice cleanup',4],['SFX',3],['Mix',2]]]];
+const tl=$('#tl');
+tl.innerHTML='<div class="rl">'+['00:00','00:15','00:30','00:45','01:00'].map(x=>`<span>${x}</span>`).join('')+'</div>'+TR.map(([n,c,cl])=>`<div class="tk" data-n="${n}" style="--tc:${c}">${cl.map(([t,f])=>`<span style="flex:${f}">${t}</span>`).join('')}</div>`).join('')+'<div class="ph" id="ph"><b id="tc">00:00:00</b></div>';
+const ph=$('#ph'),tc=$('#tc'),z=n=>String(n).padStart(2,'0');
+function set(p){p=Math.max(0,Math.min(1,p));ph.style.left=`calc(var(--o) + (100% - var(--o) - 14px)*${p})`;const t=p*59.9,s=Math.floor(t);tc.textContent=`00:${z(s)}:${z(Math.floor((t-s)*30))}`}
+let go=1,p0=0;
+function sweep(){if(!go)return;p0+=.004;set(p0);if(p0<.62)requestAnimationFrame(sweep)}
+tl.addEventListener('pointermove',e=>{go=0;const r=tl.getBoundingClientRect(),o=parseFloat(getComputedStyle(tl).getPropertyValue('--o'));set((e.clientX-r.left-o)/(r.width-o-14))});
+matchMedia('(prefers-reduced-motion:reduce)').matches?set(.62):sweep();
+
+/* Video modal */
+const yt=u=>(u.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/)||[])[1];
+function play(u,t){
+  const vm=u&&u.match(/vimeo\.com\/(\d+)/);let h;
+  if(!u)h=`<p><b style="color:#fff">${t}</b><br>Add your video link in the WORKS list (bottom of this file) to play it here.</p>`;
+  else if(yt(u))h=`<iframe src="https://www.youtube.com/embed/${yt(u)}?autoplay=1&rel=0" allow="autoplay;fullscreen" allowfullscreen></iframe>`;
+  else if(vm)h=`<iframe src="https://player.vimeo.com/video/${vm[1]}?autoplay=1" allow="autoplay;fullscreen" allowfullscreen></iframe>`;
+  else h=`<video src="${u}" controls autoplay></video>`;
+  $('#vb').innerHTML=h;dl.showModal();
 }
+dl.addEventListener('close',()=>$('#vb').innerHTML='');
+dl.addEventListener('click',e=>{if(e.target===dl)dl.close()});
 
-function swapMain(el){
-  document.getElementById('mainImg').src = el.src.replace('w=300','w=900');
-  document.querySelectorAll('.thumbs img').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
+/* Work grid with filters */
+const cats=[...new Set(WORKS.map(w=>w.c))],K=['var(--cy)','var(--m)','var(--g)','var(--y)'];
+$('#fl').innerHTML=['All',...cats].map((c,i)=>`<button class="${i?'':'on'}" data-c="${c}">${c}</button>`).join('');
+function draw(c='All'){
+  $('#grid').innerHTML=WORKS.map((w,i)=>({...w,i})).filter(w=>c=='All'||w.c==c).map(w=>{
+    const id=yt(w.u),im=w.img||(id?`https://i.ytimg.com/vi/${id}/hqdefault.jpg`:'');
+    return `<article class="card" tabindex="0" onclick="play(WORKS[${w.i}].u,WORKS[${w.i}].t)" onkeydown="event.key=='Enter'&&this.click()"><div class="th${im?'':' e'}" ${im?`style="background-image:url(${im})"`:''}><span class="pl">&#9654;</span></div><small style="--k:${K[cats.indexOf(w.c)%4]}"><i></i>${w.c}</small><h3>${w.t}</h3><p>${w.d}</p></article>`}).join('');
 }
+$('#fl').onclick=e=>{const b=e.target.closest('button');if(!b)return;$$('#fl button').forEach(x=>x.classList.toggle('on',x==b));draw(b.dataset.c);rev()};
+draw();
 
-function openLightbox(src){
-  document.getElementById('lightboxImg').src = src;
-  document.getElementById('lightbox').style.display = 'flex';
-}
+/* Contact */
+$('#lk').innerHTML=[['WhatsApp','https://wa.me/'+CFG.whatsapp],['Email','mailto:'+CFG.email],['Facebook',CFG.facebook],['LinkedIn',CFG.linkedin],['YouTube',CFG.youtube]].filter(x=>x[1]!='#').map(([n,h])=>`<a href="${h}"${h[0]=='h'?' target="_blank" rel="noopener"':''}>${n}</a>`).join('');
+$('#f').onsubmit=e=>{e.preventDefault();location.href=`mailto:${CFG.email}?subject=${encodeURIComponent('Project inquiry from '+$('#n').value)}&body=${encodeURIComponent($('#m').value+'\n\n'+$('#n').value+' ('+$('#e').value+')')}`};
+$$('.links a').forEach(a=>a.onclick=()=>document.body.classList.remove('open'));
+$('#y').textContent=new Date().getFullYear();
 
-function updateSummary(){
-  const size = document.getElementById('sizeSel').value || 'সিলেক্ট করা হয়নি';
-  const qty = parseInt(document.getElementById('qtySel').value, 10) || 1;
-  
-  document.getElementById('sSize').textContent = size;
-  document.getElementById('sQty').textContent = toBanglaNum(qty) + ' জোড়া';
-  
-  const subtotal = UNIT_PRICE * qty;
-  const grandTotal = subtotal + DELIVERY_CHARGE;
-  
-  const priceFormatted = '৳' + toBanglaNum(subtotal);
-  const totalFormatted = '৳' + toBanglaNum(grandTotal);
-  
-  document.getElementById('sPrice').textContent = priceFormatted;
-  document.getElementById('sTotal').textContent = totalFormatted;
-  document.getElementById('hiddenTotal').value = totalFormatted;
-}
-
-// হোয়াটসঅ্যাপে সরাসরি অর্ডার পাঠানোর ফাংশন
-function sendViaWhatsApp() {
-  const form = document.getElementById('shoeOrderForm');
-  if(!form.checkValidity()){
-    form.reportValidity();
-    return;
-  }
-
-  const name = document.getElementById('custName').value.trim();
-  const phone = document.getElementById('custPhone').value.trim();
-  const address = document.getElementById('custAddress').value.trim();
-  const size = document.getElementById('sizeSel').value;
-  const qty = document.getElementById('qtySel').value;
-  const total = document.getElementById('hiddenTotal').value;
-
-  const myWhatsAppNumber = "8801887373866"; 
-
-  const message = `*নতুন জুতার অর্ডার (Website Order)*%0A` +
-                  `----------------------------%0A` +
-                  `*নাম:* ${encodeURIComponent(name)}%0A` +
-                  `*মোবাইল:* ${encodeURIComponent(phone)}%0A` +
-                  `*ঠিকানা:* ${encodeURIComponent(address)}%0A` +
-                  `*সাইজ:* ${encodeURIComponent(size)}%0A` +
-                  `*পরিমাণ:* ${encodeURIComponent(qty)} জোড়া%0A` +
-                  `*সর্বমোট বিল:* ${encodeURIComponent(total)} (Cash On Delivery)%0A` +
-                  `----------------------------%0A` +
-                  `অর্ডারটি দ্রুত কনফার্ম করুন।`;
-
-  const waURL = `https://api.whatsapp.com/send?phone=${myWhatsAppNumber}&text=${message}`;
-  window.open(waURL, '_blank');
-}
+/* Pictures, motion */
+if(CFG.photo)$('#pf .ini').outerHTML=`<img src="${CFG.photo}" alt="Ebadul Islam Shishir">`;
+const MQ=['Video editing','Motion graphics','Color grading','Sound design','Reels & Shorts','YouTube','Ads','Brand films'].map(x=>`<span>${x}</span><span style="color:var(--y)">&#10022;</span>`).join('');
+$('#mq').innerHTML=MQ+MQ;
+if(CFG.before)$('#b1').style.cssText=`background-image:url(${CFG.before});filter:none`;
+if(CFG.after)$('#b2').style.backgroundImage=`url(${CFG.after})`;
+$('#rg').oninput=e=>$('#ba').style.setProperty('--s',e.target.value+'%');
+const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&(e.target.classList.add('in'),io.unobserve(e.target))),{threshold:.12});
+function rev(){$$('.card,.row,ol li,.cm>div,.hd,.ba').forEach(el=>{if(el.dataset.r)return;el.dataset.r=1;el.style.transitionDelay=[...el.parentNode.children].indexOf(el)%4*.08+'s';el.classList.add('rv');io.observe(el)})}
+rev();
+document.addEventListener('pointermove',e=>{const b=document.body.style;b.setProperty('--mx',e.clientX+'px');b.setProperty('--my',e.clientY+'px')});
+$('#grid').addEventListener('pointermove',e=>{const t=e.target.closest('.th');if(!t)return;const r=t.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;t.style.transform=`perspective(700px) rotateY(${x*10}deg) rotateX(${-y*10}deg) scale(1.03)`});
+$('#grid').addEventListener('pointerout',e=>{const t=e.target.closest('.th');if(t)t.style.transform=''});
 </script>
-
 </body>
 </html>
