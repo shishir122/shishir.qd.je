@@ -312,7 +312,7 @@ const CFG={
 };
 // u = video link (YouTube, Vimeo or .mp4). img = optional thumbnail picture, e.g. img:'thumb1.jpg'. YouTube thumbnails load automatically.
 const WORKS=[
-{t:'Travel vlog, cinematic edit',c:'YouTube',u:'',d:'Story-first pacing, smooth transitions and color grade.'},
+{t:'Featured video',c:'Facebook',u:'https://www.facebook.com/share/v/1ahNTHrXvo/',img:'',d:'Click to watch this edit.'},
 {t:'Product launch ad',c:'Ads',u:'',d:'A 30-second promo with motion graphics and a strong hook.'},
 {t:'Fitness reel series',c:'Shorts & Reels',u:'',d:'Fast cuts, animated captions and beat-matched music.'},
 {t:'Company brand film',c:'Corporate',u:'',d:'Interviews, b-roll and a clean, consistent grade.'},
@@ -321,7 +321,7 @@ const WORKS=[
 ];
 const REELS=[ // two vertical reels shown on the left and right of the showreel. u = YouTube Shorts, Instagram Reel, TikTok, Google Drive or .mp4 link. img = optional picture.
 {t:'Reel 1',u:'https://drive.google.com/file/d/1z8xP8DLYHrQweUjIiWW1BBN_qREK3IR0/view?usp=drive_link',img:''},
-{t:'Reel 2',u:'',img:''}
+{t:'Reel 2',u:'https://drive.google.com/file/d/1fztpTY3CbWjy2tc7qdhYKZ5woI_rPsm7/view?usp=drive_link',img:''}
 ];
 const REVIEWS=[ // add client reviews to show a "What clients say" section: {n:'Client name',r:'Role, Company',q:'Their feedback'}
 ];
@@ -356,15 +356,17 @@ matchMedia('(prefers-reduced-motion:reduce)').matches?set(.62):sweep();
 const gdi=u=>{const m=(u||'').match(/drive\.google\.com\/file\/d\/([\w-]+)/);return m?`https://drive.google.com/thumbnail?id=${m[1]}&sz=w800`:''};
 const yt=u=>(u.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/)||[])[1];
 function play(u,t,v){dl.classList.toggle('v',!!v);
-  const vm=u&&u.match(/vimeo\.com\/(\d+)/),ig=u&&u.match(/instagram\.com\/(?:reel|reels|p)\/([\w-]+)/),tk=u&&u.match(/tiktok\.com\/.*video\/(\d+)/),gd=u&&u.match(/drive\.google\.com\/file\/d\/([\w-]+)/);let h;
+  const vm=u&&u.match(/vimeo\.com\/(\d+)/),ig=u&&u.match(/instagram\.com\/(?:reel|reels|p)\/([\w-]+)/),tk=u&&u.match(/tiktok\.com\/.*video\/(\d+)/),fb=u&&/facebook\.com|fb\.watch/.test(u),gd=u&&u.match(/drive\.google\.com\/file\/d\/([\w-]+)/);let h;
   if(!u)h=`<p><b style="color:#fff">${t}</b><br>Add your video link in the WORKS list (bottom of this file) to play it here.</p>`;
   else if(yt(u))h=`<iframe src="https://www.youtube.com/embed/${yt(u)}?autoplay=1&rel=0" allow="autoplay;fullscreen" allowfullscreen></iframe>`;
+  else if(fb)h='';
   else if(gd)h=`<iframe src="https://drive.google.com/file/d/${gd[1]}/preview" allow="autoplay;fullscreen" allowfullscreen></iframe>`;
   else if(ig)h=`<iframe src="https://www.instagram.com/reel/${ig[1]}/embed" allowfullscreen></iframe>`;
   else if(tk)h=`<iframe src="https://www.tiktok.com/embed/v2/${tk[1]}" allow="autoplay;fullscreen" allowfullscreen></iframe>`;
   else if(vm)h=`<iframe src="https://player.vimeo.com/video/${vm[1]}?autoplay=1" allow="autoplay;fullscreen" allowfullscreen></iframe>`;
   else h=`<video src="${u}" controls autoplay></video>`;
   $('#vb').innerHTML=h;dl.showModal();
+  if(!v&&fb&&!yt(u)){const b=$('#vb'),w=Math.round(b.clientWidth),hh=Math.round(b.clientHeight);b.innerHTML=`<iframe src="https://www.facebook.com/plugins/video.php?height=${hh}&href=${encodeURIComponent(u)}&show_text=false&width=${w}&t=0" allow="autoplay;clipboard-write;encrypted-media;picture-in-picture;web-share" allowfullscreen></iframe>`}
 }
 dl.addEventListener('close',()=>$('#vb').innerHTML='');
 dl.addEventListener('click',e=>{if(e.target===dl)dl.close()});
