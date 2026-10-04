@@ -310,8 +310,8 @@ const WORKS=[
 {t:'Gaming highlights',c:'YouTube',u:'',d:'High-energy edit with zooms, sound effects and overlays.'},
 {t:'Short-form promo pack',c:'Shorts & Reels',u:'',d:'Vertical edits made for Instagram, TikTok and Shorts.'}
 ];
-const REELS=[ // two vertical reels shown on the left and right of the showreel. u = YouTube Shorts, Instagram Reel, TikTok or .mp4 link. img = optional picture.
-{t:'Reel 1',u:'',img:''},
+const REELS=[ // two vertical reels shown on the left and right of the showreel. u = YouTube Shorts, Instagram Reel, TikTok, Google Drive or .mp4 link. img = optional picture.
+{t:'Reel 1',u:'https://drive.google.com/file/d/1z8xP8DLYHrQweUjIiWW1BBN_qREK3IR0/view?usp=drive_link',img:''},
 {t:'Reel 2',u:'',img:''}
 ];
 const REVIEWS=[ // add client reviews to show a "What clients say" section: {n:'Client name',r:'Role, Company',q:'Their feedback'}
@@ -344,11 +344,13 @@ tl.addEventListener('pointermove',e=>{go=0;const r=tl.getBoundingClientRect(),o=
 matchMedia('(prefers-reduced-motion:reduce)').matches?set(.62):sweep();
 
 /* Video modal */
+const gdi=u=>{const m=(u||'').match(/drive\.google\.com\/file\/d\/([\w-]+)/);return m?`https://drive.google.com/thumbnail?id=${m[1]}&sz=w800`:''};
 const yt=u=>(u.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/)||[])[1];
 function play(u,t,v){dl.classList.toggle('v',!!v);
-  const vm=u&&u.match(/vimeo\.com\/(\d+)/),ig=u&&u.match(/instagram\.com\/(?:reel|reels|p)\/([\w-]+)/),tk=u&&u.match(/tiktok\.com\/.*video\/(\d+)/);let h;
+  const vm=u&&u.match(/vimeo\.com\/(\d+)/),ig=u&&u.match(/instagram\.com\/(?:reel|reels|p)\/([\w-]+)/),tk=u&&u.match(/tiktok\.com\/.*video\/(\d+)/),gd=u&&u.match(/drive\.google\.com\/file\/d\/([\w-]+)/);let h;
   if(!u)h=`<p><b style="color:#fff">${t}</b><br>Add your video link in the WORKS list (bottom of this file) to play it here.</p>`;
   else if(yt(u))h=`<iframe src="https://www.youtube.com/embed/${yt(u)}?autoplay=1&rel=0" allow="autoplay;fullscreen" allowfullscreen></iframe>`;
+  else if(gd)h=`<iframe src="https://drive.google.com/file/d/${gd[1]}/preview" allow="autoplay;fullscreen" allowfullscreen></iframe>`;
   else if(ig)h=`<iframe src="https://www.instagram.com/reel/${ig[1]}/embed" allowfullscreen></iframe>`;
   else if(tk)h=`<iframe src="https://www.tiktok.com/embed/v2/${tk[1]}" allow="autoplay;fullscreen" allowfullscreen></iframe>`;
   else if(vm)h=`<iframe src="https://player.vimeo.com/video/${vm[1]}?autoplay=1" allow="autoplay;fullscreen" allowfullscreen></iframe>`;
@@ -363,7 +365,7 @@ const cats=[...new Set(WORKS.map(w=>w.c))],K=['var(--cy)','var(--m)','var(--g)',
 $('#fl').innerHTML=['All',...cats].map((c,i)=>`<button class="${i?'':'on'}" data-c="${c}">${c}</button>`).join('');
 function draw(c='All'){
   $('#grid').innerHTML=WORKS.map((w,i)=>({...w,i})).filter(w=>c=='All'||w.c==c).map(w=>{
-    const id=yt(w.u),im=w.img||(id?`https://i.ytimg.com/vi/${id}/hqdefault.jpg`:'');
+    const id=yt(w.u),im=w.img||(id?`https://i.ytimg.com/vi/${id}/hqdefault.jpg`:'')||gdi(w.u);
     return `<article class="card" tabindex="0" onclick="play(WORKS[${w.i}].u,WORKS[${w.i}].t)" onkeydown="event.key=='Enter'&&this.click()"><div class="th${im?'':' e'}" ${im?`style="background-image:url(${im})"`:''}><span class="pl">&#9654;</span></div><small style="--k:${K[cats.indexOf(w.c)%4]}"><i></i>${w.c}</small><h3>${w.t}</h3><p>${w.d}</p></article>`}).join('');
 }
 $('#fl').onclick=e=>{const b=e.target.closest('button');if(!b)return;$$('#fl button').forEach(x=>x.classList.toggle('on',x==b));draw(b.dataset.c);rev()};
@@ -418,7 +420,7 @@ rs();addEventListener('resize',rs);addEventListener('pointermove',e=>{mx=e.clien
 function bg(){cx.clearRect(0,0,W,H);P.forEach((a,i)=>{a.x+=a.vx;a.y+=a.vy;if(a.x<0||a.x>W)a.vx*=-1;if(a.y<0||a.y>H)a.vy*=-1;cx.fillStyle='#ffd23f77';cx.fillRect(a.x,a.y,2,2);
 for(let j=i+1;j<P.length;j++){const b=P[j],d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){cx.strokeStyle=`rgba(163,171,192,${.16*(1-d/120)})`;cx.beginPath();cx.moveTo(a.x,a.y);cx.lineTo(b.x,b.y);cx.stroke()}}
 const m=Math.hypot(a.x-mx,a.y-my);if(m<170){cx.strokeStyle=`rgba(255,210,63,${.4*(1-m/170)})`;cx.beginPath();cx.moveTo(a.x,a.y);cx.lineTo(mx,my);cx.stroke()}});rm||requestAnimationFrame(bg)}
-REELS.forEach((r,i)=>{const el=$('#r'+i);if(!el)return;const id=yt(r.u),im=r.img||(id?`https://i.ytimg.com/vi/${id}/hqdefault.jpg`:'');if(im){el.classList.remove('e');el.style.backgroundImage=`url(${im})`}el.querySelector('em').textContent=(r.t||'Reel '+(i+1)).toUpperCase();el.onclick=()=>play(r.u,r.t||'Reel',1);el.onkeydown=e=>e.key=='Enter'&&el.click()});
+REELS.forEach((r,i)=>{const el=$('#r'+i);if(!el)return;const id=yt(r.u),im=r.img||(id?`https://i.ytimg.com/vi/${id}/hqdefault.jpg`:'')||gdi(r.u);if(im){el.classList.remove('e');el.style.backgroundImage=`url(${im})`}el.querySelector('em').textContent=(r.t||'Reel '+(i+1)).toUpperCase();el.onclick=()=>play(r.u,r.t||'Reel',1);el.onkeydown=e=>e.key=='Enter'&&el.click()});
 $('#wa').href=`https://wa.me/${CFG.whatsapp}?text=`+encodeURIComponent("Hi Shishir, I saw your portfolio and I'd like to talk about a video project.");
 $('#wa').innerHTML=I('whatsapp')+'<span>Chat on WhatsApp</span>';
 bg();rev();
