@@ -272,6 +272,8 @@ html:has(dialog[open]){overflow:hidden}
 #adm .li span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}#adm .li button{background:none;border:0;color:var(--m);cursor:pointer;font-size:14px;flex:none}
 #adm .ae{color:var(--m);font-size:14px;margin-top:10px;min-height:20px}#adm hr{border:0;border-top:1px solid var(--ln);margin:22px 0 4px}
 #adm::backdrop{background:#000c}
+#adm{width:min(720px,96vw)}#adm .tb{display:flex;gap:6px;flex-wrap:wrap;margin:0 40px 8px 0}#adm .tb button{background:none;border:1px solid var(--ln);color:var(--mu);border-radius:99px;padding:7px 14px;font:600 14px 'Instrument Sans',sans-serif;cursor:pointer}#adm .tb .on{background:var(--y);border-color:var(--y);color:var(--ink)}
+#adm textarea{resize:vertical;font-size:15px}#adm details{border:1px solid var(--ln);border-radius:8px;padding:10px 14px;margin-top:10px}#adm summary{cursor:pointer;font-weight:600}#adm .li b{display:flex;gap:2px;flex:none}#adm .li b button{padding:4px 7px;color:var(--tx)}
 </style>
 </head>
 <body class="go">
@@ -364,6 +366,10 @@ html:has(dialog[open]){overflow:hidden}
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 
 /* ================= EDIT YOUR DETAILS HERE ================= */
+window.SITE_BAKED=/*B*/null/*E*/;
+const ST_KEY='sh_site_v2';let SITE={};
+try{const l=localStorage.getItem(ST_KEY);SITE=l?JSON.parse(l):(window.SITE_BAKED||{})}catch(e){SITE=window.SITE_BAKED||{}}
+SITE.d=SITE.d||{};const ov=(k,d)=>SITE.d[k]!=null?SITE.d[k]:d;
 const CFG={
   formspree:'https://formspree.io/f/mykqoajw',   // contact form sends messages here
   photo:'',                         // your photo: file name like 'me.jpg' (same folder) or an image link
@@ -375,6 +381,7 @@ const CFG={
   instagram:'https://www.instagram.com/far_han__shishir/',
   showreel:''                       // YouTube / Vimeo / .mp4 link of your showreel
 };
+Object.assign(CFG,SITE.d.CFG||{});
 // v:1 = vertical video (Reels/Shorts). u = video link (YouTube, Drive, Facebook or .mp4). img = optional thumbnail picture, e.g. img:'thumb1.jpg'. YouTube thumbnails load automatically.
 const WORKS=[
 {t:'Video Intro',c:'Video Intro',u:'https://youtu.be/y3uEbK6SgYg',img:'',d:'An intro edit made to hook viewers fast.'},
@@ -387,13 +394,16 @@ const WORKS=[
 {t:'Reel 06',c:'Reels',v:1,u:'https://drive.google.com/file/d/1O0q6vJRMBYV3xhsV2RcMBDWcxet777G-/view?usp=sharing',img:'',d:'Vertical edit with quick cuts and captions.'},
 {t:'Reel Before and After',c:'Before & After',v:1,u:'https://youtube.com/shorts/7EYJ_azLCkQ',img:'',d:'See the raw footage next to the final edit.'},
 {t:'Reel 07',c:'Reels',v:1,u:'https://www.facebook.com/share/r/19VfQejmhJ/',img:'',d:'Vertical edit with quick cuts and captions.'}
-/*ADD_NEW_HERE*/];
+];
+{const w=ov('WORKS',0);if(w){WORKS.length=0;WORKS.push(...w)}}
 const REELS=[ // two vertical reels shown on the left and right of the showreel. u = YouTube Shorts, Instagram Reel, TikTok, Google Drive or .mp4 link. img = optional picture.
 {t:'Reel 1',u:'https://drive.google.com/file/d/1z8xP8DLYHrQweUjIiWW1BBN_qREK3IR0/view?usp=drive_link',img:''},
 {t:'Reel 2',u:'https://drive.google.com/file/d/1fztpTY3CbWjy2tc7qdhYKZ5woI_rPsm7/view?usp=drive_link',img:''}
 ];
+{const w=ov('REELS',0);if(w){REELS.length=0;REELS.push(...w)}}
 const REVIEWS=[ // add client reviews to show a "What clients say" section: {n:'Client name',r:'Role, Company',q:'Their feedback'}
 ];
+{const w=ov('RV',0);if(w){REVIEWS.length=0;REVIEWS.push(...w)}}
 /* ========================================================== */
 
 const IC={
@@ -403,9 +413,9 @@ facebook:'<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-
 instagram:'<rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/>'
 };
 const I=n=>`<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
-const SV=[['YouTube editing','Long-form videos with tight pacing, captions, b-roll and sound, built to keep viewers watching.'],['Reels, Shorts and TikTok','Vertical edits with strong hooks, animated subtitles and a rhythm that fits the platform.'],['Ads and promos','Short, persuasive cuts for products and campaigns on Facebook, Instagram and YouTube.'],['Corporate and brand films','Interviews, events and company stories, edited cleanly in the formats you need.'],['Motion graphics','Titles, lower thirds, logo reveals and animated text that match your brand.'],['Color and sound','Color correction and grading, audio cleanup, music sync and sound effects.']];
-const ST=[['Brief','You send footage, references and the goal. I confirm length, format and deadline.'],['Rough cut','You get a first version quickly, so we agree on the direction early.'],['Revisions','I apply your feedback fast and keep every change organized.'],['Delivery','Final export in the right resolution and format, ready to upload.']];
-const CM=[['On-time delivery','I agree a deadline up front and keep to it.'],['Clear communication','Regular updates and quick replies, start to finish.'],['Consistent quality','Clean cuts, balanced audio and matched color on every export.'],['Private by default','Your raw footage and unreleased videos stay confidential.']];
+const SV=ov('SV',[['YouTube editing','Long-form videos with tight pacing, captions, b-roll and sound, built to keep viewers watching.'],['Reels, Shorts and TikTok','Vertical edits with strong hooks, animated subtitles and a rhythm that fits the platform.'],['Ads and promos','Short, persuasive cuts for products and campaigns on Facebook, Instagram and YouTube.'],['Corporate and brand films','Interviews, events and company stories, edited cleanly in the formats you need.'],['Motion graphics','Titles, lower thirds, logo reveals and animated text that match your brand.'],['Color and sound','Color correction and grading, audio cleanup, music sync and sound effects.']]);
+const ST=ov('ST',[['Brief','You send footage, references and the goal. I confirm length, format and deadline.'],['Rough cut','You get a first version quickly, so we agree on the direction early.'],['Revisions','I apply your feedback fast and keep every change organized.'],['Delivery','Final export in the right resolution and format, ready to upload.']]);
+const CM=ov('CM',[['On-time delivery','I agree a deadline up front and keep to it.'],['Clear communication','Regular updates and quick replies, start to finish.'],['Consistent quality','Clean cuts, balanced audio and matched color on every export.'],['Private by default','Your raw footage and unreleased videos stay confidential.']]);
 $('#sv').innerHTML=SV.map(([t,d],i)=>`<div class="row"><h3>${t}</h3><p>${d}</p></div>`).join('');
 $('#st').innerHTML=ST.map(([t,d],i)=>`<li><div><b>${t}</b><span>${d}</span></div></li>`).join('');
 $('#cm').innerHTML=CM.map(([t,d],i)=>`<div><b>${t}</b><span>${d}</span></div>`).join('');
@@ -443,9 +453,6 @@ dl.addEventListener('close',()=>$('#vb').innerHTML='');
 dl.addEventListener('click',e=>{if(e.target===dl)dl.close()});
 
 /* Work grid with filters */
-/* Videos added from the owner panel (saved in this browser only) */
-const LS='sh_works_v1';let LOCAL=[];try{LOCAL=JSON.parse(localStorage.getItem(LS)||'[]')||[]}catch(e){LOCAL=[]}
-LOCAL.forEach(x=>{x.l=1;WORKS.push(x)});
 let cats=[...new Set(WORKS.map(w=>w.c))];const K=['var(--cy)','var(--m)','var(--g)','var(--y)'];
 function filt(){cats=[...new Set(WORKS.map(w=>w.c))];$('#fl').innerHTML=['All',...cats].map((c,i)=>`<button class="${i?'':'on'}" data-c="${c}">${c}</button>`).join('')}
 filt();
@@ -459,67 +466,96 @@ function draw(c='All'){
 $('#fl').onclick=e=>{const b=e.target.closest('button');if(!b)return;$$('#fl button').forEach(x=>x.classList.toggle('on',x==b));draw(b.dataset.c);rev()};
 draw();
 
-/* ===== Owner panel: open with  yoursite.com/#admin  or press the logo 5 times ===== */
+/* ===== Owner panel: open with  yoursite.com/#admin  or tap the logo 5 times ===== */
 (function(){
  const H=s=>{let h1=0xdeadbeef,h2=0x41c6ce57;for(let i=0,c;i<s.length;i++){c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return(4294967296*(2097151&h2)+(h1>>>0)).toString(36)};
  const AH='2ddsd27vyl1';
  const d=document.createElement('dialog');d.id='adm';document.body.appendChild(d);
- const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
- const save=()=>{try{localStorage.setItem(LS,JSON.stringify(LOCAL));return 1}catch(e){alert('Browser storage is full. Remove a video or use a smaller thumbnail.');return 0}};
+ const esc=x=>String(x==null?'':x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ const persist=()=>{try{localStorage.setItem(ST_KEY,JSON.stringify(SITE));return 1}catch(e){alert('Browser storage is full. Use smaller pictures.');return 0}};
+ const reload=()=>{location.hash='#admin';location.reload()};
+ const say=m=>{const e=$('#ae');if(e)e.textContent=m};
+ const TX=[['.hero h1','Hero name'],['.hero .lead','Hero intro'],['#pf .chip','Photo badge'],['#reel h2','Reels heading'],['#reel .sub','Reels text'],['#work h2','Work heading'],['#work .sub','Work text'],['#grade h2','Before/after heading'],['#services h2','Services heading'],['#services .sub','Services text'],['#process .two>div:first-child h2','Process heading'],['#process .two>div:last-child h2','Count-on heading'],['.tools','Tools line'],['#resume h2','Resume heading'],['#faq h2','FAQ heading'],['#contact h2','Contact heading'],['#contact .sub','Contact text']];
+ const SEC=[['reel','Short-form reels'],['work','Selected work'],['grade','Before and after'],['services','Services'],['process','How I work'],['resume','Resume'],['reviews','Client reviews'],['faq','FAQ'],['contact','Contact']];
+ Object.entries(SITE.tx||{}).forEach(([k,v])=>{const e=$(k);if(e)e.innerHTML=v});
+ (SITE.hide||[]).forEach(id=>{const e=$('#'+id);if(e)e.style.display='none';$$('nav a[href="#'+id+'"]').forEach(a=>a.style.display='none')});
+ if(SITE.logo){const l=$('.logo img');if(l)l.src=SITE.logo}
+ const pr=t=>t.split('\n').map(x=>x.split('|').map(y=>y.trim())).filter(x=>x[0]),pj=a=>a.map(x=>x.join(' | ')).join('\n');
+ const LD={
+  SV:['Services (title | description)',()=>pj(SV),pr],
+  ST:['Process steps (title | description)',()=>pj(ST),pr],
+  CM:['What you can count on (title | description)',()=>pj(CM),pr],
+  FQ:['FAQ (question | answer)',()=>pj(FQ),pr],
+  RV:['Client reviews (name | role | quote)',()=>REVIEWS.map(r=>[r.n,r.r,r.q].join(' | ')).join('\n'),t=>pr(t).map(x=>({n:x[0],r:x[1]||'',q:x[2]||''}))],
+  MQ:['Scrolling tags (one per line)',()=>MQL.join('\n'),t=>t.split('\n').map(x=>x.trim()).filter(Boolean)],
+  CV:['Resume (# Group name, then: line | detail | detail)',()=>CV.map(g=>'# '+g[0]+'\n'+pj(g[1])).join('\n'),t=>{const o=[];t.split('\n').forEach(l=>{l=l.trim();if(!l)return;if(l[0]=='#')o.push([l.replace(/^#\s*/,''),[]]);else if(o.length)o[o.length-1][1].push(l.split('|').map(y=>y.trim()))});return o}]
+ };
  const isV=u=>/shorts\/|facebook\.com\/(?:share\/r|reel)|fb\.watch|\/reels?\/|tiktok\.com|pinterest|pin\.it/i.test(u);
- const refresh=()=>{filt();draw();rev()};
- const strip=x=>{const o={...x};delete o.l;return o};
- const code=()=>LOCAL.map(x=>JSON.stringify(strip(x))).join(',\n');
- function login(msg){
-  d.innerHTML=`<button class="ax" id="ac">Close &#10005;</button><h3>Owner login</h3><p class="am">Only you can add videos to this site.</p><input id="ap" type="password" placeholder="Password" autocomplete="current-password"><div class="bt"><button class="btn pri" id="ag">Open</button></div><p class="ae" id="ae">${msg||''}</p>`;
-  d.querySelector('#ac').onclick=()=>d.close();
-  const go=()=>{if(H(d.querySelector('#ap').value)===AH){try{sessionStorage.setItem('sh_adm','1')}catch(e){}panel()}else d.querySelector('#ae').textContent='Wrong password.'};
-  d.querySelector('#ag').onclick=go;d.querySelector('#ap').onkeydown=e=>{if(e.key=='Enter')go()};
- }
- function panel(){
-  const cl=[...new Set(WORKS.map(w=>w.c))];
-  d.innerHTML=`<button class="ax" id="ac">Close &#10005;</button><h3>Add a video</h3><p class="am">Paste any link: Facebook, YouTube, Google Drive, Pinterest, Instagram, TikTok, Vimeo or an .mp4 file.</p>
-  <label>Video link *</label><input id="fu" type="url" placeholder="https://...">
-  <div class="r2"><div><label>Title</label><input id="ft" placeholder="e.g. Reel 08"></div><div><label>Category</label><input id="fc" list="fcl" placeholder="Reels"><datalist id="fcl">${cl.map(c=>`<option value="${esc(c)}">`).join('')}</datalist></div></div>
-  <div class="r2"><div><label>Shape</label><select id="fv"><option value="">Auto detect</option><option value="1">Vertical (Reels)</option><option value="0">Horizontal (16:9)</option></select></div><div><label>Thumbnail picture (optional)</label><input id="fi" type="file" accept="image/*"></div></div>
-  <label>Short description (optional)</label><input id="fd" placeholder="What is this video?">
-  <div class="bt"><button class="btn pri" id="fa">Add video</button></div><p class="ae" id="ae"></p>
-  <hr><h3 style="font-size:19px;margin-top:18px">Added from this panel (${LOCAL.length})</h3>
-  <p class="am">These show on <b>this browser only</b>. To show them to every visitor, press "Download updated site" and upload that file to your hosting.</p>
-  ${LOCAL.map((x,i)=>`<div class="li"><span>${esc(x.t)} &middot; ${esc(x.c)}</span><button data-i="${i}">Remove</button></div>`).join('')||'<p class="am">Nothing added yet.</p>'}
-  <div class="bt"><button class="btn" id="fdl">Download updated site</button><button class="btn" id="fcp">Copy code</button><button class="btn" id="flo">Lock</button></div>`;
-  const q=x=>d.querySelector(x);
-  q('#ac').onclick=()=>d.close();
-  q('#flo').onclick=()=>{try{sessionStorage.removeItem('sh_adm')}catch(e){}d.close()};
-  q('#fa').onclick=async()=>{
-   const u=q('#fu').value.trim(),e=q('#ae');
-   if(!/^https?:\/\//i.test(u)){e.textContent='Please paste a full link starting with https://';return}
-   const vv=q('#fv').value,v=vv===''?(isV(u)?1:0):+vv;
-   const it={t:q('#ft').value.trim()||('Video '+(WORKS.length+1)),c:q('#fc').value.trim()||(v?'Reels':'Long Format'),u,img:'',d:q('#fd').value.trim()||(v?'Vertical edit with quick cuts and captions.':'A video edit from my portfolio.')};
-   if(v)it.v=1;
-   const f=q('#fi').files[0];
-   if(f){try{it.img=await new Promise((ok,no)=>{const r=new FileReader();r.onerror=no;r.onload=()=>{const im=new Image();im.onerror=no;im.onload=()=>{const k=Math.min(1,480/im.width),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);ok(c.toDataURL('image/jpeg',.78))};im.src=r.result};r.readAsDataURL(f)})}catch(x){e.textContent='Could not read that picture.';return}}
-   it.l=1;LOCAL.push(it);if(!save()){LOCAL.pop();return}
-   WORKS.push(it);refresh();panel();d.querySelector('#ae').textContent='Added. It is now in the work section.';
-  };
-  d.querySelectorAll('.li button').forEach(b=>b.onclick=()=>{const x=LOCAL.splice(+b.dataset.i,1)[0];const k=WORKS.indexOf(x);if(k>-1)WORKS.splice(k,1);save();refresh();panel()});
-  q('#fcp').onclick=async()=>{if(!LOCAL.length){q('#ae').textContent='Nothing to copy yet.';return}try{await navigator.clipboard.writeText(code());q('#ae').textContent='Copied. Paste it just before /*ADD_NEW_HERE*/ in the WORKS list (add a comma after the previous item).'}catch(x){prompt('Copy this code:',code())}};
-  q('#fdl').onclick=async()=>{
-   if(!LOCAL.length){q('#ae').textContent='Add a video first.';return}
-   let src='';try{src=await (await fetch(location.href.split('#')[0],{cache:'no-store'})).text()}catch(x){}
-   const M='/*ADD_NEW_HERE*/';
-   if(!src.includes(M)){q('#ae').textContent='Could not read the page source here (opened as a local file). Use "Copy code" instead, or send me the code.';return}
-   const out=src.split(M).join(',\n'+code()+'\n'+M);
-   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out],{type:'text/html'}));a.download='index.html';document.body.appendChild(a);a.click();a.remove();
-   LOCAL=[];save();q('#ae').textContent='Downloaded index.html with your new videos. Upload it to your hosting. (Local list cleared so nothing shows twice.)';
-  };
- }
- function open(){let ok=0;try{ok=sessionStorage.getItem('sh_adm')}catch(e){}ok?panel():login();if(!d.open)d.showModal()}
+ const F=(id,l,v,t)=>`<label>${l}</label><input id="${id}" type="${t||'text'}" value="${esc(v)}">`;
+ const pic=(f,w,png)=>new Promise((ok,no)=>{const r=new FileReader();r.onerror=no;r.onload=()=>{const m=new Image();m.onerror=no;m.onload=()=>{const k=Math.min(1,w/m.width),c=document.createElement('canvas');c.width=m.width*k;c.height=m.height*k;c.getContext('2d').drawImage(m,0,0,c.width,c.height);ok(png?c.toDataURL('image/png'):c.toDataURL('image/jpeg',.82))};m.src=r.result};r.readAsDataURL(f)});
+ const dlf=(t,n,m)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:m}));a.download=n;document.body.appendChild(a);a.click();a.remove()};
+ const setCFG=o=>{SITE.d.CFG=Object.assign(SITE.d.CFG||{},o);if(persist())reload()};
+ let tab='Videos',ed=-1;try{tab=sessionStorage.getItem('sh_tab')||tab}catch(e){}
+ const TABS=['Videos','Text','Lists','Links','Photos','Sections','Save'];
+ const saveV=()=>{SITE.d.WORKS=WORKS.map(x=>({...x}));persist();filt();draw();rev();show()};
+ const BODY={
+  Videos:()=>{const w=ed>=0?WORKS[ed]:{},cl=[...new Set(WORKS.map(x=>x.c))];
+   return `<h3>${ed>=0?'Edit video':'Add a video'}</h3><p class="am">Any link: Facebook, YouTube, Google Drive, Pinterest, Instagram, TikTok, Vimeo or .mp4</p>${F('fu','Video link *',w.u,'url')}
+   <div class="r2"><div>${F('ft','Title',w.t)}</div><div>${F('fc','Category',w.c).replace('<input','<input list="fcl"')}<datalist id="fcl">${cl.map(c=>`<option value="${esc(c)}">`).join('')}</datalist></div></div>
+   <div class="r2"><div><label>Shape</label><select id="fv"><option value="">Auto detect</option><option value="1"${w.v?' selected':''}>Vertical (Reels)</option><option value="0"${ed>=0&&!w.v?' selected':''}>Horizontal (16:9)</option></select></div><div><label>Thumbnail picture${w.img?' (keeps current if empty)':' (optional)'}</label><input id="fi" type="file" accept="image/*"></div></div>${F('fd','Short description',w.d)}
+   <div class="bt"><button class="btn pri" data-a="vs">${ed>=0?'Save changes':'Add video'}</button>${ed>=0?'<button class="btn" data-a="vc">Cancel</button>':''}</div>
+   <hr><h3 style="font-size:19px;margin-top:18px">All videos (${WORKS.length})</h3>${WORKS.map((x,i)=>`<div class="li"><span>${esc(x.t)} &middot; ${esc(x.c)}${x.v?' &middot; vertical':''}</span><b><button data-a="vu" data-i="${i}">&#9650;</button><button data-a="vd" data-i="${i}">&#9660;</button><button data-a="ve" data-i="${i}">Edit</button><button data-a="vx" data-i="${i}" style="color:var(--m)">Remove</button></b></div>`).join('')}
+   <hr><h3 style="font-size:19px;margin-top:18px">Two side reels (top of page)</h3>${F('r0','Reel 1 link',REELS[0]&&REELS[0].u)}${F('r1','Reel 2 link',REELS[1]&&REELS[1].u)}<div class="bt"><button class="btn" data-a="rs">Save side reels</button></div>`},
+  Text:()=>`<h3>Page text</h3><p class="am">Edit any heading or paragraph. You can use &lt;b&gt;bold&lt;/b&gt; and &lt;br&gt; for a new line.</p>${TX.map(([k,l])=>{const e=$(k),v=e?e.innerHTML.trim():'';return e?`<label>${l}</label><textarea rows="${v.length>90?3:1}" data-s="${esc(k)}" data-o="${esc(v)}">${esc(v)}</textarea>`:''}).join('')}<div class="bt"><button class="btn pri" data-a="ts">Save text</button><button class="btn" data-a="tr">Reset all text</button></div>`,
+  Lists:()=>`<h3>Lists</h3><p class="am">One item per line. Add a line to add an item, delete a line to remove it. Use | to separate parts.</p>${Object.entries(LD).map(([k,l])=>`<details><summary>${l[0]}</summary><textarea rows="9" id="L_${k}">${esc(l[1]())}</textarea><div class="bt"><button class="btn pri" data-a="ls" data-k="${k}">Save</button><button class="btn" data-a="lr" data-k="${k}">Reset to original</button></div></details>`).join('')}`,
+  Links:()=>`<h3>Contact and links</h3>${['email','whatsapp','facebook','instagram','showreel','formspree'].map(k=>F('c_'+k,{whatsapp:'WhatsApp number (with country code, no +)',showreel:'Showreel video link',formspree:'Contact form address (Formspree link)'}[k]||k[0].toUpperCase()+k.slice(1),CFG[k])).join('')}<div class="bt"><button class="btn pri" data-a="cs">Save links</button></div>`,
+  Photos:()=>`<h3>Pictures</h3>${[['photo','Profile photo',CFG.photo],['logo','Logo (PNG with transparent background is best)',SITE.logo],['before','Before/after: raw picture',CFG.before],['after','Before/after: graded picture',CFG.after]].map(([k,l,v])=>`<label>${l}</label>${v?`<img src="${esc(v)}" style="height:56px;border-radius:8px;display:block;margin:6px 0;background:#0006">`:''}<input type="file" accept="image/*" data-p="${k}">${v?`<div class="bt" style="margin-top:8px"><button class="btn" data-a="px" data-k="${k}">Remove</button></div>`:''}`).join('')}<p class="am" style="margin-top:14px">Pictures are resized and saved automatically.</p>`,
+  Sections:()=>`<h3>Show or hide sections</h3>${SEC.map(([k,l])=>`<label style="display:flex;gap:10px;align-items:center;color:var(--tx);font-size:16px"><input type="checkbox" style="width:auto" data-h="${k}"${(SITE.hide||[]).includes(k)?'':' checked'}> ${l}</label>`).join('')}<div class="bt"><button class="btn pri" data-a="ss">Save sections</button></div>`,
+  Save:()=>`<h3>Publish and backup</h3><p class="am">Everything you change is saved in <b>this browser</b> first. Visitors see it only after you press <b>Download updated site</b> and upload that file to your hosting.</p><div class="bt"><button class="btn pri" data-a="bk">Download updated site</button><button class="btn" data-a="ex">Export backup</button><label class="btn" style="margin:0;cursor:pointer">Import backup<input type="file" accept=".json" data-imp style="display:none"></label></div><div class="bt"><button class="btn" data-a="dr">Discard my changes</button><button class="btn" data-a="lk">Lock panel</button></div>`
+ };
+ function show(){d.innerHTML=`<button class="ax" data-a="cl">Close &#10005;</button><div class="tb">${TABS.map(t=>`<button class="${t==tab?'on':''}" data-t="${t}">${t}</button>`).join('')}</div><div>${BODY[tab]()}</div><p class="ae" id="ae"></p>`}
+ const ACT={
+  cl:()=>d.close(),lk:()=>{try{sessionStorage.removeItem('sh_adm')}catch(e){}d.close()},
+  vc:()=>{ed=-1;show()},ve:b=>{ed=+b.dataset.i;show();d.scrollTop=0},
+  vx:b=>{if(confirm('Remove this video?')){WORKS.splice(+b.dataset.i,1);ed=-1;saveV()}},
+  vu:b=>{const i=+b.dataset.i;if(i>0){[WORKS[i-1],WORKS[i]]=[WORKS[i],WORKS[i-1]];saveV()}},
+  vd:b=>{const i=+b.dataset.i;if(i<WORKS.length-1){[WORKS[i+1],WORKS[i]]=[WORKS[i],WORKS[i+1]];saveV()}},
+  vs:async()=>{const u=$('#fu').value.trim();if(!/^https?:\/\//i.test(u))return say('Paste a full link starting with https://');
+   const vv=$('#fv').value,v=vv===''?(isV(u)?1:0):+vv,o=ed>=0?WORKS[ed]:{img:''};
+   Object.assign(o,{t:$('#ft').value.trim()||('Video '+(WORKS.length+1)),c:$('#fc').value.trim()||(v?'Reels':'Long Format'),u,d:$('#fd').value.trim()||(v?'Vertical edit with quick cuts and captions.':'A video edit from my portfolio.')});
+   if(v)o.v=1;else delete o.v;
+   const f=$('#fi').files[0];if(f){try{o.img=await pic(f,480)}catch(e){return say('Could not read that picture.')}}
+   if(ed<0)WORKS.push(o);ed=-1;saveV();say('Saved.')},
+  rs:()=>{REELS[0]=Object.assign(REELS[0]||{t:'Reel 1',img:''},{u:$('#r0').value.trim()});REELS[1]=Object.assign(REELS[1]||{t:'Reel 2',img:''},{u:$('#r1').value.trim()});SITE.d.REELS=REELS.map(x=>({...x}));if(persist())reload()},
+  ts:()=>{SITE.tx=SITE.tx||{};$$('#adm [data-s]').forEach(t=>{if(t.value.trim()!=t.dataset.o)SITE.tx[t.dataset.s]=t.value.trim()});if(persist())reload()},
+  tr:()=>{delete SITE.tx;if(persist())reload()},
+  ls:b=>{SITE.d[b.dataset.k]=LD[b.dataset.k][2]($('#L_'+b.dataset.k).value);if(persist())reload()},
+  lr:b=>{delete SITE.d[b.dataset.k];if(persist())reload()},
+  cs:()=>setCFG(Object.fromEntries(['email','whatsapp','facebook','instagram','showreel','formspree'].map(k=>[k,$('#c_'+k).value.trim()]))),
+  px:b=>{const k=b.dataset.k;if(k=='logo'){delete SITE.logo;if(persist())reload()}else setCFG({[k]:''})},
+  ss:()=>{SITE.hide=$$('#adm [data-h]').filter(c=>!c.checked).map(c=>c.dataset.h);if(persist())reload()},
+  dr:()=>{if(confirm('Discard all changes made in this browser?')){localStorage.removeItem(ST_KEY);reload()}},
+  ex:()=>dlf(JSON.stringify(SITE,null,1),'shishir-site-backup.json','application/json'),
+  bk:async()=>{let src='';try{src=await (await fetch(location.href.split('#')[0],{cache:'no-store'})).text()}catch(e){}
+   const re=/window\.SITE_BAKED=\/\*B\*\/[\s\S]*?\/\*E\*\/;/;
+   if(!re.test(src))return say('Cannot read the page source here (opened as a local file). Use "Export backup" and send me that file.');
+   const js=JSON.stringify(SITE).replace(/</g,'\\u003c');
+   dlf(src.replace(re,()=>'window.SITE_BAKED=/*B*/'+js+'/*E*/;'),'index.html','text/html');
+   try{localStorage.removeItem(ST_KEY)}catch(e){}say('Downloaded index.html. Upload it to your hosting to publish.')}
+ };
+ d.addEventListener('click',e=>{const t=e.target.closest('[data-t]');if(t){tab=t.dataset.t;ed=-1;try{sessionStorage.setItem('sh_tab',tab)}catch(x){}show();return}const b=e.target.closest('[data-a]');if(b&&ACT[b.dataset.a])ACT[b.dataset.a](b)});
+ d.addEventListener('change',async e=>{const t=e.target,f=t.files&&t.files[0];if(!f)return;
+  if(t.dataset.p){try{if(t.dataset.p=='logo'){SITE.logo=await pic(f,500,f.type=='image/png');if(persist())reload()}else setCFG({[t.dataset.p]:await pic(f,t.dataset.p=='photo'?800:1200)})}catch(x){say('Could not read that picture.')}}
+  if('imp' in t.dataset){try{SITE=JSON.parse(await f.text());SITE.d=SITE.d||{};if(persist())reload()}catch(x){say('That file is not a valid backup.')}}});
+ function login(m){d.innerHTML=`<button class="ax" data-a="cl">Close &#10005;</button><h3>Owner login</h3><p class="am">Only you can edit this site.</p><input id="ap" type="password" placeholder="Password" autocomplete="current-password"><div class="bt"><button class="btn pri" id="ag">Open</button></div><p class="ae" id="ae">${m||''}</p>`;
+  const go=()=>{if(H($('#ap').value)===AH){try{sessionStorage.setItem('sh_adm','1')}catch(e){}show()}else say('Wrong password.')};$('#ag').onclick=go;$('#ap').onkeydown=e=>{if(e.key=='Enter')go()}}
+ function open(){let ok=0;try{ok=sessionStorage.getItem('sh_adm')}catch(e){}ok?show():login();if(!d.open)d.showModal()}
  addEventListener('hashchange',()=>{if(location.hash=='#admin')open()});
- if(location.hash=='#admin')open();
+ if(location.hash=='#admin')setTimeout(open,50);
  addEventListener('keydown',e=>{if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()=='a'){e.preventDefault();open()}});
- let n=0,tm;const lg=document.querySelector('.logo');if(lg)lg.addEventListener('click',()=>{n++;clearTimeout(tm);tm=setTimeout(()=>n=0,2000);if(n>=5){n=0;open()}});
+ let n=0,tm;const lg=$('.logo');if(lg)lg.addEventListener('click',()=>{n++;clearTimeout(tm);tm=setTimeout(()=>n=0,2000);if(n>=5){n=0;open()}});
 })();
+
 
 /* Contact */
 const LK=[['WhatsApp','https://wa.me/'+CFG.whatsapp],['Email','mailto:'+CFG.email],['Facebook',CFG.facebook],['Instagram',CFG.instagram]].filter(x=>x[1]&&x[1]!='#');
@@ -537,7 +573,7 @@ $('#y').textContent=new Date().getFullYear();
 
 /* Pictures, motion */
 const PH=CFG.photo||window.PHOTO;if(PH)$('#pf .ini').outerHTML=`<img src="${PH}" alt="Ebadul Islam Shishir" width="800" height="1000">`;
-const MQ=['Video editing','Motion graphics','Color grading','Sound design','Reels & Shorts','YouTube','Ads','Brand films'].map(x=>`<span>${x}</span><span style="color:var(--y)">&#10022;</span>`).join('');
+const MQL=ov('MQ',['Video editing','Motion graphics','Color grading','Sound design','Reels & Shorts','YouTube','Ads','Brand films']),MQ=MQL.map(x=>`<span>${x}</span><span style="color:var(--y)">&#10022;</span>`).join('');
 const mk=a=>{const h=a.map(x=>`<span>${x}</span><span style="color:var(--y)">&#10022;</span>`).join('');return h+h};
 $('#mq').innerHTML=MQ+MQ;$('#mq2').innerHTML=mk(['Cuts','Transitions','Titles','Visual effects','Storytelling','Pacing','Captions','Delivery']);
 const SC='<div class="sc"><b class="sun"></b><b class="m1"></b><b class="m2"></b><b class="wt"></b></div>';$('#b1').innerHTML=SC;$('#b2').innerHTML=SC;
@@ -566,7 +602,7 @@ addEventListener('pointermove',e=>{x=e.clientX;y=e.clientY;$('#cd').style.transf
 (function c(){rx+=(x-rx)*.18;ry+=(y-ry)*.18;$('#cr').style.transform=`translate(${rx}px,${ry}px)`;requestAnimationFrame(c)})();
 document.addEventListener('pointerover',e=>$('#cr').classList.toggle('h',!!e.target.closest('a,button,.card,.reel,.ba,.tl,input,textarea,summary')))}
 if(REVIEWS.length){$('#reviews').hidden=false;$('#rv').innerHTML=REVIEWS.map(r=>`<blockquote><p>${r.q}</p><b style="display:block;margin-top:16px">${r.n}</b><span style="color:var(--mu);font-size:14px">${r.r}</span></blockquote>`).join('')}
-const FQ=[['What do I need to send you?','Your raw footage, any music or brand assets, and a short brief. References you like help a lot.'],['How do revisions work?','I send a rough cut first, you share notes, and I apply them until the video matches your vision. We agree on the number of revision rounds before we start.'],['Which formats do you deliver?','MP4 by default, in the resolution and aspect ratio your platform needs (16:9, 9:16 or 1:1). Other formats are available on request.'],['How do we get started?','Send me a message with your project details. I will reply with a plan, timeline and price.']];
+const FQ=ov('FQ',[['What do I need to send you?','Your raw footage, any music or brand assets, and a short brief. References you like help a lot.'],['How do revisions work?','I send a rough cut first, you share notes, and I apply them until the video matches your vision. We agree on the number of revision rounds before we start.'],['Which formats do you deliver?','MP4 by default, in the resolution and aspect ratio your platform needs (16:9, 9:16 or 1:1). Other formats are available on request.'],['How do we get started?','Send me a message with your project details. I will reply with a plan, timeline and price.']]);
 $('#fq').innerHTML=FQ.map(([q,a])=>`<details><summary>${q}</summary><p>${a}</p></details>`).join('');
 /* Background: drifting points that connect near each other and to the cursor */
 const cv=$('#bg'),cx=cv.getContext('2d');let W,H,P=[],mx=-9e3,my=-9e3;
@@ -578,7 +614,7 @@ const m=Math.hypot(a.x-mx,a.y-my);if(m<170){cx.strokeStyle=`rgba(255,210,63,${.4
 REELS.forEach((r,i)=>{const el=$('#r'+i);if(!el)return;const id=yt(r.u),im=r.img||(id?`https://i.ytimg.com/vi/${id}/hqdefault.jpg`:'')||gdi(r.u);if(im){el.classList.remove('e');el.style.backgroundImage=`url(${im})`}el.querySelector('em').textContent=(r.t||'Reel '+(i+1)).toUpperCase();el.onclick=()=>play(r.u,r.t||'Reel',1);el.onkeydown=e=>e.key=='Enter'&&el.click()});
 $('#wa').href=`https://wa.me/${CFG.whatsapp}?text=`+encodeURIComponent("Hi Shishir, I saw your portfolio and I'd like to talk about a video project.");
 $('#wa').innerHTML=I('whatsapp')+'<span>Chat on WhatsApp</span>';
-const CV=[['Experience',[['Junior Video Editor','Video editing','2 years'],['IT Manager','Digital marketing','1 year']]],['Education',[['HSC, Business Studies','Govt. M. M. City College, Khulna','2025 | GPA 3.25'],['SSC, Business Studies','RRF Secondary School, Khulna','2023 | GPA 4.67']]],['Skills',[['Video editing'],['MS Word and Excel'],['Internet and email'],['Typing in Bangla and English']]],['Languages',[['Bangla','Mother tongue'],['English','Reading, writing and speaking fluently']]],['Strengths',[['Creative thinking and dedication'],['Self-motivated and hard working'],['Good leadership skill'],['Patient, honest and positive']]]];
+const CV=ov('CV',[['Experience',[['Junior Video Editor','Video editing','2 years'],['IT Manager','Digital marketing','1 year']]],['Education',[['HSC, Business Studies','Govt. M. M. City College, Khulna','2025 | GPA 3.25'],['SSC, Business Studies','RRF Secondary School, Khulna','2023 | GPA 4.67']]],['Skills',[['Video editing'],['MS Word and Excel'],['Internet and email'],['Typing in Bangla and English']]],['Languages',[['Bangla','Mother tongue'],['English','Reading, writing and speaking fluently']]],['Strengths',[['Creative thinking and dedication'],['Self-motivated and hard working'],['Good leadership skill'],['Patient, honest and positive']]]]);
 $('#cvg').innerHTML=CV.map(([g,a])=>`<div class="cg"><h3>${g}</h3>${a.map(([t,s,m])=>`<div class="ce"><div><b>${t}</b>${s?`<span>${s}</span>`:''}</div>${m?`<em>${m}</em>`:''}</div>`).join('')}</div>`).join('');
 try{const u=URL.createObjectURL(new Blob([Uint8Array.from(atob(window.CVPDF.split(',')[1]),c=>c.charCodeAt(0))],{type:'application/pdf'}));$('#cv').href=u;$('#cvv').href=u}catch(_){$('#cv').href=window.CVPDF}
 $('#hw').href=`https://wa.me/${CFG.whatsapp}`;$('#hw').innerHTML=I('whatsapp')+'Chat on WhatsApp';
