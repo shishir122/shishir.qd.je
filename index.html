@@ -502,7 +502,7 @@ function login(msg){if(DB)return loginDB(msg);
   const go=()=>{if(H(d.querySelector('#ap').value)===AH){try{sessionStorage.setItem('sh_adm','1')}catch(e){}panel()}else d.querySelector('#ae').textContent='Wrong password.'};
   d.querySelector('#ag').onclick=go;d.querySelector('#ap').onkeydown=e=>{if(e.key=='Enter')go()};
  }
- let tab='work',eid=null,msg='';
+ let tab='work',eid=null,msg='';const impd=()=>{try{return localStorage.getItem('sh_imp')}catch(e){return ''}};
   const api=async(m,qs,b,pre)=>{const r=await fetch(SB+'/rest/v1/works'+qs,{method:m,headers:sbh(tok(),pre?{Prefer:pre}:{}),body:b?JSON.stringify(b):undefined});if(r.status==401||r.status==403){try{sessionStorage.removeItem('sh_tok')}catch(e){}login('Session expired. Please log in again.');throw 'auth'}if(!r.ok)throw new Error(await r.text());return r};
   const thumb=f=>new Promise((ok,no)=>{const r=new FileReader();r.onerror=no;r.onload=()=>{const im=new Image();im.onerror=no;im.onload=()=>{const k=Math.min(1,480/im.width),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);ok(c.toDataURL('image/jpeg',.72))};im.src=r.result};r.readAsDataURL(f)});
   async function act(fn,ok){try{await fn();msg=ok||'Done.';await loadRemote()}catch(e){if(e==='auth')return;msg='Error: '+(e.message||e)}panelDB()}
@@ -511,7 +511,7 @@ function login(msg){if(DB)return loginDB(msg);
    const th=x=>{const i=x.img||(x.u&&yt(x.u)?`https://i.ytimg.com/vi/${yt(x.u)}/default.jpg`:'')||gdi(x.u);return i?`<img src="${esc(i)}" alt="">`:'<div class="ph0"></div>'};
    d.innerHTML=`<button class="ax" id="ac">Close &#10005;</button><h3>Admin panel</h3><p class="am">Everything here is saved online and shows on every device.</p>
    ${LERR?`<div class="li" style="display:block;border-color:var(--m)"><b style="color:var(--m)">Database setup is not finished.</b><br>Open Supabase &rarr; SQL Editor, run the setup SQL (alter table ... add column), then run <code>notify pgrst, 'reload schema';</code> and reload this page.<br><small>${esc(LERR)}</small></div>`:''}
-   ${ROWS.length||LERR?'':'<div class="li" style="display:block"><b>First step:</b> copy the videos already on your site into the database, so you can edit, reorder and delete them.<div class="bt"><button class="btn pri" id="imp">Import existing videos</button></div></div>'}
+   ${LERR||impd()?'':'<div class="li" style="display:block"><b>Original videos missing:</b> your first videos are not in the database yet, so they are not showing on the site. Import them to edit, reorder and delete them.<div class="bt"><button class="btn pri" id="imp">Import existing videos</button></div></div>'}
    <div class="tb"><button class="btn${T?'':' on'}" data-t="work">Videos (${nw})</button><button class="btn${T?' on':''}" data-t="top">Top 2 reels (${nt})</button></div>
    <h3 style="font-size:19px;margin-top:18px">${eid?'Edit':'Add'} ${T?'top reel':'video'}</h3>
    <label>Video link *</label><input id="fu" type="url" placeholder="https://..." value="${esc(E.u||'')}">
@@ -527,7 +527,7 @@ function login(msg){if(DB)return loginDB(msg);
    q('#ac').onclick=()=>d.close();q('#flo').onclick=()=>{try{sessionStorage.removeItem('sh_tok')}catch(e){}d.close()};
    d.querySelectorAll('.tb button').forEach(b=>b.onclick=()=>{tab=b.dataset.t;eid=null;panelDB()});
    if(q('#fx'))q('#fx').onclick=()=>{eid=null;panelDB()};
-   if(q('#imp'))q('#imp').onclick=()=>act(async()=>{await api('POST','',[...SEED.map((x,i)=>({t:x.t,c:x.c,u:x.u,img:x.img||'',d:x.d||'',v:x.v?1:0,sec:'work',pos:i,hidden:false})),...SEEDR.map((x,i)=>({t:x.t||('Reel '+(i+1)),c:'Top reel',u:x.u,img:x.img||'',d:'',v:1,sec:'top',pos:i,hidden:false}))],'return=minimal')},'Imported. You can now edit everything.');
+   if(q('#imp'))q('#imp').onclick=()=>act(async()=>{const rows=[...SEED.filter(x=>!ROWS.some(r=>r.u==x.u)).map((x,i)=>({t:x.t,c:x.c,u:x.u,img:x.img||'',d:x.d||'',v:x.v?1:0,sec:'work',pos:i-100,hidden:false})),...SEEDR.filter(x=>!ROWS.some(r=>r.u==x.u)).map((x,i)=>({t:x.t||('Reel '+(i+1)),c:'Top reel',u:x.u,img:x.img||'',d:'',v:1,sec:'top',pos:i-100,hidden:false}))];if(rows.length)await api('POST','',rows,'return=minimal');try{localStorage.setItem('sh_imp','1')}catch(e){}},'Imported. All your original videos are back and editable.');
    q('#fa').onclick=async()=>{const u=q('#fu').value.trim(),e=q('#ae');
     if(!/^https?:\/\//i.test(u)){e.textContent='Please paste a full link starting with https://';return}
     const vv=q('#fv')?q('#fv').value:'1',v=T?1:(vv===''?(isV(u)?1:0):+vv),f=q('#fi').files[0];e.textContent='Saving...';
