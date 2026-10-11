@@ -506,6 +506,9 @@ function login(msg){if(DB)return loginDB(msg);
   const api=async(m,qs,b,pre)=>{const r=await fetch(SB+'/rest/v1/works'+qs,{method:m,headers:sbh(tok(),pre?{Prefer:pre}:{}),body:b?JSON.stringify(b):undefined});if(r.status==401||r.status==403){try{sessionStorage.removeItem('sh_tok')}catch(e){}login('Session expired. Please log in again.');throw 'auth'}if(!r.ok)throw new Error(await r.text());return r};
   const thumb=f=>new Promise((ok,no)=>{const r=new FileReader();r.onerror=no;r.onload=()=>{const im=new Image();im.onerror=no;im.onload=()=>{const k=Math.min(1,480/im.width),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);ok(c.toDataURL('image/jpeg',.72))};im.src=r.result};r.readAsDataURL(f)});
   async function act(fn,ok){try{await fn();msg=ok||'Done.';await loadRemote()}catch(e){if(e==='auth')return;msg='Error: '+(e.message||e)}panelDB()}
+  async function doImp(){if(LERR)return;
+   const rows=[...SEED.filter(x=>!ROWS.some(r=>r.u==x.u)).map((x,i)=>({t:x.t,c:x.c,u:x.u,img:x.img||'',d:x.d||'',v:x.v?1:0,sec:'work',pos:i-100,hidden:false})),...SEEDR.filter(x=>!ROWS.some(r=>r.u==x.u)).map((x,i)=>({t:x.t||('Reel '+(i+1)),c:'Top reel',u:x.u,img:x.img||'',d:'',v:1,sec:'top',pos:i-100,hidden:false}))];
+   if(rows.length)await api('POST','',rows,'return=minimal');try{localStorage.setItem('sh_imp','1')}catch(e){}await loadRemote()}
   function panelDB(){
    const L=ROWS.filter(x=>(x.sec||'work')==tab),cl=[...new Set(ROWS.map(x=>x.c))].filter(Boolean),E=ROWS.find(x=>x.id===eid)||{},T=tab=='top',nw=ROWS.filter(x=>x.sec!='top').length,nt=ROWS.length-nw;
    const th=x=>{const i=x.img||(x.u&&yt(x.u)?`https://i.ytimg.com/vi/${yt(x.u)}/default.jpg`:'')||gdi(x.u);return i?`<img src="${esc(i)}" alt="">`:'<div class="ph0"></div>'};
@@ -527,7 +530,7 @@ function login(msg){if(DB)return loginDB(msg);
    q('#ac').onclick=()=>d.close();q('#flo').onclick=()=>{try{sessionStorage.removeItem('sh_tok')}catch(e){}d.close()};
    d.querySelectorAll('.tb button').forEach(b=>b.onclick=()=>{tab=b.dataset.t;eid=null;panelDB()});
    if(q('#fx'))q('#fx').onclick=()=>{eid=null;panelDB()};
-   if(q('#imp'))q('#imp').onclick=()=>act(async()=>{const rows=[...SEED.filter(x=>!ROWS.some(r=>r.u==x.u)).map((x,i)=>({t:x.t,c:x.c,u:x.u,img:x.img||'',d:x.d||'',v:x.v?1:0,sec:'work',pos:i-100,hidden:false})),...SEEDR.filter(x=>!ROWS.some(r=>r.u==x.u)).map((x,i)=>({t:x.t||('Reel '+(i+1)),c:'Top reel',u:x.u,img:x.img||'',d:'',v:1,sec:'top',pos:i-100,hidden:false}))];if(rows.length)await api('POST','',rows,'return=minimal');try{localStorage.setItem('sh_imp','1')}catch(e){}},'Imported. All your original videos are back and editable.');
+   if(q('#imp'))q('#imp').onclick=()=>act(doImp,'Imported. All your original videos are back and editable.');
    q('#fa').onclick=async()=>{const u=q('#fu').value.trim(),e=q('#ae');
     if(!/^https?:\/\//i.test(u)){e.textContent='Please paste a full link starting with https://';return}
     const vv=q('#fv')?q('#fv').value:'1',v=T?1:(vv===''?(isV(u)?1:0):+vv),f=q('#fi').files[0];e.textContent='Saving...';
@@ -541,7 +544,7 @@ function login(msg){if(DB)return loginDB(msg);
     const j=a=='up'?i-1:i+1;if(j<0||j>=L.length)return;const M=[...L];[M[i],M[j]]=[M[j],M[i]];
     act(async()=>{await Promise.all(M.map((y,k)=>y.pos===k?0:api('PATCH','?id=eq.'+y.id,{pos:k})))},'Moved.')});
   }
-  function panel(){if(DB){d.innerHTML='<p class="am">Loading...</p>';loadRemote().then(panelDB);return}
+  function panel(){if(DB){d.innerHTML='<p class="am">Loading...</p>';loadRemote().then(()=>impd()?0:doImp()).catch(()=>{}).then(panelDB);return}
   const cl=[...new Set(WORKS.map(w=>w.c))];
   d.innerHTML=`<button class="ax" id="ac">Close &#10005;</button><h3>Add a video</h3><p class="am">Paste any link: Facebook, YouTube, Google Drive, Pinterest, Instagram, TikTok, Vimeo or an .mp4 file.</p>
   <label>Video link *</label><input id="fu" type="url" placeholder="https://...">
