@@ -260,7 +260,7 @@ html:has(dialog[open]){overflow:hidden}
 
 .vo{position:absolute;left:0;top:calc(100% + 14px);padding:9px 16px;border-radius:99px;background:#ffffff1f;border:1px solid #ffffff33;color:#fff;font:600 14px 'Instrument Sans',sans-serif;backdrop-filter:blur(10px)}.vo:hover{background:var(--y);color:var(--ink);border-color:var(--y)}.vo[hidden]{display:none}
 @media(max-width:780px){.v .vo{top:auto;bottom:max(16px,env(safe-area-inset-bottom));left:14px;z-index:5}}
-#adm{width:min(580px,94vw);max-height:90vh;max-height:90dvh;overflow:auto;background:var(--pn);padding:26px;color:var(--tx)}
+#adm{width:min(860px,96vw);max-height:90vh;max-height:90dvh;overflow:auto;background:var(--pn);padding:26px;color:var(--tx)}
 #adm h3{font-size:24px;margin-bottom:6px}#adm .am{color:var(--mu);font-size:14px;margin-bottom:16px}
 #adm label{display:block;font-size:13px;color:var(--mu);margin:12px 0 5px}
 #adm input,#adm select,#adm textarea{width:100%;padding:11px 13px;border-radius:8px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);font:16px 'Instrument Sans',sans-serif}
@@ -272,6 +272,12 @@ html:has(dialog[open]){overflow:hidden}
 #adm .li span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}#adm .li button{background:none;border:0;color:var(--m);cursor:pointer;font-size:14px;flex:none}
 #adm .ae{color:var(--m);font-size:14px;margin-top:10px;min-height:20px}#adm hr{border:0;border-top:1px solid var(--ln);margin:22px 0 4px}
 #adm::backdrop{background:#000c}
+#adm .tb{display:flex;gap:8px;margin:14px 0 4px}#adm .tb .btn{flex:1}#adm .tb .on{background:var(--y);color:var(--ink);border-color:var(--y)}
+#adm .it{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:10px;border:1px solid var(--ln);border-radius:10px;margin-top:8px}
+#adm .it img,#adm .it .ph0{width:64px;height:40px;object-fit:cover;border-radius:6px;background:#242b3e}
+#adm .it b{display:block;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#adm .it small{color:var(--mu);font-size:12px}#adm .it.hid{opacity:.5}
+#adm .ac2{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}#adm .ac2 button{background:var(--bg);border:1px solid var(--ln);color:var(--tx);border-radius:7px;padding:6px 10px;cursor:pointer;font-size:13px}#adm .ac2 button:disabled{opacity:.3;cursor:default}#adm .ac2 .rm{color:var(--m)}
+@media(max-width:560px){#adm .it{grid-template-columns:56px 1fr}#adm .ac2{grid-column:1/-1;justify-content:flex-start}}
 </style>
 </head>
 <body class="go">
@@ -451,12 +457,14 @@ const DB=!!(CFG.supabaseUrl&&CFG.supabaseKey),SB=(CFG.supabaseUrl||'').replace(/
 if(!DB)try{LOCAL=JSON.parse(localStorage.getItem(LS)||'[]')||[]}catch(e){LOCAL=[]}
 const sbh=(t,x)=>({apikey:CFG.supabaseKey,...(t?{Authorization:'Bearer '+t}:{}),'Content-Type':'application/json',...x});
 const tok=()=>{try{const o=JSON.parse(sessionStorage.getItem('sh_tok')||'null');return o&&o.exp>Date.now()?o.t:''}catch(e){return ''}};
-let REMOTE=[];
+const SEED=WORKS.map(x=>({...x})),SEEDR=REELS.map(x=>({...x}));
+let ROWS=[],REMOTE=[];
 async function loadRemote(){if(!DB)return;
- try{const r=await fetch(SB+'/rest/v1/works?select=*&order=id.asc',{headers:sbh(),cache:'no-store'});if(!r.ok)throw 0;const rows=await r.json();
-  REMOTE.forEach(x=>{const k=WORKS.indexOf(x);if(k>-1)WORKS.splice(k,1)});
-  REMOTE=rows.map(x=>({id:x.id,t:x.t,c:x.c,u:x.u,img:x.img||'',d:x.d||'',...(x.v?{v:1}:{}),l:1}));WORKS.push(...REMOTE);
-  const on=$('#fl button.on');let cur=on?on.dataset.c:'All';filt();const b=$$('#fl button').find(x=>x.dataset.c==cur);if(b)$$('#fl button').forEach(x=>x.classList.toggle('on',x==b));else cur='All';draw(cur);rev()}catch(e){}}
+ try{const t=tok(),r=await fetch(SB+'/rest/v1/works?select=*&order=pos.asc,id.asc'+(t?'':'&hidden=eq.false'),{headers:sbh(t),cache:'no-store'});if(!r.ok)throw 0;
+  ROWS=await r.json();REMOTE=ROWS;
+  const pub=ROWS.filter(x=>!x.hidden),mk=x=>({id:x.id,t:x.t,c:x.c,u:x.u,img:x.img||'',d:x.d||'',...(x.v?{v:1}:{})});
+  if(ROWS.length){WORKS.length=0;WORKS.push(...pub.filter(x=>x.sec!='top').map(mk));if(ROWS.some(x=>x.sec=='top')){REELS.length=0;REELS.push(...pub.filter(x=>x.sec=='top').map(mk))}}
+  const on=$('#fl button.on');let cur=on?on.dataset.c:'All';filt();const b=$$('#fl button').find(x=>x.dataset.c==cur);if(b)$$('#fl button').forEach(x=>x.classList.toggle('on',x==b));else cur='All';draw(cur);rev();renderReels()}catch(e){}}
 LOCAL.forEach(x=>{x.l=1;WORKS.push(x)});
 let cats=[...new Set(WORKS.map(w=>w.c))];const K=['var(--cy)','var(--m)','var(--g)','var(--y)'];
 function filt(){cats=[...new Set(WORKS.map(w=>w.c))];$('#fl').innerHTML=['All',...cats].map((c,i)=>`<button class="${i?'':'on'}" data-c="${c}">${c}</button>`).join('')}
@@ -495,7 +503,45 @@ function login(msg){if(DB)return loginDB(msg);
   const go=()=>{if(H(d.querySelector('#ap').value)===AH){try{sessionStorage.setItem('sh_adm','1')}catch(e){}panel()}else d.querySelector('#ae').textContent='Wrong password.'};
   d.querySelector('#ag').onclick=go;d.querySelector('#ap').onkeydown=e=>{if(e.key=='Enter')go()};
  }
- function panel(){
+ let tab='work',eid=null,msg='';
+  const api=async(m,qs,b,pre)=>{const r=await fetch(SB+'/rest/v1/works'+qs,{method:m,headers:sbh(tok(),pre?{Prefer:pre}:{}),body:b?JSON.stringify(b):undefined});if(r.status==401||r.status==403){try{sessionStorage.removeItem('sh_tok')}catch(e){}login('Session expired. Please log in again.');throw 'auth'}if(!r.ok)throw new Error(await r.text());return r};
+  const thumb=f=>new Promise((ok,no)=>{const r=new FileReader();r.onerror=no;r.onload=()=>{const im=new Image();im.onerror=no;im.onload=()=>{const k=Math.min(1,480/im.width),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);ok(c.toDataURL('image/jpeg',.72))};im.src=r.result};r.readAsDataURL(f)});
+  async function act(fn,ok){try{await fn();msg=ok||'Done.';await loadRemote()}catch(e){if(e==='auth')return;msg='Error: '+(e.message||e)}panelDB()}
+  function panelDB(){
+   const L=ROWS.filter(x=>(x.sec||'work')==tab),cl=[...new Set(ROWS.map(x=>x.c))].filter(Boolean),E=ROWS.find(x=>x.id===eid)||{},T=tab=='top',nw=ROWS.filter(x=>x.sec!='top').length,nt=ROWS.length-nw;
+   const th=x=>{const i=x.img||(x.u&&yt(x.u)?`https://i.ytimg.com/vi/${yt(x.u)}/default.jpg`:'')||gdi(x.u);return i?`<img src="${esc(i)}" alt="">`:'<div class="ph0"></div>'};
+   d.innerHTML=`<button class="ax" id="ac">Close &#10005;</button><h3>Admin panel</h3><p class="am">Everything here is saved online and shows on every device.</p>
+   ${ROWS.length?'':'<div class="li" style="display:block"><b>First step:</b> copy the videos already on your site into the database, so you can edit, reorder and delete them.<div class="bt"><button class="btn pri" id="imp">Import existing videos</button></div></div>'}
+   <div class="tb"><button class="btn${T?'':' on'}" data-t="work">Videos (${nw})</button><button class="btn${T?' on':''}" data-t="top">Top 2 reels (${nt})</button></div>
+   <h3 style="font-size:19px;margin-top:18px">${eid?'Edit':'Add'} ${T?'top reel':'video'}</h3>
+   <label>Video link *</label><input id="fu" type="url" placeholder="https://..." value="${esc(E.u||'')}">
+   <div class="r2"><div><label>Title</label><input id="ft" placeholder="e.g. Reel 08" value="${esc(E.t||'')}"></div>${T?'':`<div><label>Category</label><input id="fc" list="fcl" placeholder="Reels" value="${esc(E.c||'')}"><datalist id="fcl">${cl.map(c=>`<option value="${esc(c)}">`).join('')}</datalist></div>`}</div>
+   <div class="r2">${T?'':`<div><label>Shape</label><select id="fv"><option value=""${eid?'':' selected'}>Auto detect</option><option value="1"${eid&&E.v?' selected':''}>Vertical (Reels)</option><option value="0"${eid&&!E.v?' selected':''}>Horizontal (16:9)</option></select></div>`}<div><label>Thumbnail picture ${eid?'(leave empty to keep current)':'(optional)'}</label><input id="fi" type="file" accept="image/*"></div></div>
+   <label>Short description (optional)</label><input id="fd" value="${esc(E.d||'')}" placeholder="What is this video?">
+   <div class="bt"><button class="btn pri" id="fa">${eid?'Save changes':'Add'}</button>${eid?'<button class="btn" id="fx">Cancel</button>':''}</div><p class="ae" id="ae">${esc(msg)}</p>
+   <hr><h3 style="font-size:19px;margin-top:18px">${T?'Top reels':'All videos'} (${L.length})</h3><p class="am">Use the arrows to change the order. Hide keeps a video saved but removes it from the site.</p>
+   ${L.map((x,i)=>`<div class="it${x.hidden?' hid':''}">${th(x)}<div><b>${esc(x.t)}</b><small>${esc(x.c||'')}${x.v?' &middot; vertical':''}${x.hidden?' &middot; hidden':''}</small></div><div class="ac2" data-id="${x.id}"><button data-a="up"${i?'':' disabled'}>&uarr;</button><button data-a="down"${i<L.length-1?'':' disabled'}>&darr;</button><button data-a="eye">${x.hidden?'Show':'Hide'}</button><button data-a="ed">Edit</button><button class="rm" data-a="rm">Delete</button></div></div>`).join('')||'<p class="am">Nothing here yet.</p>'}
+   <div class="bt"><button class="btn" id="flo">Lock</button></div>`;
+   d.scrollTop=0;msg='';
+   const q=x=>d.querySelector(x);
+   q('#ac').onclick=()=>d.close();q('#flo').onclick=()=>{try{sessionStorage.removeItem('sh_tok')}catch(e){}d.close()};
+   d.querySelectorAll('.tb button').forEach(b=>b.onclick=()=>{tab=b.dataset.t;eid=null;panelDB()});
+   if(q('#fx'))q('#fx').onclick=()=>{eid=null;panelDB()};
+   if(q('#imp'))q('#imp').onclick=()=>act(async()=>{await api('POST','',[...SEED.map((x,i)=>({t:x.t,c:x.c,u:x.u,img:x.img||'',d:x.d||'',v:x.v?1:0,sec:'work',pos:i,hidden:false})),...SEEDR.map((x,i)=>({t:x.t||('Reel '+(i+1)),c:'Top reel',u:x.u,img:x.img||'',d:'',v:1,sec:'top',pos:i,hidden:false}))],'return=minimal')},'Imported. You can now edit everything.');
+   q('#fa').onclick=async()=>{const u=q('#fu').value.trim(),e=q('#ae');
+    if(!/^https?:\/\//i.test(u)){e.textContent='Please paste a full link starting with https://';return}
+    const vv=q('#fv')?q('#fv').value:'1',v=T?1:(vv===''?(isV(u)?1:0):+vv),f=q('#fi').files[0];e.textContent='Saving...';
+    let img=E.img||'';if(f){try{img=await thumb(f)}catch(x){e.textContent='Could not read that picture.';return}}
+    const row={t:q('#ft').value.trim()||('Video '+(L.length+1)),c:T?'Top reel':(q('#fc').value.trim()||(v?'Reels':'Long Format')),u,img,d:q('#fd').value.trim()||(v?'Vertical edit with quick cuts and captions.':'A video edit from my portfolio.'),v},was=eid;
+    act(async()=>{if(was){await api('PATCH','?id=eq.'+was,row)}else{await api('POST','',{...row,sec:tab,pos:Math.max(-1,...ROWS.map(x=>x.pos||0))+1,hidden:false})}eid=null},was?'Saved.':'Added. It is live on every device.')};
+   d.querySelectorAll('.ac2 button').forEach(b=>b.onclick=()=>{const id=+b.parentNode.dataset.id,a=b.dataset.a,i=L.findIndex(x=>x.id===id),x=L[i];
+    if(a=='ed'){eid=id;panelDB();return}
+    if(a=='rm'){if(confirm('Delete "'+x.t+'" permanently?'))act(()=>api('DELETE','?id=eq.'+id),'Deleted.');return}
+    if(a=='eye'){act(()=>api('PATCH','?id=eq.'+id,{hidden:!x.hidden}),x.hidden?'Now visible on the site.':'Now hidden from visitors.');return}
+    const j=a=='up'?i-1:i+1;if(j<0||j>=L.length)return;const M=[...L];[M[i],M[j]]=[M[j],M[i]];
+    act(async()=>{await Promise.all(M.map((y,k)=>y.pos===k?0:api('PATCH','?id=eq.'+y.id,{pos:k})))},'Moved.')});
+  }
+  function panel(){if(DB){d.innerHTML='<p class="am">Loading...</p>';loadRemote().then(panelDB);return}
   const cl=[...new Set(WORKS.map(w=>w.c))];
   d.innerHTML=`<button class="ax" id="ac">Close &#10005;</button><h3>Add a video</h3><p class="am">Paste any link: Facebook, YouTube, Google Drive, Pinterest, Instagram, TikTok, Vimeo or an .mp4 file.</p>
   <label>Video link *</label><input id="fu" type="url" placeholder="https://...">
@@ -601,7 +647,7 @@ rs();addEventListener('resize',rs);addEventListener('pointermove',e=>{mx=e.clien
 function bg(){cx.clearRect(0,0,W,H);P.forEach((a,i)=>{a.x+=a.vx;a.y+=a.vy;if(a.x<0||a.x>W)a.vx*=-1;if(a.y<0||a.y>H)a.vy*=-1;cx.fillStyle='#ffd23f77';cx.fillRect(a.x,a.y,2,2);
 for(let j=i+1;j<P.length;j++){const b=P[j],d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){cx.strokeStyle=`rgba(163,171,192,${.16*(1-d/120)})`;cx.beginPath();cx.moveTo(a.x,a.y);cx.lineTo(b.x,b.y);cx.stroke()}}
 const m=Math.hypot(a.x-mx,a.y-my);if(m<170){cx.strokeStyle=`rgba(255,210,63,${.4*(1-m/170)})`;cx.beginPath();cx.moveTo(a.x,a.y);cx.lineTo(mx,my);cx.stroke()}});rm||requestAnimationFrame(bg)}
-REELS.forEach((r,i)=>{const el=$('#r'+i);if(!el)return;const id=yt(r.u),im=r.img||(id?`https://i.ytimg.com/vi/${id}/hqdefault.jpg`:'')||gdi(r.u);if(im){el.classList.remove('e');el.style.backgroundImage=`url(${im})`}el.querySelector('em').textContent=(r.t||'Reel '+(i+1)).toUpperCase();el.onclick=()=>play(r.u,r.t||'Reel',1);el.onkeydown=e=>e.key=='Enter'&&el.click()});
+function renderReels(){REELS.forEach((r,i)=>{const el=$('#r'+i);if(!el)return;el.style.backgroundImage='';el.classList.add('e');const id=yt(r.u),im=r.img||(id?`https://i.ytimg.com/vi/${id}/hqdefault.jpg`:'')||gdi(r.u);if(im){el.classList.remove('e');el.style.backgroundImage=`url(${im})`}el.querySelector('em').textContent=(r.t||'Reel '+(i+1)).toUpperCase();el.onclick=()=>play(r.u,r.t||'Reel',1);el.onkeydown=e=>e.key=='Enter'&&el.click()})}renderReels();
 $('#wa').href=`https://wa.me/${CFG.whatsapp}?text=`+encodeURIComponent("Hi Shishir, I saw your portfolio and I'd like to talk about a video project.");
 $('#wa').innerHTML=I('whatsapp')+'<span>Chat on WhatsApp</span>';
 const CV=[['Experience',[['Junior Video Editor','Video editing','2 years'],['IT Manager','Digital marketing','1 year']]],['Education',[['HSC, Business Studies','Govt. M. M. City College, Khulna','2025 | GPA 3.25'],['SSC, Business Studies','RRF Secondary School, Khulna','2023 | GPA 4.67']]],['Skills',[['Video editing'],['MS Word and Excel'],['Internet and email'],['Typing in Bangla and English']]],['Languages',[['Bangla','Mother tongue'],['English','Reading, writing and speaking fluently']]],['Strengths',[['Creative thinking and dedication'],['Self-motivated and hard working'],['Good leadership skill'],['Patient, honest and positive']]]];
