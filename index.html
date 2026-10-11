@@ -393,8 +393,7 @@ const WORKS=[
 {t:'Reel 04',c:'Reels',v:1,u:'https://drive.google.com/file/d/1RYyQv2LPN86lO6VrNsBOpSCUnHQs8Iaw/view?usp=sharing',img:'',d:'Vertical edit with quick cuts and captions.'},
 {t:'Reel 05',c:'Reels',v:1,u:'https://drive.google.com/file/d/1XQH70hQ_UGsHj-XLhoXSUfjd3hYa-TUr/view?usp=sharing',img:'',d:'Vertical edit with quick cuts and captions.'},
 {t:'Reel 06',c:'Reels',v:1,u:'https://drive.google.com/file/d/1O0q6vJRMBYV3xhsV2RcMBDWcxet777G-/view?usp=sharing',img:'',d:'Vertical edit with quick cuts and captions.'},
-{t:'Reel Before and After',c:'Before & After',v:1,u:'https://youtube.com/shorts/7EYJ_azLCkQ',img:'',d:'See the raw footage next to the final edit.'},
-{t:'Reel 07',c:'Reels',v:1,u:'https://www.facebook.com/share/r/19VfQejmhJ/',img:'',d:'Vertical edit with quick cuts and captions.'}
+{t:'Reel Before and After',c:'Before & After',v:1,u:'https://youtube.com/shorts/7EYJ_azLCkQ',img:'',d:'See the raw footage next to the final edit.'}
 /*ADD_NEW_HERE*/];
 const REELS=[ // two vertical reels shown on the left and right of the showreel. u = YouTube Shorts, Instagram Reel, TikTok, Google Drive or .mp4 link. img = optional picture.
 {t:'Reel 1',u:'https://drive.google.com/file/d/1z8xP8DLYHrQweUjIiWW1BBN_qREK3IR0/view?usp=drive_link',img:''},
@@ -458,13 +457,13 @@ if(!DB)try{LOCAL=JSON.parse(localStorage.getItem(LS)||'[]')||[]}catch(e){LOCAL=[
 const sbh=(t,x)=>({apikey:CFG.supabaseKey,...(t?{Authorization:'Bearer '+t}:{}),'Content-Type':'application/json',...x});
 const tok=()=>{try{const o=JSON.parse(sessionStorage.getItem('sh_tok')||'null');return o&&o.exp>Date.now()?o.t:''}catch(e){return ''}};
 const SEED=WORKS.map(x=>({...x})),SEEDR=REELS.map(x=>({...x}));
-let ROWS=[],REMOTE=[];
+let ROWS=[],REMOTE=[],LERR='';
 async function loadRemote(){if(!DB)return;
- try{const t=tok(),r=await fetch(SB+'/rest/v1/works?select=*&order=pos.asc,id.asc'+(t?'':'&hidden=eq.false'),{headers:sbh(t),cache:'no-store'});if(!r.ok)throw 0;
+ LERR='';try{const t=tok(),r=await fetch(SB+'/rest/v1/works?select=*&order=pos.asc,id.asc'+(t?'':'&hidden=eq.false'),{headers:sbh(t),cache:'no-store'});if(!r.ok){LERR=(await r.text()).slice(0,220);throw 0}
   ROWS=await r.json();REMOTE=ROWS;
   const pub=ROWS.filter(x=>!x.hidden),mk=x=>({id:x.id,t:x.t,c:x.c,u:x.u,img:x.img||'',d:x.d||'',...(x.v?{v:1}:{})});
   if(ROWS.length){WORKS.length=0;WORKS.push(...pub.filter(x=>x.sec!='top').map(mk));if(ROWS.some(x=>x.sec=='top')){REELS.length=0;REELS.push(...pub.filter(x=>x.sec=='top').map(mk))}}
-  const on=$('#fl button.on');let cur=on?on.dataset.c:'All';filt();const b=$$('#fl button').find(x=>x.dataset.c==cur);if(b)$$('#fl button').forEach(x=>x.classList.toggle('on',x==b));else cur='All';draw(cur);rev();renderReels()}catch(e){}}
+  const on=$('#fl button.on');let cur=on?on.dataset.c:'All';filt();const b=$$('#fl button').find(x=>x.dataset.c==cur);if(b)$$('#fl button').forEach(x=>x.classList.toggle('on',x==b));else cur='All';draw(cur);rev();renderReels()}catch(e){if(!LERR)LERR='Could not connect to the database.'}}
 LOCAL.forEach(x=>{x.l=1;WORKS.push(x)});
 let cats=[...new Set(WORKS.map(w=>w.c))];const K=['var(--cy)','var(--m)','var(--g)','var(--y)'];
 function filt(){cats=[...new Set(WORKS.map(w=>w.c))];$('#fl').innerHTML=['All',...cats].map((c,i)=>`<button class="${i?'':'on'}" data-c="${c}">${c}</button>`).join('')}
@@ -511,7 +510,8 @@ function login(msg){if(DB)return loginDB(msg);
    const L=ROWS.filter(x=>(x.sec||'work')==tab),cl=[...new Set(ROWS.map(x=>x.c))].filter(Boolean),E=ROWS.find(x=>x.id===eid)||{},T=tab=='top',nw=ROWS.filter(x=>x.sec!='top').length,nt=ROWS.length-nw;
    const th=x=>{const i=x.img||(x.u&&yt(x.u)?`https://i.ytimg.com/vi/${yt(x.u)}/default.jpg`:'')||gdi(x.u);return i?`<img src="${esc(i)}" alt="">`:'<div class="ph0"></div>'};
    d.innerHTML=`<button class="ax" id="ac">Close &#10005;</button><h3>Admin panel</h3><p class="am">Everything here is saved online and shows on every device.</p>
-   ${ROWS.length?'':'<div class="li" style="display:block"><b>First step:</b> copy the videos already on your site into the database, so you can edit, reorder and delete them.<div class="bt"><button class="btn pri" id="imp">Import existing videos</button></div></div>'}
+   ${LERR?`<div class="li" style="display:block;border-color:var(--m)"><b style="color:var(--m)">Database setup is not finished.</b><br>Open Supabase &rarr; SQL Editor, run the setup SQL (alter table ... add column), then run <code>notify pgrst, 'reload schema';</code> and reload this page.<br><small>${esc(LERR)}</small></div>`:''}
+   ${ROWS.length||LERR?'':'<div class="li" style="display:block"><b>First step:</b> copy the videos already on your site into the database, so you can edit, reorder and delete them.<div class="bt"><button class="btn pri" id="imp">Import existing videos</button></div></div>'}
    <div class="tb"><button class="btn${T?'':' on'}" data-t="work">Videos (${nw})</button><button class="btn${T?' on':''}" data-t="top">Top 2 reels (${nt})</button></div>
    <h3 style="font-size:19px;margin-top:18px">${eid?'Edit':'Add'} ${T?'top reel':'video'}</h3>
    <label>Video link *</label><input id="fu" type="url" placeholder="https://..." value="${esc(E.u||'')}">
