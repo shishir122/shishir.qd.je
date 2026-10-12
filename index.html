@@ -295,18 +295,25 @@ html:has(dialog[open]){overflow:hidden}
 /* ===== Custom player UI ===== */
 #dl .pc{position:absolute;inset:0;z-index:3;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
 #dl .pc.idle{cursor:none}
-#dl .wm{position:absolute;top:14px;left:16px;z-index:4;display:flex;align-items:center;gap:8px;font:700 13px var(--d);letter-spacing:.05em;color:#fff;opacity:.8;text-shadow:0 1px 8px #000;pointer-events:none}
-#dl .wm:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--y);box-shadow:0 0 10px var(--y)}
-#dl .blk{position:absolute;top:0;right:0;width:70px;height:60px;z-index:3}
-#dl .bp{position:absolute;left:50%;top:50%;width:76px;height:76px;margin:-38px 0 0 -38px;border:0;border-radius:50%;background:var(--y);color:var(--ink);font-size:26px;padding-left:5px;cursor:pointer;box-shadow:0 12px 40px #0009;transition:transform .2s,opacity .2s}
+#dl .wm{position:absolute;top:10px;left:12px;z-index:4;display:flex;align-items:center;gap:6px;font:600 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#fff;opacity:.55;text-shadow:0 1px 6px #000a;pointer-events:none;transition:opacity .3s}
+#dl .wm:before{content:"";width:5px;height:5px;border-radius:50%;background:var(--y)}
+#dl .blk{position:absolute;top:0;right:0;width:64px;height:56px;z-index:3}
+#dl .bp{position:absolute;left:50%;top:50%;width:68px;height:68px;margin:-34px 0 0 -34px;border-radius:50%;background:#ffffff26;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid #ffffff40;color:#fff;display:grid;place-items:center;padding:0;cursor:pointer;box-shadow:0 10px 36px #0008;transition:transform .25s,opacity .25s}
+#dl .bp svg{width:30px;height:30px;margin-left:3px}
 #dl .pc:not(.pa) .bp{opacity:0;transform:scale(.7);pointer-events:none}
-#dl .bar{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:8px;padding:40px 14px 10px;background:linear-gradient(transparent,#000d);color:#fff;font:600 13px var(--mono);transition:opacity .25s,transform .25s;cursor:default}
+#dl .bar{position:absolute;left:10px;right:10px;bottom:10px;display:flex;align-items:center;gap:4px;padding:5px 8px;border-radius:16px;background:#0b0d14b8;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid #ffffff1a;color:#fff;font:500 11px var(--mono);transition:opacity .25s,transform .25s;cursor:default}
 #dl .pc.idle .bar,#dl .pc.idle .wm{opacity:0}#dl .pc.idle .bar{transform:translateY(8px)}
-#dl .bar button{background:none;border:0;color:#fff;font:600 14px var(--mono);cursor:pointer;min-width:36px;height:36px;border-radius:8px;padding:0 6px}
-#dl .bar button:hover{background:#ffffff26}
-#dl .sk{flex:1;width:auto;min-width:0;accent-color:var(--y);height:4px;padding:0;border:0;background:none;cursor:pointer}
-#dl .tm{white-space:nowrap}
-@media(max-width:520px){#dl .tm{display:none}#dl .bp{width:62px;height:62px;margin:-31px 0 0 -31px}}
+#dl .bar button{background:none;border:0;color:#fff;font:600 12px var(--mono);cursor:pointer;min-width:34px;height:34px;border-radius:10px;padding:0;display:grid;place-items:center}
+#dl .bar button svg{width:19px;height:19px}
+#dl .bar button:hover{background:#ffffff22}
+#dl .tm{white-space:nowrap;color:#d5d9e6;padding:0 6px}
+#dl .sk{flex:1;width:auto;min-width:0;height:18px;padding:0;border:0;background:none;cursor:pointer;-webkit-appearance:none;appearance:none;--p:0%}
+#dl .sk::-webkit-slider-runnable-track{height:4px;border-radius:4px;background:linear-gradient(90deg,var(--y) var(--p),#ffffff3d var(--p))}
+#dl .sk::-moz-range-track{height:4px;border-radius:4px;background:#ffffff3d}#dl .sk::-moz-range-progress{height:4px;border-radius:4px;background:var(--y)}
+#dl .sk::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:#fff;margin-top:-4px;box-shadow:0 0 0 3px #0005}
+#dl .sk::-moz-range-thumb{width:12px;height:12px;border:0;border-radius:50%;background:#fff}
+@media(max-width:520px){#dl .bp{width:58px;height:58px;margin:-29px 0 0 -29px}#dl .bar{left:6px;right:6px;bottom:max(6px,env(safe-area-inset-bottom))}}
+@media(pointer:coarse){#dl .mu{display:none}}
 /* admin extras */
 #adm .ac2 button:hover{border-color:var(--y)}#adm .it:hover{border-color:#4a536b}#adm .fh{color:var(--cy);font-size:13px;margin:6px 0 0;min-height:18px}
 #adm details{border:1px solid var(--ln);border-radius:10px;padding:12px 14px;margin-top:16px}#adm details summary{font:600 16px 'Instrument Sans',sans-serif}#adm details textarea{margin-top:10px}
@@ -476,18 +483,20 @@ setTimeout(()=>ytApi().catch(()=>{}),2500);
 function probe(src){return new Promise(ok=>{if(!src)return ok(0);const i=new Image();i.onload=()=>ok(i.naturalWidth/i.naturalHeight);i.onerror=()=>ok(0);i.src=src;setTimeout(()=>ok(0),7000)})}
 function setAR(r,k){if(k!==PT)return;if(r>.3&&r<3)dl.style.setProperty('--ar',r.toFixed(4))}
 function stop(){if(CUR){try{CUR()}catch(e){}CUR=null}CT=null}
+const SI=x=>`<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">${x}</svg>`,SG='fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
+const IP=SI('<path d="M8 5.5v13l11-6.5z"/>'),IA=SI('<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>'),IV=SI(`<path d="M3 9.5v5h4l5 4v-13l-5 4z"/><path ${SG} d="M15.5 9a4 4 0 010 6"/>`),IM=SI(`<path d="M3 9.5v5h4l5 4v-13l-5 4z"/><path ${SG} d="M16 9.5l5 5M21 9.5l-5 5"/>`),IF=SI(`<path ${SG} d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>`);
 /* Controls overlay. ad = adapter {play,pause,playing,cur,dur,seek,mute,rate,el?} */
 function ctl(vb,ad){const pc=document.createElement('div');pc.className='pc pa';
- pc.innerHTML='<div class="wm"></div><button class="bp" aria-label="Play">&#9654;</button><div class="bar"><button class="pp" aria-label="Play or pause">&#9654;</button><span class="tm">0:00 / 0:00</span><input class="sk" type="range" min="0" max="1000" value="0" aria-label="Seek"><button class="mu" aria-label="Mute">&#128266;</button><button class="sp" aria-label="Speed">1x</button><button class="fs" aria-label="Fullscreen">&#9974;</button></div>';
+ pc.innerHTML=`<div class="wm"></div><button class="bp" aria-label="Play">${IP}</button><div class="bar"><button class="pp" aria-label="Play or pause">${IP}</button><span class="tm">0:00 / 0:00</span><input class="sk" type="range" min="0" max="1000" value="0" aria-label="Seek"><button class="mu" aria-label="Mute">${IV}</button><button class="sp" aria-label="Speed">1x</button><button class="fs" aria-label="Fullscreen">${IF}</button></div>`;
  pc.querySelector('.wm').textContent=BR;vb.appendChild(pc);
  const q=s=>pc.querySelector(s),sk=q('.sk'),R=[1,1.25,1.5,2,.75];let drag=0,idle,ri=0,mu=0;
- const upd=()=>{const p=ad.playing(),c=ad.cur()||0,d=ad.dur()||0;pc.classList.toggle('pa',!p);q('.pp').innerHTML=p?'&#10074;&#10074;':'&#9654;';q('.tm').textContent=fmt(c)+' / '+fmt(d);if(!drag&&d)sk.value=c/d*1000;if(p)vb.classList.remove('vl')};
+ const upd=()=>{const p=ad.playing(),c=ad.cur()||0,d=ad.dur()||0;pc.classList.toggle('pa',!p);q('.pp').innerHTML=p?IA:IP;q('.tm').textContent=fmt(c)+' / '+fmt(d);if(!drag&&d)sk.value=c/d*1000;sk.style.setProperty('--p',sk.value/10+'%');if(p)vb.classList.remove('vl')};
  const wake=()=>{pc.classList.remove('idle');clearTimeout(idle);idle=setTimeout(()=>ad.playing()&&pc.classList.add('idle'),2600)};
  const tg=()=>{ad.playing()?ad.pause():ad.play();setTimeout(upd,80);wake()};
  pc.onclick=e=>{if(!e.target.closest('.bar'))tg()};pc.onpointermove=wake;
  q('.bp').onclick=e=>{e.stopPropagation();tg()};q('.pp').onclick=tg;
- sk.oninput=()=>{const d=ad.dur();if(d){ad.seek(sk.value/1000*d);upd()}};sk.onpointerdown=()=>drag=1;sk.onpointerup=sk.onblur=()=>drag=0;
- q('.mu').onclick=()=>{mu=!mu;ad.mute(mu);q('.mu').innerHTML=mu?'&#128263;':'&#128266;'};
+ sk.oninput=()=>{const d=ad.dur();sk.style.setProperty('--p',sk.value/10+'%');if(d){ad.seek(sk.value/1000*d);upd()}};sk.onpointerdown=()=>drag=1;sk.onpointerup=sk.onblur=()=>drag=0;
+ q('.mu').onclick=()=>{mu=!mu;ad.mute(mu);q('.mu').innerHTML=mu?IM:IV};
  q('.sp').onclick=()=>{ri=(ri+1)%R.length;ad.rate(R[ri]);q('.sp').textContent=R[ri]+'x'};
  q('.fs').onclick=()=>{const d=document;if(d.fullscreenElement||d.webkitFullscreenElement)(d.exitFullscreen||d.webkitExitFullscreen).call(d);else{const f=vb.requestFullscreen||vb.webkitRequestFullscreen;if(f)f.call(vb);else if(ad.el&&ad.el.webkitEnterFullscreen)ad.el.webkitEnterFullscreen()}};
  const iv=setInterval(upd,250);CT={tg,seekBy:n=>ad.seek(Math.max(0,(ad.cur()||0)+n)),mu:()=>q('.mu').click(),fs:()=>q('.fs').click()};
@@ -515,7 +524,7 @@ function play(u,t,v){const pk=++PT;stop();u=u||'';dl.classList.toggle('v',!!v);d
    P=new YT.Player(box,{videoId:id,playerVars:{autoplay:1,controls:0,rel:0,modestbranding:1,playsinline:1,iv_load_policy:3,fs:0,disablekb:1,origin:location.origin},events:{onReady:e=>e.target.playVideo(),onStateChange:e=>{if(e.data===0){e.target.seekTo(0);e.target.pauseVideo()}},onError:()=>{stop();fail()}}});
    const c=ctl(vb,{play:()=>Y('playVideo'),pause:()=>Y('pauseVideo'),playing:()=>Y('getPlayerState')===1,cur:()=>Y('getCurrentTime'),dur:()=>Y('getDuration'),seek:t=>Y('seekTo',t,true),mute:m=>Y(m?'mute':'unMute'),rate:r=>Y('setPlaybackRate',r)});
    CUR=()=>{c();try{P.destroy()}catch(e){}}}).catch(()=>{if(PT===pk)frame(`https://www.youtube.com/embed/${id}?autoplay=1&rel=0&playsinline=1&modestbranding=1`)})}
- else if(g)direct(`https://drive.usercontent.google.com/download?id=${g}&export=download&confirm=t`,drive);
+ else if(g)CFG.driveDirect?direct(`https://drive.usercontent.google.com/download?id=${g}&export=download&confirm=t`,drive):drive();
  else if(file||dx)direct(dx||u,fail);
  else if(fb){const w=Math.round(vb.clientWidth),h=Math.round(vb.clientHeight);frame(`https://www.facebook.com/plugins/video.php?height=${h}&href=${encodeURIComponent(u)}&show_text=false&width=${w}&t=0`)}
  else if(ig)frame(`https://www.instagram.com/reel/${ig[1]}/embed`);
