@@ -318,6 +318,7 @@ html:has(dialog[open]){overflow:hidden}
 #dl:fullscreen .video-wrapper{width:min(100vw,calc(100dvh*var(--ar)));border-radius:0;box-shadow:none}
 #dl:fullscreen .x{top:max(12px,env(safe-area-inset-top));right:14px;left:auto}#dl:fullscreen .vo{display:none}
 #dl .rot{position:absolute;right:10px;top:64px;z-index:5;width:38px;height:38px;border-radius:50%;border:1px solid #ffffff40;background:#0009;color:#fff;display:grid;place-items:center;padding:0;cursor:pointer}#dl .rot svg{width:18px;height:18px}
+#adm .pg{height:6px;border-radius:6px;background:var(--ln);margin-top:8px;overflow:hidden}#adm .pg i{display:block;height:100%;width:0;background:var(--y);transition:width .2s}
 /* admin extras */
 #adm .ac2 button:hover{border-color:var(--y)}#adm .it:hover{border-color:#4a536b}#adm .fh{color:var(--cy);font-size:13px;margin:6px 0 0;min-height:18px}
 #adm details{border:1px solid var(--ln);border-radius:10px;padding:12px 14px;margin-top:16px}#adm details summary{font:600 16px 'Instrument Sans',sans-serif}#adm details textarea{margin-top:10px}
@@ -416,6 +417,7 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 /* ================= EDIT YOUR DETAILS HERE ================= */
 const CFG={
   brand:'Ebadul Islam Shishir',   // name shown on the video player
+  maxUploadMB:50,                   // max size for direct uploads (Supabase free plan allows 50 MB per file)
   driveKey:'',                      // free Google Drive API key: makes Drive videos play in the custom player (see steps)
   formspree:'https://formspree.io/f/mykqoajw',   // contact form sends messages here
   photo:'',                         // your photo: file name like 'me.jpg' (same folder) or an image link
@@ -588,6 +590,17 @@ loadRemote();document.addEventListener('visibilitychange',()=>{if(!document.hidd
  const save=()=>{try{localStorage.setItem(LS,JSON.stringify(LOCAL));return 1}catch(e){alert('Browser storage is full. Remove a video or use a smaller thumbnail.');return 0}};
  const isV=u=>/shorts\/|facebook\.com\/(?:share\/r|reel)|fb\.watch|\/reels?\/|tiktok\.com|pinterest|pin\.it/i.test(u);
  const refresh=()=>{filt();draw();rev()};
+  const vmeta=f=>new Promise(ok=>{const v=document.createElement('video'),url=URL.createObjectURL(f);v.muted=true;v.playsInline=true;v.preload='metadata';let done=0;const fin=r=>{if(done)return;done=1;URL.revokeObjectURL(url);ok(r)};v.onerror=()=>fin(null);v.onloadedmetadata=()=>{v.currentTime=Math.min(1,(v.duration||2)/4)};v.onseeked=()=>{try{const k=Math.min(1,480/v.videoWidth),c=document.createElement('canvas');c.width=v.videoWidth*k;c.height=v.videoHeight*k;c.getContext('2d').drawImage(v,0,0,c.width,c.height);fin({v:v.videoHeight>v.videoWidth?1:0,img:c.toDataURL('image/jpeg',.72)})}catch(x){fin(null)}};v.src=url;setTimeout(()=>fin(null),8000)});
+  const upVideo=async(f,e)=>{const lim=CFG.maxUploadMB||50;if(f.size>lim*1048576){e.textContent='This file is '+Math.round(f.size/1048576)+' MB, the limit is '+lim+' MB. Compress it (HandBrake, Web Optimized) and try again.';return null}
+   const t=tok();if(!t){login('Session expired. Please log in again.');return null}
+   const name=Date.now().toString(36)+'-'+f.name.toLowerCase().replace(/[^a-z0-9.]+/g,'-').replace(/^-+|-+$/g,'').slice(-60);
+   const bar=document.querySelector('#pg'),fill=bar&&bar.firstChild;if(bar)bar.hidden=false;e.textContent='Preparing...';
+   const meta=await vmeta(f);
+   try{await new Promise((ok,no)=>{const x=new XMLHttpRequest();x.open('POST',SB+'/storage/v1/object/videos/'+name);x.setRequestHeader('apikey',CFG.supabaseKey);x.setRequestHeader('Authorization','Bearer '+t);x.setRequestHeader('Content-Type',f.type||'video/mp4');x.setRequestHeader('x-upsert','false');
+    x.upload.onprogress=ev=>{if(ev.lengthComputable){const pc=Math.round(ev.loaded/ev.total*100);e.textContent='Uploading... '+pc+'%';if(fill)fill.style.width=pc+'%'}};
+    x.onload=()=>x.status<300?ok():no(new Error(x.responseText||('HTTP '+x.status)));x.onerror=()=>no(new Error('Network error'));x.send(f)})}
+   catch(x){const m=String(x.message||x);e.textContent=/bucket not found/i.test(m)?'Storage bucket "videos" is missing. Run the one-time setup SQL first.':/row-level|polic|unauthor|403/i.test(m)?'Upload not allowed. Run the one-time setup SQL and log in again.':'Upload failed: '+m;if(bar)bar.hidden=true;return null}
+   return{url:SB+'/storage/v1/object/public/videos/'+name,v:meta?meta.v:null,img:meta?meta.img:''}};
   const kind=u=>{u=u||'';return yt(u)?'YouTube':gid(u)?'Google Drive':/facebook\.com|fb\.watch/.test(u)?'Facebook':/instagram\.com/.test(u)?'Instagram':/tiktok\.com/.test(u)?'TikTok':/vimeo\.com/.test(u)?'Vimeo':/pinterest|pin\.it/.test(u)?'Pinterest':/dropbox\.com/.test(u)?'Dropbox':/\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(u)?'Direct file':u?'Other link':''};
  const strip=x=>{const o={...x};delete o.l;return o};
  const code=()=>LOCAL.map(x=>JSON.stringify(strip(x))).join(',\n');
@@ -619,6 +632,7 @@ function login(msg){if(DB)return loginDB(msg);
    <div class="tb"><button class="btn${T?'':' on'}" data-t="work">Videos (${nw})</button><button class="btn${T?' on':''}" data-t="top">Top 2 reels (${nt})</button></div>
    <h3 style="font-size:19px;margin-top:18px">${eid?'Edit':'Add'} ${T?'top reel':'video'}</h3>
    <label>Video link *</label><input id="fu" type="url" placeholder="https://..." value="${esc(E.u||'')}"><p class="fh" id="fh"></p>
+   <label>Or upload a video file (mp4 / mov / webm)</label><input id="fvf" type="file" accept="video/*"><div class="pg" id="pg" hidden><i></i></div>
    <div class="r2"><div><label>Title</label><input id="ft" placeholder="e.g. Reel 08" value="${esc(E.t||'')}"></div>${T?'':`<div><label>Category</label><input id="fc" list="fcl" placeholder="Reels" value="${esc(E.c||'')}"><datalist id="fcl">${cl.map(c=>`<option value="${esc(c)}">`).join('')}</datalist></div>`}</div>
    <div class="r2">${T?'':`<div><label>Shape</label><select id="fv"><option value=""${eid?'':' selected'}>Auto detect</option><option value="1"${eid&&E.v?' selected':''}>Vertical (Reels)</option><option value="0"${eid&&!E.v?' selected':''}>Horizontal (16:9)</option></select></div>`}<div><label>Thumbnail picture ${eid?'(leave empty to keep current)':'(optional)'}</label><input id="fi" type="file" accept="image/*"></div></div>
    <label>Short description (optional)</label><input id="fd" value="${esc(E.d||'')}" placeholder="What is this video?">
@@ -637,17 +651,18 @@ function login(msg){if(DB)return loginDB(msg);
    d.querySelectorAll('.tb button').forEach(b=>b.onclick=()=>{tab=b.dataset.t;eid=null;panelDB()});
    if(q('#fx'))q('#fx').onclick=()=>{eid=null;panelDB()};
    if(q('#imp'))q('#imp').onclick=()=>act(doImp,'Imported. All your original videos are back and editable.');
-   q('#fa').onclick=async()=>{const u=q('#fu').value.trim(),e=q('#ae');
-    if(!/^https?:\/\//i.test(u)){e.textContent='Please paste a full link starting with https://';return}
-    const vv=q('#fv')?q('#fv').value:'1',f=q('#fi').files[0];e.textContent='Saving...';let v=T?1:(vv===''?(isV(u)?1:0):+vv);if(!T&&vv===''&&!isV(u)&&gdi(u)){const r=await probe(gdi(u));if(r)v=r<1?1:0}
-    let img=E.img||'';if(f){try{img=await thumb(f)}catch(x){e.textContent='Could not read that picture.';return}}
+   q('#fa').onclick=async()=>{let u=q('#fu').value.trim();const e=q('#ae'),vf=q('#fvf').files[0];let auto=null;
+    if(vf){q('#fa').disabled=true;auto=await upVideo(vf,e);if(!auto){q('#fa').disabled=false;return}u=auto.url}
+    if(!/^https?:\/\//i.test(u)){e.textContent='Paste a full link starting with https:// or choose a video file';return}
+    const vv=q('#fv')?q('#fv').value:'1',f=q('#fi').files[0];e.textContent='Saving...';let v=T?1:(vv===''?(auto&&auto.v!=null?auto.v:(isV(u)?1:0)):+vv);if(!T&&vv===''&&!isV(u)&&gdi(u)){const r=await probe(gdi(u));if(r)v=r<1?1:0}
+    let img=E.img||'';if(f){try{img=await thumb(f)}catch(x){e.textContent='Could not read that picture.';return}}if(!f&&auto&&auto.img)img=auto.img;
     const row={t:q('#ft').value.trim()||('Video '+(L.length+1)),c:T?'Top reel':(q('#fc').value.trim()||(v?'Reels':'Long Format')),u,img,d:q('#fd').value.trim()||(v?'Vertical edit with quick cuts and captions.':'A video edit from my portfolio.'),v},was=eid;
     act(async()=>{if(was){await api('PATCH','?id=eq.'+was,row)}else{await api('POST','',{...row,sec:tab,pos:Math.max(-1,...ROWS.map(x=>x.pos||0))+1,hidden:false})}eid=null},was?'Saved.':'Added. It is live on every device.')};
    d.querySelectorAll('.ac2 button').forEach(b=>b.onclick=()=>{const id=+b.parentNode.dataset.id,a=b.dataset.a,i=L.findIndex(x=>x.id===id),x=L[i];
     if(a=='pl'){play(x.u,x.t,x.v);return}
      if(a=='dup'){act(()=>api('POST','',{t:x.t+' (copy)',c:x.c,u:x.u,img:x.img||'',d:x.d||'',v:x.v?1:0,sec:x.sec||'work',pos:Math.max(-1,...ROWS.map(y=>y.pos||0))+1,hidden:false}),'Duplicated.');return}
      if(a=='ed'){eid=id;panelDB();return}
-    if(a=='rm'){if(confirm('Delete "'+x.t+'" permanently?'))act(()=>api('DELETE','?id=eq.'+id),'Deleted.');return}
+    if(a=='rm'){if(confirm('Delete "'+x.t+'" permanently?'))act(async()=>{await api('DELETE','?id=eq.'+id);const pre=SB+'/storage/v1/object/public/videos/';if((x.u||'').startsWith(pre)&&!ROWS.some(y=>y.id!==id&&y.u===x.u))fetch(SB+'/storage/v1/object/videos/'+encodeURIComponent(x.u.slice(pre.length)),{method:'DELETE',headers:sbh(tok())}).catch(()=>{})},'Deleted.');return}
     if(a=='eye'){act(()=>api('PATCH','?id=eq.'+id,{hidden:!x.hidden}),x.hidden?'Now visible on the site.':'Now hidden from visitors.');return}
     const j=a=='up'?i-1:i+1;if(j<0||j>=L.length)return;const M=[...L];[M[i],M[j]]=[M[j],M[i]];
     act(async()=>{await Promise.all(M.map((y,k)=>y.pos===k?0:api('PATCH','?id=eq.'+y.id,{pos:k})))},'Moved.')});
