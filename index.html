@@ -640,7 +640,7 @@ function login(msg){if(DB)return loginDB(msg);
    <label>Short description (optional)</label><input id="fd" value="${esc(E.d||'')}" placeholder="What is this video?">
    <div class="bt"><button class="btn pri" id="fa">${eid?'Save changes':'Add'}</button>${eid?'<button class="btn" id="fx">Cancel</button>':''}</div><p class="ae" id="ae">${esc(msg)}</p>
    <details><summary>Bulk add (many links at once)</summary><textarea id="bkt" rows="4" placeholder="Paste one video link per line"></textarea><div class="bt"><button class="btn" id="bk">Add all</button></div></details>
-    <hr><h3 style="font-size:19px;margin-top:18px">${T?'Top reels':'All videos'} (${L.length})</h3><div class="st"><span>${L.filter(x=>!x.hidden).length} live</span><span>${L.filter(x=>x.hidden).length} hidden</span><span>${L.filter(x=>x.v).length} vertical</span></div><input id="fq2" type="search" placeholder="Search videos..." style="margin-top:12px"><p class="am">Use the arrows to change the order. Hide keeps a video saved but removes it from the site.</p>
+    <hr><h3 style="font-size:19px;margin-top:18px">${T?'Top reels':'All videos'} (${L.length})</h3><div class="st"><span>${L.filter(x=>!x.hidden).length} live</span><span>${L.filter(x=>x.hidden).length} hidden</span><span>${L.filter(x=>x.v).length} vertical</span></div><input id="fq2" type="search" placeholder="Search videos..." style="margin-top:12px"><p class="am">Hold a video and drag it up or down to change the order (on phone use the &#8942;&#8942; handle), or use the arrows. Hide keeps a video saved but removes it from the site.</p>
    ${L.map((x,i)=>`<div class="it${x.hidden?' hid':''}" data-id="${x.id}"><span class="dg" title="Drag to reorder">&#8942;&#8942;</span>${th(x)}<div><b>${esc(x.t)}</b><small>${esc(x.c||'')} &middot; ${kind(x.u)}${x.v?' &middot; vertical':''}${x.hidden?' &middot; hidden':''}</small></div><div class="ac2" data-id="${x.id}"><button data-a="up"${i?'':' disabled'}>&uarr;</button><button data-a="down"${i<L.length-1?'':' disabled'}>&darr;</button><button data-a="eye">${x.hidden?'Show':'Hide'}</button><button data-a="pl">Play</button><button data-a="ed">Edit</button><button data-a="dup">Duplicate</button><button class="rm" data-a="rm">Delete</button></div></div>`).join('')||'<p class="am">Nothing here yet.</p>'}
    <div class="bt"><button class="btn" id="flo">Lock</button></div>`;
    d.scrollTop=0;msg='';
@@ -660,7 +660,7 @@ function login(msg){if(DB)return loginDB(msg);
     let img=E.img||'';if(f){try{img=await thumb(f)}catch(x){e.textContent='Could not read that picture.';return}}if(!f&&auto&&auto.img)img=auto.img;
     const row={t:q('#ft').value.trim()||('Video '+(L.length+1)),c:T?'Top reel':(q('#fc').value.trim()||(v?'Reels':'Long Format')),u,img,d:q('#fd').value.trim()||(v?'Vertical edit with quick cuts and captions.':'A video edit from my portfolio.'),v},was=eid;
     act(async()=>{if(was){await api('PATCH','?id=eq.'+was,row)}else{await api('POST','',{...row,sec:tab,pos:Math.max(-1,...ROWS.map(x=>x.pos||0))+1,hidden:false})}eid=null},was?'Saved.':'Added. It is live on every device.')};
-   d.querySelectorAll('.it .dg').forEach(h=>h.onpointerdown=e=>{
+   d.querySelectorAll('.it').forEach(h=>h.onpointerdown=e=>{if(!(e.target.closest('.dg')||(e.pointerType=='mouse'&&!e.target.closest('button,input,a'))))return;
     e.preventDefault();const it=h.closest('.it');h.setPointerCapture(e.pointerId);it.classList.add('dragging');
     const mv=ev=>{const y=ev.clientY,sib=[...d.querySelectorAll('.it')].filter(n=>n!==it);let ref=null;for(const n of sib){const r=n.getBoundingClientRect();if(y<r.top+r.height/2){ref=n;break}}
      if(ref)ref.before(it);else if(sib.length)sib[sib.length-1].after(it);const dr=d.getBoundingClientRect();if(y>dr.bottom-60)d.scrollTop+=12;else if(y<dr.top+60)d.scrollTop-=12};
@@ -798,7 +798,7 @@ $$('section[id]').forEach(x=>sio.observe(x));
 document.addEventListener('pointermove',e=>{const r=e.target.closest&&e.target.closest('.row');if(r){const b=r.getBoundingClientRect();r.style.setProperty('--rx',e.clientX-b.left+'px');r.style.setProperty('--ry',e.clientY-b.top+'px')}});
 bg();rev();
 </script>
-<style>#sx input[type=checkbox]{width:auto;margin-right:8px}#sx .it{margin-top:10px}#sx input[type=color]{height:42px;padding:3px}</style>
+<style>#sx input[type=checkbox]{width:auto;margin-right:8px}#sx .it{margin-top:10px}#sx input[type=color]{height:42px;padding:3px}#adm .it{cursor:grab}#adm .it button,#adm .it input{cursor:pointer}#sx .it{cursor:auto}</style>
 <script>
 (()=>{
 const SK='sh_site',esc=eh,cl=x=>JSON.parse(JSON.stringify(x));
@@ -810,7 +810,7 @@ for(const k in M){const e=$(M[k]);DEF[k]=e?e.textContent:''}
 DEF.name=$('.hero h1').innerHTML.replace(/<br\s*\/?>/g,'\n');DEF.leadB=$('.lead b').textContent;DEF.leadT=$('.lead').textContent.replace(DEF.leadB,'').trim();DEF.foot=$('#y').nextSibling.textContent.trim();
 DEF.title=document.title;DEF.desc=$('meta[name=description]').content;
 for(const k in NV)DEF['nav_'+k]=NV[k];
-Object.assign(DEF,{email:CFG.email,whatsapp:CFG.whatsapp,facebook:CFG.facebook,instagram:CFG.instagram,formspree:CFG.formspree,waMsg:"Hi Shishir, I saw your portfolio and I'd like to talk about a video project.",photo:'',logo:'',favicon:'',before:'',after:'',cvUrl:'',order:SEC,hide:{},noMq:false,noWa:false,noCursor:false,noBgfx:false,mq1:'Video editing, Motion graphics, Color grading, Sound design, Reels & Shorts, YouTube, Ads, Brand films',mq2:'Cuts, Transitions, Titles, Visual effects, Storytelling, Pacing, Captions, Delivery',extra:[]});
+Object.assign(DEF,{email:CFG.email,whatsapp:CFG.whatsapp,facebook:CFG.facebook,instagram:CFG.instagram,formspree:CFG.formspree,waMsg:"Hi Shishir, I saw your portfolio and I'd like to talk about a video project.",photo:'',logo:'',favicon:'',before:'',after:'',cvUrl:'',order:SEC,hide:{},noMq:false,noWa:false,noCursor:false,noBgfx:false,mq1:'Video editing, Motion graphics, Color grading, Sound design, Reels & Shorts, YouTube, Ads, Brand films',mq2:'Cuts, Transitions, Titles, Visual effects, Storytelling, Pacing, Captions, Delivery',extra:[]});Object.assign(DEF,{maint:false,maintTitle:'Under maintenance',maintMsg:'We are making some improvements. Please check back soon.',maintStart:'',maintEnd:''});
 const rs=getComputedStyle(document.documentElement);['y','bg','pn','tx','mu'].forEach(k=>DEF['c_'+k]=rs.getPropertyValue('--'+k).trim());
 DEF.sv=SV.map(([t,d])=>({t,d}));DEF.st=ST.map(([t,d])=>({t,d}));DEF.cm=CM.map(([t,d])=>({t,d}));DEF.fq=FQ.map(([q,a])=>({q,a}));DEF.rv=REVIEWS.map(x=>({...x}));
 DEF.cv=CV.map(([g,a])=>({g,l:a.map(x=>x.join(' || ')).join('\n')}));DEF.tl=TR.map(([n,c,k])=>({n,l:k.map(x=>x.join('|')).join('\n')}));
@@ -853,7 +853,15 @@ function apply(S){S=S||{};const E=k=>S[k]!==undefined?S[k]:DEF[k],R=document.doc
  $('.mq').style.display=E('noMq')?'none':'';$('#wa').style.display=E('noWa')?'none':'';
  if(E('noBgfx'))$('#bg').style.display='none';
  if(E('noCursor'))document.documentElement.classList.remove('cc');
- rev()}
+ rev();maint()}
+let mt,mb;
+function maint(){const S=window.SITEC||{},E=k=>S[k]!==undefined?S[k]:DEF[k],now=Date.now(),st=E('maintStart')?+new Date(E('maintStart')):0,en=E('maintEnd')?+new Date(E('maintEnd')):0,act=E('maint')&&now>=st&&(!en||now<en),adm=!!tok();
+ if(act&&adm){if(!mb){mb=document.createElement('div');mb.style.cssText='position:fixed;left:14px;bottom:14px;z-index:195;background:var(--m);color:#fff;padding:8px 14px;border-radius:99px;font:600 13px var(--mono)';mb.textContent='MAINTENANCE ON: visitors see the maintenance page';document.body.appendChild(mb)}}else if(mb){mb.remove();mb=null}
+ if(!(act&&!adm)){if(mt){mt.remove();mt=null;document.documentElement.style.overflow=''}return}
+ if(!mt){mt=document.createElement('div');mt.style.cssText='position:fixed;inset:0;z-index:190;background:var(--bg);display:grid;place-items:center;text-align:center;padding:24px;overflow:auto';document.body.appendChild(mt);document.documentElement.style.overflow='hidden'}
+ const l=Math.max(0,en-now),z=n=>String(n).padStart(2,'0'),dd=Math.floor(l/864e5),hh=Math.floor(l%864e5/36e5),mm=Math.floor(l%36e5/6e4),ss=Math.floor(l%6e4/1e3);
+ mt.innerHTML=`<div style="max-width:560px"><div style="font:800 64px var(--d);color:var(--y)">&#9881;</div><h1 style="font:800 clamp(34px,6vw,56px)/1.05 var(--d);margin-top:10px">${esc(E('maintTitle'))}</h1><p style="color:var(--mu);margin:16px 0 24px">${esc(E('maintMsg'))}</p>${en?`<div style="font:700 30px var(--mono);color:var(--y)">${dd?dd+'d ':''}${z(hh)}:${z(mm)}:${z(ss)}</div><p style="color:var(--mu);font-size:14px;margin-top:10px">Back online: ${esc(new Date(en).toLocaleString())}</p>`:''}</div>`}
+setInterval(maint,1000);
 apply(window.SITEC);
 if(DB)fetch(SB+'/rest/v1/site?id=eq.1&select=data',{headers:sbh(tok()),cache:'no-store'}).then(r=>r.ok?r.json():[]).then(j=>{if(j[0]&&j[0].data){window.SITEC=j[0].data;try{localStorage.setItem(SK,JSON.stringify(j[0].data))}catch(e){}apply(j[0].data)}}).catch(()=>{});
 
@@ -862,15 +870,23 @@ const F={text:[['title','Browser title / SEO title'],['desc','SEO description','
  img:[['photo','Your photo'],['logo','Logo'],['favicon','Favicon (small tab icon)'],['before','Before picture'],['after','After picture'],['cvUrl','CV file (PDF)']],
  con:[['email','Email'],['whatsapp','WhatsApp number (country code, no +)'],['facebook','Facebook link'],['instagram','Instagram link'],['formspree','Contact form link (Formspree)'],['waMsg','WhatsApp first message','a']]};
 const T2=[['t','Title'],['d','Description','a']],LD={sv:['Services',T2],st:['Process steps',T2],cm:['What you can count on',T2],fq:['FAQ',[['q','Question'],['a','Answer','a']]],rv:['Client reviews',[['n','Client name'],['r','Role / company'],['q','Feedback','a']]],cv:['Resume groups',[['g','Group title (Experience, Education...)'],['l','One item per line: Title || Subtitle || Date','a']]],tl:['Skills timeline',[['n','Track name (V1, A1...)'],['l','Clips, one per line: Name|size 1-5','a']]],extra:['Extra social links',[['n','Name (TikTok, YouTube...)'],['u','Link']]]};
-const TB=[['text','Text & SEO'],['img','Images & CV'],['con','Contact'],['ls','Lists'],['lay','Layout & look']];
+const TB=[['text','Text & SEO'],['img','Images & CV'],['con','Contact'],['ls','Lists'],['lay','Layout & look'],['mt','Maintenance']];
 let D,tab='text',lt='sv',msg='';const d=$('#adm');
 const fld=([k,l,t])=>`<label>${l}</label>${t=='a'?`<textarea rows="3" data-k="${k}">${esc(D[k]||'')}</textarea>`:`<input data-k="${k}" value="${esc(D[k]||'')}">`}`;
 const img=([k,l])=>fld([k,l+' (link or upload)'])+`<input type="file" data-up="${k}" accept="${k=='cvUrl'?'application/pdf':'image/*'}" style="margin-top:6px"><p class="fh"></p>`;
 const lst=k=>{const[n,fs]=LD[k];return `<h3 style="font-size:19px;margin:18px 0 6px">${n} (${D[k].length})</h3>`+D[k].map((r,i)=>`<div class="it" style="display:block">${fs.map(([f,l,t])=>`<label>${l}</label>${t=='a'?`<textarea rows="3" data-l="${k}" data-i="${i}" data-f="${f}">${esc(r[f]||'')}</textarea>`:`<input data-l="${k}" data-i="${i}" data-f="${f}" value="${esc(r[f]||'')}">`}`).join('')}<div class="ac2" style="margin-top:10px"><button data-x="up" data-l="${k}" data-i="${i}">&uarr;</button><button data-x="dn" data-l="${k}" data-i="${i}">&darr;</button><button class="rm" data-x="rm" data-l="${k}" data-i="${i}">Delete</button></div></div>`).join('')+`<div class="bt"><button class="btn" data-x="add" data-l="${k}">+ Add</button></div>`};
 const lay=()=>`<h3 style="font-size:19px;margin-top:14px">Sections: order and show / hide</h3>`+D.order.map((id,i)=>`<div class="it" style="grid-template-columns:1fr auto auto"><b>${SN[id]}</b><label style="margin:0"><input type="checkbox" data-h="${id}"${D.hide[id]?'':' checked'}>Show</label><div class="ac2"><button data-x="ou" data-i="${i}">&uarr;</button><button data-x="od" data-i="${i}">&darr;</button></div></div>`).join('')+`<h3 style="font-size:19px;margin-top:22px">Menu names</h3>`+Object.keys(NV).map(k=>fld(['nav_'+k,NV[k]+' (menu text)'])).join('')+`<h3 style="font-size:19px;margin-top:22px">Colors</h3><div class="r2">`+[['c_y','Accent'],['c_bg','Background'],['c_pn','Panels'],['c_tx','Text'],['c_mu','Muted text']].map(([k,l])=>`<div><label>${l}</label><input type="color" data-k="${k}" value="${D[k]}"></div>`).join('')+`</div><h3 style="font-size:19px;margin-top:22px">Extras</h3>`+[['noMq','Hide moving words strip'],['noWa','Hide floating WhatsApp button'],['noCursor','Turn off custom cursor'],['noBgfx','Turn off animated background']].map(([k,l])=>`<label style="margin:10px 0 0"><input type="checkbox" data-t="${k}"${D[k]?' checked':''}>${l}</label>`).join('');
+const loc=v=>{if(!v)return'';const x=new Date(v);return new Date(x-x.getTimezoneOffset()*6e4).toISOString().slice(0,16)};
+const mtab=()=>{const en=D.maintEnd?+new Date(D.maintEnd):0,st=D.maintStart?+new Date(D.maintStart):0,act=D.maint&&Date.now()>=st&&(!en||Date.now()<en);
+ return `<h3 style="font-size:19px;margin-top:14px">Maintenance mode</h3><div class="st"><span>${act?'Visitors see: MAINTENANCE PAGE':D.maint?'Scheduled, not started or already ended':'Site is LIVE'}</span></div><p class="am" style="margin-top:10px">When on, visitors see a maintenance page. You stay logged in and still see the real site.</p>
+ <label style="margin:12px 0"><input type="checkbox" data-t="maint"${D.maint?' checked':''}>Maintenance mode ON</label>
+ ${fld(['maintTitle','Title'])}${fld(['maintMsg','Message','a'])}
+ <label>Start time (empty = starts as soon as saved)</label><input type="datetime-local" data-dt="maintStart" value="${loc(D.maintStart)}">
+ <label>Go live again at (empty = stays until you turn it off. A countdown shows to visitors)</label><input type="datetime-local" data-dt="maintEnd" value="${loc(D.maintEnd)}">
+ <div class="bt"><button class="btn pri" data-x="mon">Start maintenance now</button><button class="btn" data-x="moff">Go live now</button></div><p class="am">Times use your device time zone. Press Save changes to apply the schedule.</p>`};
 function draw(){const top=d.scrollTop;let b='';
  if(tab=='text')b=F.text.map(fld).join('');else if(tab=='img')b=F.img.map(img).join('');else if(tab=='con')b=F.con.map(fld).join('')+lst('extra');
- else if(tab=='ls')b=`<select data-sel>${Object.keys(LD).filter(k=>k!='extra').map(k=>`<option value="${k}"${k==lt?' selected':''}>${LD[k][0]}</option>`).join('')}</select>`+lst(lt);else b=lay();
+ else if(tab=='ls')b=`<select data-sel>${Object.keys(LD).filter(k=>k!='extra').map(k=>`<option value="${k}"${k==lt?' selected':''}>${LD[k][0]}</option>`).join('')}</select>`+lst(lt);else if(tab=='mt')b=mtab();else b=lay();
  d.innerHTML=`<button class="ax" id="ac">Close &#10005;</button><h3>Website control</h3><p class="am">Edit anything on the site, then press Save. It goes live on every device.</p><div class="bt" style="margin:0 0 6px"><button class="btn" id="bv">&larr; Videos</button></div><div class="tb" style="flex-wrap:wrap">${TB.map(([k,n])=>`<button class="btn${k==tab?' on':''}" data-tab="${k}">${n}</button>`).join('')}</div><div id="sx">${b}</div><div class="bt"><button class="btn pri" id="sv0">Save changes</button><button class="btn" id="rs0">Reset all to original</button></div><p class="ae">${esc(msg)}</p>`;
  msg='';wire();d.scrollTop=top}
 const up=async f=>{const n='site-'+Date.now().toString(36)+'-'+f.name.toLowerCase().replace(/[^a-z0-9.]+/g,'-').slice(-50);const r=await fetch(SB+'/storage/v1/object/videos/'+n,{method:'POST',headers:{apikey:CFG.supabaseKey,Authorization:'Bearer '+tok(),'Content-Type':f.type||'application/octet-stream','x-upsert':'false'},body:f});if(!r.ok)throw new Error(await r.text());return SB+'/storage/v1/object/public/videos/'+n};
@@ -887,9 +903,9 @@ function wire(){const q=s=>d.querySelector(s),sx=q('#sx');
  sx.onchange=async e=>{const t=e.target;
   if('sel' in t.dataset){lt=t.value;draw()}
   else if(t.dataset.h)D.hide={...D.hide,[t.dataset.h]:!t.checked};
-  else if(t.dataset.t)D[t.dataset.t]=t.checked;
+  else if(t.dataset.t)D[t.dataset.t]=t.checked;else if(t.dataset.dt!==undefined)D[t.dataset.dt]=t.value?new Date(t.value).toISOString():'';
   else if(t.dataset.up&&t.files[0]){const p=t.nextElementSibling;p.textContent='Uploading...';try{D[t.dataset.up]=await up(t.files[0]);sx.querySelector(`[data-k="${t.dataset.up}"]`).value=D[t.dataset.up];p.textContent='Uploaded. Press Save.'}catch(x){p.textContent='Upload failed: '+x.message}}};
- sx.onclick=e=>{const b=e.target.closest('[data-x]');if(!b)return;const x=b.dataset.x,l=b.dataset.l,i=+b.dataset.i;
+ sx.onclick=e=>{const b=e.target.closest('[data-x]');if(!b)return;const x=b.dataset.x,l=b.dataset.l,i=+b.dataset.i;if(x=='mon'||x=='moff'){D.maint=x=='mon';if(x=='mon')D.maintStart='';save();return}
   if(x=='ou'||x=='od'){const a=D.order,j=x=='ou'?i-1:i+1;if(j>=0&&j<a.length)[a[i],a[j]]=[a[j],a[i]]}
   else{const a=D[l];if(x=='add')a.push(Object.fromEntries(LD[l][1].map(f=>[f[0],''])));else if(x=='rm'){if(!confirm('Delete this item?'))return;a.splice(i,1)}else{const j=x=='up'?i-1:i+1;if(j>=0&&j<a.length)[a[i],a[j]]=[a[j],a[i]]}}
   draw()}}
