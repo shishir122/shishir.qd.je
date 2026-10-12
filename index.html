@@ -416,6 +416,7 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 /* ================= EDIT YOUR DETAILS HERE ================= */
 const CFG={
   brand:'Ebadul Islam Shishir',   // name shown on the video player
+  driveKey:'',                      // free Google Drive API key: makes Drive videos play in the custom player (see steps)
   formspree:'https://formspree.io/f/mykqoajw',   // contact form sends messages here
   photo:'',                         // your photo: file name like 'me.jpg' (same folder) or an image link
   before:'', after:'',              // one picture is enough (the page makes the raw + graded look itself), or give both
@@ -521,7 +522,7 @@ function play(u,t,v){const pk=++PT;stop();u=u||'';dl.classList.toggle('v',!!v);d
  const fail=()=>{vb.classList.remove('vl');vb.innerHTML=`<p><b style="color:#fff">${eh(t||'Video')}</b><br>This link can't play inside the page. Use the button below to watch it.</p>`};
  const frame=(src,more)=>{vb.classList.add('vl');vb.insertAdjacentHTML('afterbegin',`<iframe src="${src}" allow="autoplay;fullscreen;encrypted-media;picture-in-picture;clipboard-write;web-share" allowfullscreen${more||''}></iframe>`);vb.querySelector('iframe').onload=()=>vb.classList.remove('vl');wm();if(mob&&!v){vb.insertAdjacentHTML('beforeend',`<button class="rot" aria-label="Full screen">${IF}</button>`);vb.querySelector('.rot').onclick=()=>FSE()?outFS():goFS()}};
  const drive=()=>{frame(`https://drive.google.com/file/d/${g}/preview`);vb.insertAdjacentHTML('beforeend','<div class="blk"></div>')};
- const direct=(src,fb2)=>{vb.classList.add('vl');const el=document.createElement('video');el.playsInline=true;el.preload='auto';el.referrerPolicy='no-referrer';el.src=src;vb.prepend(el);
+ const direct=(src,fb2)=>{vb.classList.add('vl');const el=document.createElement('video');el.playsInline=true;el.preload='auto';el.referrerPolicy=g?'origin':'no-referrer';el.src=src;vb.prepend(el);
   let done=0,tm;const c=ctl(vb,vad(el)),off=()=>{clearTimeout(tm);c();el.removeAttribute('src');el.load()};
   const bad=()=>{if(done||PT!==pk)return;done=1;off();vb.innerHTML='';fb2()};
   el.onerror=bad;el.onloadeddata=()=>{done=1;clearTimeout(tm);vb.classList.remove('vl')};el.onloadedmetadata=()=>el.videoWidth&&setAR(el.videoWidth/el.videoHeight,pk);el.onwaiting=()=>vb.classList.add('vl');el.onplaying=()=>vb.classList.remove('vl');
@@ -532,7 +533,7 @@ function play(u,t,v){const pk=++PT;stop();u=u||'';dl.classList.toggle('v',!!v);d
    P=new YT.Player(box,{videoId:id,playerVars:{autoplay:1,controls:0,rel:0,modestbranding:1,playsinline:1,iv_load_policy:3,fs:0,disablekb:1,origin:location.origin},events:{onReady:e=>e.target.playVideo(),onStateChange:e=>{if(e.data===0){e.target.seekTo(0);e.target.pauseVideo()}},onError:()=>{stop();fail()}}});
    const c=ctl(vb,{play:()=>Y('playVideo'),pause:()=>Y('pauseVideo'),playing:()=>Y('getPlayerState')===1,cur:()=>Y('getCurrentTime'),dur:()=>Y('getDuration'),seek:t=>Y('seekTo',t,true),mute:m=>Y(m?'mute':'unMute'),rate:r=>Y('setPlaybackRate',r)});
    CUR=()=>{c();try{P.destroy()}catch(e){}}}).catch(()=>{if(PT===pk)frame(`https://www.youtube.com/embed/${id}?autoplay=1&rel=0&playsinline=1&modestbranding=1`)})}
- else if(g)CFG.driveDirect?direct(`https://drive.usercontent.google.com/download?id=${g}&export=download&confirm=t`,drive):drive();
+ else if(g)CFG.driveKey?direct(`https://www.googleapis.com/drive/v3/files/${g}?alt=media&key=${encodeURIComponent(CFG.driveKey)}`,drive):drive();
  else if(file||dx)direct(dx||u,fail);
  else if(fb){const w=Math.round(vb.clientWidth),h=Math.round(vb.clientHeight);frame(`https://www.facebook.com/plugins/video.php?height=${h}&href=${encodeURIComponent(u)}&show_text=false&width=${w}&t=0`)}
  else if(ig)frame(`https://www.instagram.com/reel/${ig[1]}/embed`);
