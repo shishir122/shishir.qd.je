@@ -513,13 +513,13 @@ function ctl(vb,ad){const pc=document.createElement('div');pc.className='pc pa';
 addEventListener('keydown',e=>{if(!dl.open||!CT||e.target.closest('button,textarea,input:not([type=range])'))return;const k=e.key;
  if(k==' '||k=='k'){e.preventDefault();CT.tg()}else if(k=='ArrowRight')CT.seekBy(5);else if(k=='ArrowLeft')CT.seekBy(-5);else if(k=='m')CT.mu();else if(k=='f')CT.fs()});
 const vad=el=>({el,play:()=>el.play().catch(()=>{}),pause:()=>el.pause(),playing:()=>!el.paused&&!el.ended,cur:()=>el.currentTime,dur:()=>isFinite(el.duration)?el.duration:0,seek:t=>{el.currentTime=t},mute:m=>{el.muted=m},rate:r=>{el.playbackRate=r}});
-function play(u,t,v){const pk=++PT;stop();u=u||'';dl.classList.toggle('v',!!v);dl.style.setProperty('--ar',v?'.5625':'1.7778');
+function play(u,t,v){const pk=++PT;stop();u=u||'';if(/facebook\.com\/reel\//.test(u))v=1;dl.classList.toggle('v',!!v);dl.style.setProperty('--ar',v?'.5625':'1.7778');
  const vb=$('#vb'),vo=$('#vo');vb.className='vb video-wrapper';vb.innerHTML='';
  const id=u&&yt(u),g=gid(u),dx=dbx(u),file=/\.(mp4|webm|mov|m4v|ogv)(\?|#|$)/i.test(u),vm=u.match(/vimeo\.com\/(?:.*\/)?(\d+)/),ig=u.match(/instagram\.com\/(?:reel|reels|p)\/([\w-]+)/),tk=u.match(/tiktok\.com\/.*video\/(\d+)/),pn=u.match(/pinterest\.[a-z.]+\/pin\/(?:[\w-]*--)?(\d+)/),fb=/facebook\.com|fb\.watch|fb\.com/.test(u);
  const pst=(id?`https://i.ytimg.com/vi/${id}/hqdefault.jpg`:'')||gdi(u);vb.style.backgroundImage=pst?`url(${pst})`:'';
  vo.href=u||'#';vo.hidden=!u||file||!!dx;if(!dl.open)dl.showModal();const mob=matchMedia('(pointer:coarse)').matches;if(mob&&!v)goFS();
  const wm=()=>{const w=document.createElement('div');w.className='wm';w.textContent=BR;vb.appendChild(w)};
- const fail=()=>{vb.classList.remove('vl');vb.innerHTML=`<p><b style="color:#fff">${eh(t||'Video')}</b><br>This link can't play inside the page. Use the button below to watch it.</p>`};
+ const fail=m=>{vb.classList.remove('vl');vb.innerHTML=`<p><b style="color:#fff">${eh(t||'Video')}</b><br>${eh(typeof m=='string'?m:"This link can't play inside the page. Use the button below to watch it.")}</p>`};
  const frame=(src,more)=>{vb.classList.add('vl');vb.insertAdjacentHTML('afterbegin',`<iframe src="${src}" allow="autoplay;fullscreen;encrypted-media;picture-in-picture;clipboard-write;web-share" allowfullscreen${more||''}></iframe>`);vb.querySelector('iframe').onload=()=>vb.classList.remove('vl');wm();if(mob&&!v){vb.insertAdjacentHTML('beforeend',`<button class="rot" aria-label="Full screen">${IF}</button>`);vb.querySelector('.rot').onclick=()=>FSE()?outFS():goFS()}};
  const drive=()=>{frame(`https://drive.google.com/file/d/${g}/preview`);vb.insertAdjacentHTML('beforeend','<div class="blk"></div>')};
  const direct=(src,fb2)=>{vb.classList.add('vl');const el=document.createElement('video');el.playsInline=true;el.preload='auto';el.referrerPolicy=g?'origin':'no-referrer';el.src=src;vb.prepend(el);
@@ -535,11 +535,12 @@ function play(u,t,v){const pk=++PT;stop();u=u||'';dl.classList.toggle('v',!!v);d
    CUR=()=>{c();try{P.destroy()}catch(e){}}}).catch(()=>{if(PT===pk)frame(`https://www.youtube.com/embed/${id}?autoplay=1&rel=0&playsinline=1&modestbranding=1`)})}
  else if(g)CFG.driveKey?direct(`https://www.googleapis.com/drive/v3/files/${g}?alt=media&key=${encodeURIComponent(CFG.driveKey)}`,drive):drive();
  else if(file||dx)direct(dx||u,fail);
- else if(fb){const w=Math.round(vb.clientWidth),h=Math.round(vb.clientHeight);frame(`https://www.facebook.com/plugins/video.php?height=${h}&href=${encodeURIComponent(u)}&show_text=false&width=${w}&t=0`)}
+ else if(fb){vb.classList.add('vl');const fu=u.replace(/^(https?:\/\/)(m|web|mbasic)\.facebook\.com/,'$1www.facebook.com');setTimeout(()=>{if(PT!==pk)return;const w=Math.round(vb.clientWidth),h=Math.round(vb.clientHeight);frame(`https://www.facebook.com/plugins/video.php?height=${h}&href=${encodeURIComponent(fu)}&show_text=false&width=${w}&t=0&autoplay=true`)},mob&&!v?600:80)}
  else if(ig)frame(`https://www.instagram.com/reel/${ig[1]}/embed`);
  else if(tk)frame(`https://www.tiktok.com/embed/v2/${tk[1]}`);
  else if(vm)frame(`https://player.vimeo.com/video/${vm[1]}?autoplay=1`);
- else if(pn)frame(`https://assets.pinterest.com/ext/embed.html?id=${pn[1]}`);
+ else if(pn){dl.classList.add('v');dl.style.setProperty('--ar','.62');frame(`https://assets.pinterest.com/ext/embed.html?id=${pn[1]}`)}
+ else if(/pin\.it\//.test(u))fail('Short pin.it links cannot be embedded. Open the pin and copy the full pinterest.com/pin/... link instead.');
  else fail()}
 dl.addEventListener('close',()=>{stop();outFS();const b=$('#vb');b.innerHTML='';b.className='vb video-wrapper';b.style.backgroundImage=''});
 dl.addEventListener('click',e=>{if(e.target===dl)dl.close()});
@@ -629,7 +630,7 @@ function login(msg){if(DB)return loginDB(msg);
    d.scrollTop=0;msg='';
    const q=x=>d.querySelector(x);
    q('#ac').onclick=()=>d.close();q('#flo').onclick=()=>{try{sessionStorage.removeItem('sh_tok')}catch(e){}d.close()};
-    const hint=()=>{const u=q('#fu').value.trim(),k=kind(u);q('#fh').textContent=u?'Detected: '+k+(k=='Google Drive'?' (sharing must be "Anyone with the link")':''):''};q('#fu').oninput=hint;hint();
+    const hint=()=>{const u=q('#fu').value.trim(),k=kind(u);q('#fh').textContent=u?'Detected: '+k+({'Google Drive':' (sharing must be "Anyone with the link")','Facebook':' (video must be Public; reel / watch / videos links work best)','Pinterest':' (use the full pinterest.com/pin/... link, not pin.it)'}[k]||''):''};q('#fu').oninput=hint;hint();
     q('#fq2').oninput=e=>{const w=e.target.value.toLowerCase();d.querySelectorAll('.it').forEach(i=>i.style.display=i.textContent.toLowerCase().includes(w)?'':'none')};
     q('#bk').onclick=()=>{const ls=q('#bkt').value.split(/\s+/).filter(x=>/^https?:\/\//i.test(x)),e=q('#ae');if(!ls.length){e.textContent='Paste at least one full link.';return}let p=Math.max(-1,...ROWS.map(x=>x.pos||0));
      act(()=>api('POST','',ls.map((u,i)=>{const v=T?1:(isV(u)?1:0);return{t:(T?'Top reel ':'Video ')+(L.length+i+1),c:T?'Top reel':(v?'Reels':'Long Format'),u,img:'',d:v?'Vertical edit with quick cuts and captions.':'A video edit from my portfolio.',v,sec:tab,pos:++p,hidden:false}}),'return=minimal'),ls.length+' added.')};
