@@ -877,7 +877,7 @@ const F={text:[['title','Browser title / SEO title'],['desc','SEO description','
  img:[['photo','Your photo'],['logo','Logo'],['favicon','Favicon (small tab icon)'],['before','Before picture'],['after','After picture'],['cvUrl','CV file (PDF)']],
  con:[['email','Email'],['whatsapp','WhatsApp number (country code, no +)'],['facebook','Facebook link'],['instagram','Instagram link'],['formspree','Contact form link (Formspree)'],['waMsg','WhatsApp first message','a']]};
 const T2=[['t','Title'],['d','Description','a']],LD={sv:['Services',T2],st:['Process steps',T2],cm:['What you can count on',T2],fq:['FAQ',[['q','Question'],['a','Answer','a']]],rv:['Client reviews',[['n','Client name'],['r','Role / company'],['q','Feedback','a']]],cv:['Resume groups',[['g','Group title (Experience, Education...)'],['l','One item per line: Title || Subtitle || Date','a']]],tl:['Skills timeline',[['n','Track name (V1, A1...)'],['l','Clips, one per line: Name|size 1-5','a']]],extra:['Extra social links',[['n','Name (TikTok, YouTube...)'],['u','Link']]]};
-const TB=[['text','Text & SEO'],['img','Images & CV'],['con','Contact'],['ls','Lists'],['lay','Layout & look'],['mt','Maintenance'],['tools','Tools']];
+const TB=[['text','Text & SEO'],['img','Images & CV'],['con','Contact'],['ls','Lists'],['lay','Layout & look'],['mt','Maintenance'],['tools','Tools'],['shop','Shop']];
 let D,tab='text',lt='sv',msg='';const d=$('#adm');
 const fld=([k,l,t])=>`<label>${l}</label>${t=='a'?`<textarea rows="3" data-k="${k}">${esc(D[k]||'')}</textarea>`:`<input data-k="${k}" value="${esc(D[k]||'')}">`}`;
 const img=([k,l])=>fld([k,l+' (link or upload)'])+`<input type="file" data-up="${k}" accept="${k=='cvUrl'?'application/pdf':'image/*'}" style="margin-top:6px"><p class="fh"></p>`;
@@ -909,7 +909,7 @@ async function save(){const S={};for(const k in DEF)if(JSON.stringify(D[k])!==JS
  catch(e){msg='Error: '+(/PGRST205|does not exist|relation|404/.test(e.message)?'table "site" is missing. Run the one-time setup SQL in Supabase first.':e.message)}draw()}
 function wire(){const q=s=>d.querySelector(s),sx=q('#sx');
  q('#ac').onclick=()=>d.close();q('#bv').onclick=()=>__adm.panel();
- d.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;draw()});
+ d.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;tab=='shop'?window.openShop():draw()});
  q('#sv0').onclick=save;q('#rs0').onclick=()=>{if(confirm('Reset all website text, lists and settings to the original? Videos are not touched.')){D=cl(DEF);save()}};
  sx.oninput=e=>{const t=e.target;if(t.dataset.k)D[t.dataset.k]=t.value;else if(t.dataset.l)D[t.dataset.l][+t.dataset.i][t.dataset.f]=t.value};
  sx.onchange=async e=>{const t=e.target;
@@ -941,6 +941,54 @@ new MutationObserver(()=>{const its=[...d.querySelectorAll('.it[data-id]')];if(!
   __adm.panel()};
  addEventListener('pointermove',mv);addEventListener('pointerup',end);addEventListener('pointercancel',end);tick()}})}).observe(d,{childList:true});
 window.openSite=()=>{if(!tok())return __adm.login();D={};for(const k in DEF)D[k]=cl(window.SITEC[k]!==undefined?window.SITEC[k]:DEF[k]);draw()};
+})();
+</script>
+<script>
+(()=>{
+const esc=eh,d=$('#adm');let V='p',P=[],O=[],C=[],S={},msg='',eid=null,F='all',LW='';
+const R=async(m,q,b,pre)=>{const r=await fetch(SB+'/rest/v1/'+q,{method:m,headers:sbh(tok(),pre?{Prefer:pre}:{}),body:b?JSON.stringify(b):undefined});if(r.status==401||r.status==403){__adm.login('Session expired. Please log in again.');throw 'auth'}const t=await r.text();if(!r.ok)throw new Error(t);return t?JSON.parse(t):null};
+const tk=n=>'\u09f3'+Number(n||0).toLocaleString();
+async function ld(){[P,O,C]=await Promise.all(['products?select=*&order=pos.asc,id.asc','orders?select=*&order=id.desc','coupons?select=*&order=code'].map(q=>R('GET',q)));const s=await R('GET','site?id=eq.2&select=data');S=(s&&s[0]&&s[0].data)||{}}
+async function act(fn,ok){try{await fn();msg=ok||'Done.';await ld()}catch(e){if(e==='auth')return;msg='Error: '+String(e.message||e).slice(0,220)}draw()}
+const up=async(f,bk)=>{const n='shop-'+Date.now().toString(36)+'-'+f.name.toLowerCase().replace(/[^a-z0-9.]+/g,'-').slice(-50);const r=await fetch(SB+'/storage/v1/object/'+bk+'/'+n,{method:'POST',headers:{apikey:CFG.supabaseKey,Authorization:'Bearer '+tok(),'Content-Type':f.type||'application/octet-stream','x-upsert':'false'},body:f});if(!r.ok)throw new Error(await r.text());return bk=='videos'?SB+'/storage/v1/object/public/videos/'+n:n};
+async function deliver(o){const p=P.find(x=>x.id===o.pid);let link='';
+ if(p&&p.file){const r=await fetch(SB+'/storage/v1/object/sign/shopfiles/'+p.file,{method:'POST',headers:sbh(tok()),body:JSON.stringify({expiresIn:604800})}),j=await r.json();if(!r.ok||!j.signedURL)throw new Error('Could not make a download link. Check the product file name and the private bucket.');link=SB+'/storage/v1'+j.signedURL}
+ const t=`Hi ${o.name}, thank you! Your order ${o.code} (${o.pname}) is confirmed.`+(link?`\nDownload (valid 7 days): ${link}`:'');
+ await R('PATCH','orders?id=eq.'+o.id,{status:'delivered'});try{await navigator.clipboard.writeText(t)}catch(e){}
+ LW='https://wa.me/'+String(o.phone).replace(/\D/g,'').replace(/^0/,'880')+'?text='+encodeURIComponent(t)}
+const fi=(id,l,v,t)=>`<label>${l}</label><input id="${id}" ${t?`type="${t}"`:''} value="${esc(v??'')}">`;
+function draw(){const E=P.find(x=>x.id===eid)||{},top=d.scrollTop,B='<h3 style="font-size:19px;margin-top:18px">';let b='';
+ const paid=O.filter(o=>o.status=='paid'||o.status=='delivered'),td=new Date().toDateString();
+ if(V=='p')b=`${B}${eid?'Edit':'Add'} product</h3>${fi('pn','Name *',E.name)}<div class="r2"><div>${fi('pp','Price (BDT) *',E.price,'number')}</div><div>${fi('po','Old price (optional)',E.old_price,'number')}</div></div><div class="r2"><div>${fi('pc','Category (LUTs, SFX...)',E.category)}</div><div>${fi('ps','Stock (empty = unlimited)',E.stock,'number')}</div></div>
+ ${fi('pi','Picture link or upload',E.img)}<input type="file" id="pif" accept="image/*" style="margin-top:6px">${fi('pv','Preview video link (YouTube, optional)',E.preview)}<label>Description</label><textarea id="pd" rows="4">${esc(E.descr||'')}</textarea>
+ ${fi('pf','Product file (private, sent after payment)',E.file)}<input type="file" id="pff" style="margin-top:6px"><p class="fh" id="pfh">Upload a zip/pdf. It is stored privately and never shown to visitors.</p>
+ <div class="bt"><button class="btn pri" data-s="psave">${eid?'Save changes':'Add product'}</button>${eid?'<button class="btn" data-s="pcan">Cancel</button>':''}</div>
+ ${B}Products (${P.length})</h3>`+P.map((x,i)=>`<div class="it${x.active?'':' hid'}" style="grid-template-columns:64px 1fr auto"><div class="ph0" style="${x.img?`background:url('${esc(x.img)}') center/cover`:''}"></div><div><b>${esc(x.name)}</b><small>${tk(x.price)} &middot; ${esc(x.category||'')}${x.stock!=null?' &middot; stock '+x.stock:''}${x.active?'':' &middot; hidden'}</small></div><div class="ac2"><button data-s="up" data-id="${x.id}"${i?'':' disabled'}>&uarr;</button><button data-s="dn" data-id="${x.id}"${i<P.length-1?'':' disabled'}>&darr;</button><button data-s="pe" data-id="${x.id}">Edit</button><button data-s="ph" data-id="${x.id}">${x.active?'Hide':'Show'}</button><button class="rm" data-s="pd" data-id="${x.id}">Delete</button></div></div>`).join('');
+ else if(V=='o'){const L=O.filter(o=>F=='all'||o.status==F);b=`<div class="st"><span>${O.filter(o=>o.status=='pending').length} pending</span><span>${O.filter(o=>new Date(o.created_at).toDateString()==td).length} today</span><span>Sales: ${tk(paid.reduce((a,o)=>a+Number(o.amount),0))}</span></div><div class="tb">${['all','pending','paid','delivered','cancelled'].map(s=>`<button class="btn${F==s?' on':''}" data-s="f" data-v="${s}">${s}</button>`).join('')}</div>`+(L.map(o=>`<div class="it" style="display:block"><b>${esc(o.code)} &middot; ${esc(o.pname)} &middot; ${tk(o.amount)}</b><small>${esc(o.status).toUpperCase()} &middot; ${esc(o.name)} &middot; ${esc(o.phone)}${o.email?' &middot; '+esc(o.email):''}<br>${esc(o.method)} TrxID: <b>${esc(o.trx)}</b>${o.coupon?' &middot; coupon '+esc(o.coupon):''} &middot; ${new Date(o.created_at).toLocaleString()}</small><div class="ac2" style="justify-content:flex-start;margin-top:8px"><button data-s="os" data-v="paid" data-id="${o.id}">Mark paid</button><button data-s="dv" data-id="${o.id}">Deliver (copy message)</button><button data-s="os" data-v="cancelled" data-id="${o.id}">Cancel</button><button class="rm" data-s="od" data-id="${o.id}">Delete</button></div></div>`).join('')||'<p class="am">No orders yet.</p>')}
+ else if(V=='c')b=`${B}Add coupon</h3><div class="r2"><div>${fi('cc','Code (e.g. SHISHIR10)','')}</div><div>${fi('cp','Discount %','','number')}</div></div><div class="bt"><button class="btn pri" data-s="ca">Add coupon</button></div>`+C.map(c=>`<div class="li"><span>${esc(c.code)} &middot; ${c.pct}% &middot; ${c.active?'active':'off'}</span><span><button data-s="ct" data-id="${esc(c.code)}">${c.active?'Turn off':'Turn on'}</button> <button data-s="cd" data-id="${esc(c.code)}">Delete</button></span></div>`).join('');
+ else b=`${B}Shop settings</h3><label><input type="checkbox" id="so"${S.on?' checked':''} style="width:auto;margin-right:8px">Shop is ON (visitors can see it and the Shop link shows in the menu)</label>${fi('sb','bKash number',S.bkash)}${fi('sn','Nagad number',S.nagad)}${fi('sw','WhatsApp number for orders (country code, no +)',S.wa)}<label>Extra payment note</label><textarea id="sx2" rows="2">${esc(S.note||'')}</textarea><label>License and refund text</label><textarea id="sl" rows="5">${esc(S.license||'')}</textarea><div class="bt"><button class="btn pri" data-s="sv">Save settings</button><a class="btn" href="shop.html#preview" target="_blank">Preview shop</a></div>`;
+ d.innerHTML=`<button class="ax" id="ac">Close &#10005;</button><h3>Shop</h3><div class="bt" style="margin:0 0 6px"><button class="btn" id="bw">&larr; Website control</button></div><div class="tb" style="flex-wrap:wrap">${[['p','Products'],['o','Orders ('+O.filter(o=>o.status=='pending').length+')'],['c','Coupons'],['s','Settings']].map(([k,n])=>`<button class="btn${V==k?' on':''}" data-s="t" data-v="${k}">${n}</button>`).join('')}</div><div id="shx">${b}</div><p class="ae">${esc(msg)}${LW?` <a href="${LW}" target="_blank" style="color:var(--cy)">Open WhatsApp chat</a>`:''}</p>`;
+ msg='';LW='';d.scrollTop=top;
+ const q=s=>d.querySelector(s);q('#ac').onclick=()=>d.close();q('#bw').onclick=()=>window.openSite();
+ d.onclick=async e=>{const b=e.target.closest('[data-s]');if(!b||!d.querySelector('#shx')&&b.dataset.s!='t')return;const s=b.dataset.s,id=b.dataset.id,v=b.dataset.v,p=P.find(x=>x.id==id),g=i=>d.querySelector('#'+i).value.trim();
+  if(s=='t'){V=v;eid=null;draw()}else if(s=='f'){F=v;draw()}else if(s=='pe'){eid=+id;V='p';draw()}else if(s=='pcan'){eid=null;draw()}
+  else if(s=='psave'){let img=g('pi'),file=g('pf');const fi1=q('#pif').files[0],ff=q('#pff').files[0],h=q('#pfh');
+   try{if(fi1){h.textContent='Uploading picture...';img=await up(fi1,'videos')}if(ff){h.textContent='Uploading file...';file=await up(ff,'shopfiles')}}catch(x){h.textContent='Upload failed: '+x.message;return}
+   if(!g('pn')||g('pp')===''){h.textContent='Name and price are required.';return}
+   const row={name:g('pn'),price:+g('pp'),old_price:g('po')===''?null:+g('po'),category:g('pc'),stock:g('ps')===''?null:+g('ps'),img,preview:g('pv'),descr:q('#pd').value.trim(),file},was=eid;
+   act(async()=>{if(was)await R('PATCH','products?id=eq.'+was,row);else await R('POST','products',{...row,active:true,pos:Math.max(-1,...P.map(x=>x.pos||0))+1});eid=null},'Saved.')}
+  else if(s=='ph')act(()=>R('PATCH','products?id=eq.'+id,{active:!p.active}),p.active?'Hidden from the shop.':'Visible in the shop.');
+  else if(s=='pd'){if(confirm('Delete "'+p.name+'"? Old orders stay.'))act(()=>R('DELETE','products?id=eq.'+id),'Deleted.')}
+  else if(s=='up'||s=='dn'){const i=P.findIndex(x=>x.id==id),j=s=='up'?i-1:i+1,M=[...P];[M[i],M[j]]=[M[j],M[i]];act(()=>Promise.all(M.map((y,k)=>y.pos===k?0:R('PATCH','products?id=eq.'+y.id,{pos:k}))),'Moved.')}
+  else if(s=='os')act(()=>R('PATCH','orders?id=eq.'+id,{status:v}),'Order updated.');
+  else if(s=='dv'){const o=O.find(x=>x.id==id);act(()=>deliver(o),'Marked delivered. The message is copied. Open WhatsApp to send it.')}
+  else if(s=='od'){if(confirm('Delete this order permanently?'))act(()=>R('DELETE','orders?id=eq.'+id),'Deleted.')}
+  else if(s=='ca'){const c=g('cc').toUpperCase(),n=+g('cp');if(!c||!(n>0&&n<=100)){msg='Enter a code and a discount from 1 to 100.';draw();return}act(()=>R('POST','coupons',{code:c,pct:n,active:true}),'Coupon added.')}
+  else if(s=='ct'){const c=C.find(x=>x.code==id);act(()=>R('PATCH','coupons?code=eq.'+encodeURIComponent(id),{active:!c.active}),'Updated.')}
+  else if(s=='cd')act(()=>R('DELETE','coupons?code=eq.'+encodeURIComponent(id)),'Deleted.');
+  else if(s=='sv'){const n={on:q('#so').checked,bkash:g('sb'),nagad:g('sn'),wa:g('sw'),note:q('#sx2').value.trim(),license:q('#sl').value.trim()};act(()=>R('POST','site',{id:2,data:n},'resolution=merge-duplicates,return=minimal'),'Settings saved.')}}}
+window.openShop=async()=>{if(!tok())return __adm.login();d.innerHTML='<p class="am">Loading shop...</p>';try{await ld()}catch(e){if(e==='auth')return;P=[];O=[];C=[];S={};msg='Shop database is not ready ('+String(e.message||e).slice(0,120)+'). Run the shop SQL in Supabase first.'}draw()};
+fetch(SB+'/rest/v1/site?id=eq.2&select=data',{headers:sbh(tok()),cache:'no-store'}).then(r=>r.ok?r.json():[]).then(j=>{if(j[0]&&j[0].data&&j[0].data.on){const a=document.createElement('a');a.href='shop.html';a.textContent='Shop';$('.links .btn').before(a)}}).catch(()=>{});
 })();
 </script>
 </body>
