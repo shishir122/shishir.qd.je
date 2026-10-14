@@ -365,6 +365,13 @@ html:has(dialog[open]){overflow:hidden}
 <div class="ba" id="ba"><div class="b2" id="b2"></div><div class="b1" id="b1"></div><i>Raw</i><u>Graded</u><input type="range" min="0" max="100" value="50" id="rg" aria-label="Before and after slider"></div>
 </div></section>
 
+<section id="shop" hidden><div class="w">
+<h2>Shop</h2>
+<p class="sub">Editing assets I made myself: LUTs, transitions, sound packs and templates. Tap a product to see it and buy.</p>
+<div class="shg" id="shg"></div>
+<p style="margin-top:34px"><a class="btn pri" href="shop.html">View all products</a></p>
+</div></section>
+
 <section id="services"><div class="w">
 <h2>What I can edit for you</h2>
 <p class="sub" style="margin-bottom:34px">Whatever the platform, the goal is the same: a video that holds attention and looks professional.</p>
@@ -798,13 +805,13 @@ $$('section[id]').forEach(x=>sio.observe(x));
 document.addEventListener('pointermove',e=>{const r=e.target.closest&&e.target.closest('.row');if(r){const b=r.getBoundingClientRect();r.style.setProperty('--rx',e.clientX-b.left+'px');r.style.setProperty('--ry',e.clientY-b.top+'px')}});
 bg();rev();
 </script>
-<style>#sx input[type=checkbox]{width:auto;margin-right:8px}#sx .it{margin-top:10px}#sx input[type=color]{height:42px;padding:3px}#adm .it{cursor:grab}#adm .it button,#adm .it input{cursor:pointer}#sx .it{cursor:auto}</style>
+<style>#shop .shg{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:24px 18px;margin-top:30px}.shc{display:block;color:inherit;text-decoration:none}.shc .th{aspect-ratio:4/3;border-radius:10px;background:#242b3e center/cover;border:1px solid var(--ln);transition:transform .25s}.shc:hover .th{transform:translateY(-4px)}.shc small{display:block;color:var(--mu);margin-top:10px}.shc h3{font-size:20px;margin:2px 0}.shc .pr{color:var(--y);font-weight:600}.shc .pr s{color:var(--mu);font-weight:400;margin-left:8px}#sx input[type=checkbox]{width:auto;margin-right:8px}#sx .it{margin-top:10px}#sx input[type=color]{height:42px;padding:3px}#adm .it{cursor:grab}#adm .it button,#adm .it input{cursor:pointer}#sx .it{cursor:auto}</style>
 <script>
 (()=>{
 const SK='sh_site',esc=eh,cl=x=>JSON.parse(JSON.stringify(x));
 IC.link='<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>';
 const M={reelT:'#reel h2',reelS:'#reel .sub',workT:'#work h2',workS:'#work .sub',gradeT:'#grade h2',gradeS:'#grade .sub',svT:'#services h2',svS:'#services .sub',prT:'#process .two>div:first-child>h2',cmT:'#process .two>div:last-child>h2',tools:'.tools',cvT:'#resume h2',cvS:'#resume .sub',rvT:'#reviews h2',fqT:'#faq h2',ctT:'#contact h2',ctS:'#contact .sub',big:'.big',cta1:'.cta .pri',chip:'.chip',hire:'.links .btn'};
-const SEC=['reel','work','grade','services','process','resume','reviews','faq','contact'],SN={reel:'Short-form reels',work:'Selected work',grade:'Before and after',services:'Services',process:'How a project runs',resume:'Resume',reviews:'Client reviews',faq:'FAQ',contact:'Contact'},NV={work:'Work',services:'Services',process:'How I work',resume:'Resume',faq:'FAQ'};
+const SEC=['reel','work','shop','grade','services','process','resume','reviews','faq','contact'],SN={shop:'Shop (products)',reel:'Short-form reels',work:'Selected work',grade:'Before and after',services:'Services',process:'How a project runs',resume:'Resume',reviews:'Client reviews',faq:'FAQ',contact:'Contact'},NV={work:'Work',services:'Services',process:'How I work',resume:'Resume',faq:'FAQ'};
 const DEF={};
 for(const k in M){const e=$(M[k]);DEF[k]=e?e.textContent:''}
 DEF.name=$('.hero h1').innerHTML.replace(/<br\s*\/?>/g,'\n');DEF.leadB=$('.lead b').textContent;DEF.leadT=$('.lead').textContent.replace(DEF.leadB,'').trim();DEF.foot=$('#y').nextSibling.textContent.trim();
@@ -986,9 +993,13 @@ function draw(){const E=P.find(x=>x.id===eid)||{},top=d.scrollTop,B='<h3 style="
   else if(s=='ca'){const c=g('cc').toUpperCase(),n=+g('cp');if(!c||!(n>0&&n<=100)){msg='Enter a code and a discount from 1 to 100.';draw();return}act(()=>R('POST','coupons',{code:c,pct:n,active:true}),'Coupon added.')}
   else if(s=='ct'){const c=C.find(x=>x.code==id);act(()=>R('PATCH','coupons?code=eq.'+encodeURIComponent(id),{active:!c.active}),'Updated.')}
   else if(s=='cd')act(()=>R('DELETE','coupons?code=eq.'+encodeURIComponent(id)),'Deleted.');
-  else if(s=='sv'){const n={on:q('#so').checked,bkash:g('sb'),nagad:g('sn'),wa:g('sw'),note:q('#sx2').value.trim(),license:q('#sl').value.trim()};act(()=>R('POST','site',{id:2,data:n},'resolution=merge-duplicates,return=minimal'),'Settings saved.')}}}
+  else if(s=='sv'){const n={on:q('#so').checked,bkash:g('sb'),nagad:g('sn'),wa:g('sw'),note:q('#sx2').value.trim(),license:q('#sl').value.trim()};act(()=>R('POST','site',{id:2,data:n},'resolution=merge-duplicates,return=minimal'),n.on?'Settings saved. Shop is ON and the Shop link is live.':'Settings saved. Shop is OFF.');try{localStorage.setItem('sh_shop',n.on?'1':'0')}catch(e){}window.__shopLink(n.on)}}}
 window.openShop=async()=>{if(!tok())return __adm.login();d.innerHTML='<p class="am">Loading shop...</p>';try{await ld()}catch(e){if(e==='auth')return;P=[];O=[];C=[];S={};msg='Shop database is not ready ('+String(e.message||e).slice(0,120)+'). Run the shop SQL in Supabase first.'}draw()};
-fetch(SB+'/rest/v1/site?id=eq.2&select=data',{headers:sbh(tok()),cache:'no-store'}).then(r=>r.ok?r.json():[]).then(j=>{if(j[0]&&j[0].data&&j[0].data.on){const a=document.createElement('a');a.href='shop.html';a.textContent='Shop';$('.links .btn').before(a)}}).catch(()=>{});
+async function loadShop(){try{const r=await fetch(SB+'/rest/v1/products?select=id,name,price,old_price,category,img,stock&active=eq.true&order=pos.asc,id.asc&limit=6',{headers:sbh(tok())}),L=r.ok?await r.json():[],e=$('#shop');if(!e||!L.length)return;$('#shg').innerHTML=L.map(p=>`<a class="shc" href="shop.html?p=${p.id}"><div class="th" style="${p.img?`background-image:url('${esc(p.img)}')`:''}"></div><small>${esc(p.category||'')}${p.stock===0?' &middot; Sold out':''}</small><h3>${esc(p.name)}</h3><div class="pr">\u09f3${Number(p.price).toLocaleString()}${p.old_price?`<s>\u09f3${Number(p.old_price).toLocaleString()}</s>`:''}</div></a>`).join('');e.hidden=false;rev()}catch(x){}}
+const sh=on=>{if(!on){$$('.shl').forEach(e=>e.remove());const e=$('#shop');if(e)e.hidden=true;return}loadShop();if($('.shl'))return;const a=document.createElement('a');a.href='shop.html';a.textContent='Shop';a.className='shl';$('.links .btn').before(a);const c=$('.cta');if(c){const b=document.createElement('a');b.className='btn shl';b.href='shop.html';b.textContent='Shop';c.appendChild(b)}};
+try{sh(localStorage.getItem('sh_shop')=='1')}catch(e){}
+window.__shopLink=sh;
+fetch(SB+'/rest/v1/site?id=eq.2&select=data',{headers:sbh(tok()),cache:'no-store'}).then(r=>r.ok?r.json():[]).then(j=>{const on=!!(j[0]&&j[0].data&&j[0].data.on);try{localStorage.setItem('sh_shop',on?'1':'0')}catch(e){}sh(on)}).catch(()=>{});
 })();
 </script>
 </body>

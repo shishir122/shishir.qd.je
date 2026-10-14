@@ -39,7 +39,7 @@ async function init(){
   if(a.maint&&n>=st&&(!en||n<en)&&location.hash!='#preview'){$('main').innerHTML='<h1>'+eh(a.maintTitle||'Under maintenance')+'</h1><p class="sub">'+eh(a.maintMsg||'Please check back soon.')+'</p>';return}}catch(e){}
  if(!S.on&&location.hash!='#preview'){$('main').innerHTML='<h1>Shop opening soon</h1><p class="sub">New editing assets are on the way. <a href="index.html" style="color:var(--y)">Back to portfolio</a></p>';return}
  try{P=await api('products?select=*&active=eq.true&order=pos.asc,id.asc')}catch(e){$('#msg').textContent='The shop is not ready yet. Please check back soon.';return}
- if(!P.length)$('#msg').textContent='No products yet.';draw()}
+ if(!P.length)$('#msg').textContent='No products yet.';draw();const pid=new URLSearchParams(location.search).get('p'),pp=P.find(x=>x.id==pid);if(pp)show(pp)}
 function draw(){const cs=['All',...new Set(P.map(p=>p.category).filter(Boolean))],q=$('#q').value.toLowerCase();
  $('#cats').innerHTML=cs.length>2?cs.map(c=>`<button class="${c==cat?'on':''}" data-c="${eh(c)}">${eh(c)}</button>`).join(''):'';
  $('#grid').innerHTML=P.map((p,i)=>({p,i})).filter(({p})=>(cat=='All'||p.category==cat)&&(p.name+' '+(p.descr||'')).toLowerCase().includes(q)).map(({p,i})=>`<article class="card" data-i="${i}"><div class="th" style="${p.img?`background-image:url('${eh(p.img)}')`:''}">${p.stock===0?'<span class="tag">Sold out</span>':''}</div><small>${eh(p.category)}</small><h3>${eh(p.name)}</h3><div class="pr">${tk(p.price)}${p.old_price?`<s>${tk(p.old_price)}</s>`:''}</div></article>`).join('')}
