@@ -38,5 +38,9 @@ async function init(){const id=new URLSearchParams(location.search).get('p');
   if(!L.length){$('#msg').textContent='No posts yet. Please check back soon.';return}
   $('#g').innerHTML=L.map(p=>`<a class="card" href="blog.html?p=${p.id}"><div class="im" style="${p.img?`--im:url('${eh(p.img)}')`:''}"></div><div class="bd"><small>${eh(p.cat)}</small><h3>${eh(p.title)}</h3><p>${eh(ex(p.body))}</p></div></a>`).join('')}
  catch(e){$('#msg').textContent='The blog is not ready yet.'}}
+(()=>{let n=0;const seen=m=>{try{const s=JSON.parse(sessionStorage.getItem('sh_er')||'[]');if(s.includes(m))return true;s.push(m);sessionStorage.setItem('sh_er',JSON.stringify(s.slice(-20)))}catch(e){}return false},
+ send=m=>{m=String(m||'').slice(0,300);if(n>=3||/Failed to fetch|NetworkError|Load failed|AbortError|ResizeObserver|Script error/i.test(m)||seen(m))return;n++;try{fetch(SB+'/rest/v1/rpc/log_error',{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json'},body:JSON.stringify({p_msg:m,p_page:location.pathname+location.search,p_src:(navigator.userAgent||'').slice(0,120)})}).catch(()=>{})}catch(e){}};
+ addEventListener('error',e=>{if(e.filename&&location.protocol!='file:'&&!e.filename.startsWith(location.origin))return;send((e.message||'Error')+' ('+String(e.filename||'').split('/').pop()+':'+(e.lineno||0)+')')});
+ addEventListener('unhandledrejection',e=>send('Promise: '+((e.reason&&e.reason.message)||e.reason)))})();
 init();
 </script></body></html>
