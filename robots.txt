@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://shishir.qd.je/sitemap.xml
