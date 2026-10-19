@@ -320,3 +320,174 @@ begin
 end $$;
 grant execute on function log_error(text,text,text) to anon, authenticated;
 notify pgrst, 'reload schema';
+
+-- =====================================================================
+-- PART 4: license system (trial minutes, paid approval, expiry).
+-- Used by the License Center page, the admin Licenses tab, and a plugin/panel.
+-- =====================================================================
+create table if not exists licenses(
+  id bigint generated always as identity primary key,
+  lkey text unique not null, product text not null default 'text-pack',
+  name text default '', contact text default '',
+  plan text default 'custom', expires_at timestamptz,
+  status text default 'active', machines jsonb default '[]'::jsonb, max_machines int default 1,
+  last_seen timestamptz, note text default '', created_at timestamptz default now());
+create table if not exists lic_trials(
+  id bigint generated always as identity primary key, machine text not null, product text not null,
+  seconds_used int default 0, first_at timestamptz default now(), last_at timestamptz default now(), unique(machine,product));
+create table if not exists lic_requests(
+  id bigint generated always as identity primary key, machine text, product text, name text, contact text,
+  trx text, msg text, status text default 'pending', lkey text, created_at timestamptz default now());
+alter table licenses enable row level security;
+alter table lic_trials enable row level security;
+alter table lic_requests enable row level security;
+drop policy if exists "li admin" on licenses;     create policy "li admin" on licenses for all to authenticated using (true) with check (true);
+drop policy if exists "lt admin" on lic_trials;   create policy "lt admin" on lic_trials for all to authenticated using (true) with check (true);
+drop policy if exists "lr admin" on lic_requests; create policy "lr admin" on lic_requests for all to authenticated using (true) with check (true);
+
+create or replace function lic_trial_tick(p_machine text,p_product text,p_seconds int default 0) returns json
+language plpgsql security definer set search_path=public as $$
+declare t lic_trials%rowtype; add int; lim int:=900; pr text:=left(coalesce(p_product,'text-pack'),40);
+begin
+  if length(coalesce(p_machine,''))<8 or length(p_machine)>100 then raise exception 'Bad machine id.'; end if;
+  add:=least(greatest(coalesce(p_seconds,0),0),120);
+  insert into lic_trials(machine,product,seconds_used) values(p_machine,pr,least(add,lim))
+  on conflict (machine,product) do update set seconds_used=least(lim,lic_trials.seconds_used+add), last_at=now()
+  returning * into t;
+  return json_build_object('used',t.seconds_used,'remaining',greatest(0,lim-t.seconds_used),'expired',t.seconds_used>=lim);
+end $$;
+
+create or replace function lic_status(p_machine text,p_product text) returns json
+language plpgsql security definer set search_path=public as $$
+declare l licenses%rowtype; t lic_trials%rowtype; pr text:=left(coalesce(p_product,'text-pack'),40); lexp boolean:=false;
+begin
+  select * into l from licenses where product=pr and status='active' and machines ? p_machine order by expires_at desc nulls first limit 1;
+  if found then
+    if l.expires_at is null or l.expires_at>now() then
+      update licenses set last_seen=now() where id=l.id;
+      return json_build_object('licensed',true,'plan',l.plan,'expires_at',l.expires_at,
+        'days_left',case when l.expires_at is null then null else ceil(extract(epoch from (l.expires_at-now()))/86400) end);
+    end if;
+    lexp:=true;
+  end if;
+  select * into t from lic_trials where machine=p_machine and product=pr;
+  return json_build_object('licensed',false,'license_expired',lexp,
+    'trial_remaining',greatest(0,900-coalesce(t.seconds_used,0)),'trial_expired',coalesce(t.seconds_used,0)>=900,
+    'pending',exists(select 1 from lic_requests where machine=p_machine and product=pr and status='pending'));
+end $$;
+
+create or replace function lic_activate(p_key text,p_machine text,p_product text default 'text-pack') returns json
+language plpgsql security definer set search_path=public as $$
+declare l licenses%rowtype;
+begin
+  select * into l from licenses where lkey=upper(trim(p_key));
+  if not found or l.status<>'active' or l.product<>left(coalesce(p_product,'text-pack'),40) then return json_build_object('ok',false,'reason','invalid'); end if;
+  if l.expires_at is not null and l.expires_at<=now() then return json_build_object('ok',false,'reason','expired'); end if;
+  if length(coalesce(p_machine,''))<8 then return json_build_object('ok',false,'reason','machine'); end if;
+  if not (l.machines ? p_machine) then
+    if jsonb_array_length(l.machines)>=l.max_machines then return json_build_object('ok',false,'reason','machine_limit'); end if;
+    update licenses set machines=machines||to_jsonb(p_machine) where id=l.id;
+  end if;
+  update licenses set last_seen=now() where id=l.id;
+  return json_build_object('ok',true,'plan',l.plan,'expires_at',l.expires_at);
+end $$;
+
+create or replace function lic_request(p_machine text,p_product text,p_name text,p_contact text,p_trx text,p_msg text default '') returns json
+language plpgsql security definer set search_path=public as $$
+begin
+  if length(trim(coalesce(p_name,'')))<2 or length(trim(coalesce(p_contact,'')))<5 then raise exception 'Please enter your name and WhatsApp or email.'; end if;
+  if (select count(*) from lic_requests where created_at>now()-interval '1 day' and (machine=p_machine or contact=trim(p_contact)))>=5 then raise exception 'Too many requests. Please wait.'; end if;
+  if (select count(*) from lic_requests where created_at>now()-interval '1 hour')>=60 then raise exception 'Busy. Try again later.'; end if;
+  insert into lic_requests(machine,product,name,contact,trx,msg) values(left(coalesce(p_machine,''),100),left(coalesce(p_product,'text-pack'),40),left(trim(p_name),80),left(trim(p_contact),100),left(coalesce(p_trx,''),60),left(coalesce(p_msg,''),400));
+  return json_build_object('ok',true);
+end $$;
+
+create or replace function lic_lookup(p_key text) returns json
+language plpgsql security definer set search_path=public as $$
+declare l licenses%rowtype;
+begin
+  select * into l from licenses where lkey=upper(trim(p_key));
+  if not found then return null; end if;
+  return json_build_object('product',l.product,'plan',l.plan,'status',l.status,'expires_at',l.expires_at,
+    'expired',(l.expires_at is not null and l.expires_at<=now()),
+    'days_left',case when l.expires_at is null then null else ceil(extract(epoch from (l.expires_at-now()))/86400) end,
+    'machines',jsonb_array_length(l.machines),'max',l.max_machines,'holder',left(coalesce(l.name,''),2)||'***');
+end $$;
+
+grant execute on function lic_trial_tick(text,text,int) to anon, authenticated;
+grant execute on function lic_status(text,text) to anon, authenticated;
+grant execute on function lic_activate(text,text,text) to anon, authenticated;
+grant execute on function lic_request(text,text,text,text,text,text) to anon, authenticated;
+grant execute on function lic_lookup(text) to anon, authenticated;
+notify pgrst, 'reload schema';
+
+-- =====================================================================
+-- PART 5: plugin license (days-based free trial, protected preset keys)
+-- =====================================================================
+create extension if not exists pgcrypto with schema extensions;
+create table if not exists lic_secrets(product text primary key, secret text not null);
+alter table lic_secrets enable row level security;   -- no policy: only the functions below can read it
+create table if not exists lic_dl(id bigint generated always as identity primary key, machine text, file text, at timestamptz default now());
+alter table lic_dl enable row level security;
+create index if not exists lic_dl_m on lic_dl(machine, at);
+
+create or replace function lic_trial_days() returns int language sql stable security definer set search_path=public as $$
+  select coalesce(nullif((select data->>'trialDays' from site where id=2),'')::int,3) $$;
+
+create or replace function lic_status(p_machine text,p_product text) returns json
+language plpgsql security definer set search_path=public as $$
+declare l licenses%rowtype; t lic_trials%rowtype; pr text:=left(coalesce(p_product,'text-pack'),40); lexp boolean:=false; d int:=lic_trial_days(); ends timestamptz;
+begin
+  select * into l from licenses where product=pr and status='active' and machines ? p_machine order by expires_at desc nulls first limit 1;
+  if found then
+    if l.expires_at is null or l.expires_at>now() then
+      update licenses set last_seen=now() where id=l.id;
+      return json_build_object('licensed',true,'plan',l.plan,'expires_at',l.expires_at,
+        'days_left',case when l.expires_at is null then null else ceil(extract(epoch from (l.expires_at-now()))/86400) end);
+    end if;
+    lexp:=true;
+  end if;
+  select * into t from lic_trials where machine=p_machine and product=pr;
+  if found then ends:=t.first_at+make_interval(days=>d); end if;
+  return json_build_object('licensed',false,'license_expired',lexp,'trial_days',d,
+    'trial_started',found,'trial_active',(found and ends>now()),'trial_ends_at',ends,
+    'trial_days_left',case when found and ends>now() then ceil(extract(epoch from (ends-now()))/86400) else 0 end,
+    'pending',exists(select 1 from lic_requests where machine=p_machine and product=pr and status='pending'));
+end $$;
+
+create or replace function lic_trial_start(p_machine text,p_product text) returns json
+language plpgsql security definer set search_path=public as $$
+declare pr text:=left(coalesce(p_product,'text-pack'),40);
+begin
+  if length(coalesce(p_machine,''))<8 or length(p_machine)>100 then raise exception 'Bad computer id.'; end if;
+  if (select count(*) from lic_trials where first_at>now()-interval '1 hour')>=200 then raise exception 'Busy. Try again later.'; end if;
+  insert into lic_trials(machine,product,seconds_used) values(p_machine,pr,0) on conflict (machine,product) do nothing;
+  return lic_status(p_machine,pr);
+end $$;
+
+create or replace function lic_access(p_machine text,p_product text) returns boolean
+language plpgsql stable security definer set search_path=public as $$
+declare pr text:=left(coalesce(p_product,'text-pack'),40);
+begin
+  if exists(select 1 from licenses where product=pr and status='active' and machines ? p_machine and (expires_at is null or expires_at>now())) then return true; end if;
+  return exists(select 1 from lic_trials where machine=p_machine and product=pr and first_at+make_interval(days=>lic_trial_days())>now());
+end $$;
+
+create or replace function lic_file_key(p_machine text,p_product text,p_file text) returns text
+language plpgsql security definer set search_path=public as $$
+declare s text; pr text:=left(coalesce(p_product,'text-pack'),40);
+begin
+  if not lic_access(p_machine,pr) then raise exception 'Access ended. Start the trial or unlock first.'; end if;
+  if p_file !~ '^p[0-9]{2,3}$' then raise exception 'Bad file.'; end if;
+  insert into lic_dl(machine,file) values(p_machine,p_file);
+  if (select count(*) from lic_dl where machine=p_machine and at>now()-interval '1 hour')>60 then raise exception 'Too many downloads. Try again later.'; end if;
+  select secret into s from lic_secrets where product=pr;
+  if s is null then raise exception 'Not set up yet.'; end if;
+  return encode(extensions.hmac(p_file,s,'sha256'),'hex');
+end $$;
+
+grant execute on function lic_trial_days() to anon, authenticated;
+grant execute on function lic_status(text,text) to anon, authenticated;
+grant execute on function lic_trial_start(text,text) to anon, authenticated;
+grant execute on function lic_file_key(text,text,text) to anon, authenticated;
+notify pgrst, 'reload schema';
