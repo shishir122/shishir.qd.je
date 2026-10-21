@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0e1118">
+<title>My account | Shishir Text Presets</title><meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23161a24'/%3E%3Ctext x='32' y='45' font-size='40' font-weight='800' text-anchor='middle' fill='%23ffd23f' font-family='Arial'%3ES%3C/text%3E%3C/svg%3E">
+<style>
+:root{--bg:#0e1118;--pn:#171b26;--pn2:#1d2230;--ln:#2a3144;--tx:#eef0f6;--mu:#98a1b8;--y:#ffd23f;--g:#5eead4;--r:#ff7a8a;--v:#8b5cf6}
+*{box-sizing:border-box;margin:0}body{background:var(--bg);color:var(--tx);font:16px/1.6 system-ui,-apple-system,'Segoe UI',Arial,sans-serif;min-height:100vh;overflow-x:hidden}
+a{color:var(--y);text-decoration:none}.w{max-width:960px;margin:auto;padding:0 20px}
+.bgfx{position:fixed;inset:-20%;z-index:-1;background:radial-gradient(40% 40% at 20% 10%,rgba(139,92,246,.25),transparent),radial-gradient(35% 35% at 85% 20%,rgba(255,210,63,.14),transparent),radial-gradient(40% 40% at 50% 100%,rgba(94,234,212,.12),transparent);animation:drift 18s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate3d(3%,2%,0) scale(1.06)}}
+nav{padding:16px 0;display:flex;justify-content:space-between;align-items:center}nav b{font-size:18px}nav a{color:var(--mu);margin-left:18px}nav a:hover{color:var(--y)}
+.card{background:linear-gradient(180deg,var(--pn2),var(--pn));border:1px solid var(--ln);border-radius:18px;padding:24px;margin:18px 0;box-shadow:0 20px 50px -30px #000;opacity:0;transform:translateY(14px);animation:up .6s cubic-bezier(.2,.7,.2,1) forwards}
+.card:nth-child(2){animation-delay:.08s}.card:nth-child(3){animation-delay:.16s}.card:nth-child(4){animation-delay:.24s}
+@keyframes up{to{opacity:1;transform:none}}
+h1{font-size:clamp(28px,5vw,42px);line-height:1.1;margin:30px 0 8px}h2{font-size:20px;margin-bottom:12px}.mu{color:var(--mu)}.sm{font-size:14px}
+label{display:block;font-size:13px;color:var(--mu);margin:14px 0 6px}
+input,select,textarea{width:100%;padding:13px 14px;border-radius:10px;border:1px solid var(--ln);background:#0f131c;color:var(--tx);font:inherit;transition:border .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--y);box-shadow:0 0 0 4px rgba(255,210,63,.12)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:12px;border:1px solid var(--ln);background:var(--pn2);color:var(--tx);font:600 15px system-ui;cursor:pointer;transition:transform .15s,box-shadow .2s,background .2s}
+.btn:hover{transform:translateY(-2px)}.btn.p{background:linear-gradient(135deg,#ffd23f,#ffb347);color:#10131b;border:0;box-shadow:0 10px 30px -12px rgba(255,210,63,.7)}
+.btn:disabled{opacity:.6;cursor:wait}.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.tabs{display:flex;background:#0f131c;border:1px solid var(--ln);border-radius:12px;padding:4px;margin-bottom:6px}.tabs button{flex:1;padding:10px;border:0;border-radius:9px;background:none;color:var(--mu);font:600 15px system-ui;cursor:pointer;transition:.2s}.tabs .on{background:var(--pn2);color:var(--tx);box-shadow:0 4px 14px -6px #000}
+.er{color:var(--r);min-height:22px;margin-top:10px}.ok{color:var(--g)}
+.pill{display:inline-block;padding:4px 12px;border-radius:99px;font:700 12px system-ui;letter-spacing:.04em;text-transform:uppercase}
+.pill.g{background:rgba(94,234,212,.14);color:var(--g)}.pill.y{background:rgba(255,210,63,.14);color:var(--y)}.pill.r{background:rgba(255,122,138,.14);color:var(--r)}
+.key{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#0f131c;border:1px dashed #3a4262;border-radius:14px;padding:16px 18px;margin:14px 0}
+.key code{font:700 clamp(16px,3.4vw,22px) ui-monospace,Consolas,monospace;letter-spacing:.06em;color:var(--y);word-break:break-all}
+.bar{height:8px;border-radius:8px;background:#0f131c;overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--v),var(--y));border-radius:8px;transition:width 1s cubic-bezier(.2,.7,.2,1)}
+.steps{counter-reset:s;list-style:none;padding:0}.steps li{counter-increment:s;position:relative;padding:8px 0 8px 44px;color:var(--mu)}.steps li:before{content:counter(s);position:absolute;left:0;top:6px;width:30px;height:30px;border-radius:50%;background:var(--pn2);border:1px solid var(--ln);display:grid;place-items:center;color:var(--y);font-weight:700}
+table{width:100%;border-collapse:collapse}td,th{padding:10px 6px;border-bottom:1px solid var(--ln);text-align:left;font-size:14px}th{color:var(--mu);font-weight:600}
+.spin{width:22px;height:22px;border:3px solid var(--ln);border-top-color:var(--y);border-radius:50%;animation:sp 1s linear infinite;margin:40px auto}@keyframes sp{to{transform:rotate(360deg)}}
+footer{padding:36px 0;text-align:center;color:var(--mu);font-size:14px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.card{opacity:1;transform:none}}
+</style></head><body><div class="bgfx"></div>
+<div class="w"><nav><b>Shishir<span style="color:var(--y)">.</span></b><div><a href="plugin.html">Plugin</a><a href="shop.html">Shop</a><a href="index.html">Portfolio</a><a href="#" id="out" style="display:none">Sign out</a></div></nav>
+<div id="app"><div class="spin"></div></div></div>
+<footer><div class="w">&copy; Ebadul Islam Shishir &middot; <a href="policy.html">Terms &amp; privacy</a></div></footer>
+<script>
+const SB='https://arqdpagnmjypthlskbps.supabase.co',KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFycWRwYWdubWp5cHRobHNrYnBzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE2NjExMzMsImV4cCI6MjEwNzIzNzEzM30.EbVl7soEvTMvXC1-IGB7GXdLD8yA6dPeZa_5G3A5--k',$=s=>document.querySelector(s),eh=x=>String(x??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let SES=null,SET={};try{SES=JSON.parse(localStorage.getItem('sh_cs')||'null')}catch(e){}
+const save=s=>{SES=s;try{s?localStorage.setItem('sh_cs',JSON.stringify(s)):localStorage.removeItem('sh_cs')}catch(e){}};
+const H=t=>({apikey:KEY,Authorization:'Bearer '+(t||KEY),'Content-Type':'application/json'});
+async function call(url,opt){const r=await fetch(url,opt),t=await r.text();let j=null;try{j=JSON.parse(t)}catch(e){}if(!r.ok)throw new Error((j&&(j.message||j.msg||j.error_description||j.error))||('Error '+r.status));return j}
+const auth=(p,b)=>call(SB+'/auth/v1/'+p,{method:'POST',headers:H(),body:JSON.stringify(b)});
+const rpc=(n,a,tok)=>call(SB+'/rest/v1/rpc/'+n,{method:'POST',headers:H(tok),body:JSON.stringify(a||{})});
+const sess=r=>({at:r.access_token,rt:r.refresh_token,exp:Date.now()+(r.expires_in||3600)*1000-60000,email:(r.user&&r.user.email)||'',name:(r.user&&r.user.user_metadata&&r.user.user_metadata.name)||''});
+async function token(){if(!SES)return null;if(SES.exp>Date.now())return SES.at;try{const r=await auth('token?grant_type=refresh_token',{refresh_token:SES.rt});save({...sess(r),email:SES.email||sess(r).email});return SES.at}catch(e){save(null);return null}}
+const fmt=d=>new Date(d).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'});
+function login(msg){$('#out').style.display='none';$('#app').innerHTML=`<h1>Your plugin account</h1><p class="mu">Create a free account to get your license key and download the plugin.</p>
+<div class="card"><div class="tabs"><button class="on" data-m="in">Sign in</button><button data-m="up">Create account</button></div>
+<form id="af" style="display:block"><div id="nmw" style="display:none"><label>Your name</label><input id="nm" autocomplete="name"></div><label>Email</label><input id="em" type="email" required autocomplete="email"><label>Password</label><input id="pw" type="password" required minlength="6" autocomplete="current-password">
+<p class="er" id="er">${eh(msg||'')}</p><div class="row"><button class="btn p" id="go">Sign in</button><button type="button" class="btn" id="fg">Forgot password</button></div></form></div>`;
+ let mode='in';document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{mode=b.dataset.m;document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x==b));$('#nmw').style.display=mode=='up'?'block':'none';$('#go').textContent=mode=='up'?'Create account':'Sign in';$('#pw').autocomplete=mode=='up'?'new-password':'current-password'});
+ $('#fg').onclick=async()=>{const e=$('#em').value.trim();if(!e){$('#er').textContent='Type your email first.';return}try{await auth('recover',{email:e});$('#er').className='ok';$('#er').textContent='Password reset email sent.'}catch(x){$('#er').className='er';$('#er').textContent=x.message}};
+ $('#af').onsubmit=async e=>{e.preventDefault();const b=$('#go');b.disabled=true;$('#er').className='er';$('#er').textContent='';
+  try{const em=$('#em').value.trim(),pw=$('#pw').value;let r;
+   if(mode=='up'){r=await auth('signup',{email:em,password:pw,data:{name:$('#nm').value.trim()}});if(!r.access_token){$('#er').className='ok';$('#er').textContent='Account created. Check your email to confirm it, then sign in.';b.disabled=false;return}}
+   else r=await auth('token?grant_type=password',{email:em,password:pw});
+   save(sess(r));dash()}catch(x){$('#er').textContent=/invalid login/i.test(x.message)?'Wrong email or password.':x.message;b.disabled=false}}}
+async function dash(){const t=await token();if(!t)return login();$('#out').style.display='inline';$('#app').innerHTML='<div class="spin"></div>';
+ try{SET=(((await call(SB+'/rest/v1/site?id=eq.2&select=data',{headers:H()}))[0])||{}).data||{}}catch(e){}
+ let L,O=[];try{L=await rpc('lic_my',{},t)}catch(x){if(/sign in|JWT/i.test(x.message)){save(null);return login('Please sign in again.')}$('#app').innerHTML='<div class="card"><h2>Something went wrong</h2><p class="er">'+eh(x.message)+'</p></div>';return}
+ try{O=await rpc('my_orders',{},t)}catch(e){}
+ const st=L.status!='active'?['Revoked','r']:L.plan=='owner'?['Owner: lifetime','g']:!L.activated?['Trial not started','y']:L.expired?['Ended','r']:L.expires_at?[L.days_left+' day'+(L.days_left==1?'':'s')+' left','g']:['Lifetime','g'];
+ const total=(+L.trial_days||3),pct=L.plan=='trial'&&L.expires_at&&!L.expired?Math.max(4,Math.min(100,(L.days_left/total)*100)):(L.expires_at||L.plan=='owner'||L.plan=='lifetime')&&!L.expired?100:0;
+ const pr=[['pMonth','1 month'],['pQuarter','3 months'],['pYear','1 year'],['pLife','Lifetime']].filter(x=>SET[x[0]]);
+ const name=SES.name||(SES.email||'').split('@')[0];
+ $('#app').innerHTML=`<h1>Hi ${eh(name)} &#128075;</h1><p class="mu">${eh(SES.email)}</p>
+<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><h2 style="margin:0">Your license</h2><span class="pill ${st[1]}">${eh(st[0])}</span></div>
+<div class="key"><code id="kc">${eh(L.key)}</code><button class="btn" id="cp">Copy key</button></div>
+<div class="bar"><i id="pb"></i></div>
+<p class="mu sm" style="margin-top:10px">${L.plan=='trial'&&!L.activated?`Your free ${total}-day trial starts when you first sign in inside the plugin.`:L.expires_at?`Valid until ${fmt(L.expires_at)}.`:'This license does not expire.'} Computers: ${L.machines.length} of ${L.max}${L.machines.length?' ('+L.machines.map(eh).join(', ')+')':''}.</p>
+<div class="row"><a class="btn p" id="dl" href="${eh(SET.pluginUrl||'#')}" target="_blank" rel="noopener">Download plugin${SET.pluginVersion?' v'+eh(SET.pluginVersion):''}</a>${L.machines.length?'<button class="btn" id="rs">Free my computers</button>':''}</div><p class="er" id="mer"></p></div>
+<div class="card"><h2>Get started in 3 steps</h2><ol class="steps"><li>Download and install the plugin in Premiere Pro (25.6 or newer).</li><li>Open it from <b>Window &rarr; UXP Plugins</b> and sign in with <b>${eh(SES.email)}</b>, or paste your license key.</li><li>Pick a preset and press <b>Insert</b>. It lands on your playhead.</li></ol></div>
+${L.plan=='owner'?'':`<div class="card"><h2>Upgrade to full access</h2>${pr.length?`<div class="row" style="margin-top:0">${pr.map(x=>`<span class="pill y">${x[1]}: &#2547;${eh(SET[x[0]])}</span>`).join('')}</div>`:''}
+<p class="mu sm" style="margin-top:12px">${eh(SET.payNote||'Send the payment, then fill this form with your TrxID. I will approve it and your plugin unlocks by itself.')}</p>
+<div class="mu sm" id="pay" style="margin:8px 0"></div>${L.pending?'<p class="ok">Your request is waiting for approval.</p>':`<form id="rf" style="display:block"><label>Plan</label><select id="rp">${(pr.length?pr:[['','Choose when approved']]).map(x=>`<option>${x[1]}</option>`).join('')}</select><label>Payment TrxID or reference</label><input id="rt" required><label>Message (optional)</label><input id="rm"><p class="er" id="rer"></p><button class="btn p">Send request</button></form>`}</div>`}
+<div class="card"><h2>Your orders</h2>${O.length?`<table><tr><th>Order</th><th>Item</th><th>Status</th><th></th></tr>${O.map(o=>`<tr><td>${eh(o.code)}</td><td>${eh(o.name)}</td><td>${eh(o.status)}</td><td>${o.license?`<a href="shop.html?key=${encodeURIComponent(o.license)}">Download</a>`:''}</td></tr>`).join('')}</table>`:'<p class="mu">No shop orders yet. <a href="shop.html">Browse the shop</a></p>'}</div>`;
+ setTimeout(()=>{const p=$('#pb');if(p)p.style.width=pct+'%'},120);
+ if(!SET.pluginUrl){const d=$('#dl');d.removeAttribute('href');d.textContent='Download link coming soon';d.style.opacity='.6'}
+ $('#cp').onclick=()=>{try{navigator.clipboard.writeText(L.key)}catch(e){}$('#cp').textContent='Copied \u2713'};
+ const rs=$('#rs');if(rs)rs.onclick=async()=>{try{await rpc('lic_my_reset',{},await token());dash()}catch(x){$('#mer').textContent=x.message}};
+ const pay=$('#pay');if(pay){const P=[['bKash',SET.bkash],['Nagad',SET.nagad],['Rocket',SET.rocket]].filter(x=>x[1]).map(x=>x[0]+' (Send Money): <b>'+eh(x[1])+'</b>');if(SET.bkno)P.push('Bank: <b>'+eh(SET.bkname||'')+' '+eh(SET.bkno)+'</b>');pay.innerHTML=P.join('<br>')}
+ const rf=$('#rf');if(rf)rf.onsubmit=async e=>{e.preventDefault();$('#rer').textContent='';try{await rpc('lic_request',{p_machine:'',p_product:'text-pack',p_name:name,p_contact:SES.email,p_trx:$('#rt').value.trim(),p_msg:'Plan: '+$('#rp').value+'. '+$('#rm').value.trim()},await token());dash()}catch(x){$('#rer').textContent=x.message}}}
+$('#out').onclick=e=>{e.preventDefault();save(null);login()};
+SES?dash():login();
+</script></body></html>
