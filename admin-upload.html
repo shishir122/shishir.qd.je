@@ -35,9 +35,16 @@ button.g{background:#2a2d3c;color:#e8e9ef}button:disabled{opacity:.5;cursor:defa
     <input id="files" type="file" accept=".mogrt" multiple>
     <div class="row"><div><label>Category</label><input id="cat" list="cats" placeholder="e.g. Effects"><datalist id="cats"></datalist></div>
     <div><label>Thumbnail (only if the file has none inside)</label><input id="thumb" type="file" accept="image/png,image/jpeg"></div></div>
+    <label>Where to keep the converted files</label>
+    <select id="mode"><option value="cloud">Online storage - automatic (easiest)</option><option value="github">My GitHub pack folder - I upload the .bin myself</option></select>
     <div id="queue"></div>
     <div style="margin-top:12px"><button id="go" disabled>Upload and publish</button></div>
     <div class="log" id="log" hidden></div>
+    <div id="pend" class="hide" style="margin-top:12px;border:1px dashed #ffd23f;border-radius:10px;padding:12px">
+      <b style="color:#ffd23f">Last step (GitHub mode)</b>
+      <div class="small mu" style="margin:6px 0 10px">1. Open your GitHub pack folder (where p01.bin ... are). 2. Click Add file &gt; Upload files and drop the new <b>.bin</b> and <b>.png</b> files saved in your Downloads folder. 3. Commit. 4. Wait about 1 minute, then press the button.</div>
+      <button id="pubPend">I uploaded the files - publish to customers</button>
+    </div>
   </div>
 
   <div id="t_lib" class="card hide"><div id="list" class="mu">Loading...</div></div>
@@ -85,6 +92,8 @@ async function zipThumb(u8){try{const dv=new DataView(u8.buffer,u8.byteOffset,u8
  return new Blob([bytes],{type:/\.png$/i.test(best.name)?'image/png':'image/jpeg'})}catch(e){return null}}
 async function toThumb(blob){const bm=await createImageBitmap(blob),c=document.createElement('canvas');c.width=256;c.height=144;const g=c.getContext('2d'),r=Math.max(256/bm.width,144/bm.height),w=bm.width*r,h=bm.height*r;
  g.fillStyle='#0e0f14';g.fillRect(0,0,256,144);g.drawImage(bm,(256-w)/2,(144-h)/2,w,h);return new Promise(res=>c.toBlob(res,'image/png'))}
+const PACK_BASE='https://shishir.qd.je/pack/';let PENDING=[];
+function saveFile(data,name){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data]));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000)}
 const nice=n=>n.replace(/\.mogrt$/i,'').replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim().toUpperCase();
 function log(el,t,c){el.hidden=false;const d=document.createElement('div');if(c)d.className=c;d.textContent=t;el.appendChild(d);el.scrollTop=1e9}
 
@@ -114,11 +123,20 @@ $('#go').onclick=async()=>{const L=$('#log');L.innerHTML='';$('#go').disabled=tr
   try{const buf=new Uint8Array(await f.arrayBuffer());if(buf[0]!==0x50||buf[1]!==0x4b)throw new Error('not a valid .mogrt file');
    const id='n'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),key=crypto.getRandomValues(new Uint8Array(32)),nonce=crypto.getRandomValues(new Uint8Array(12));
    log(L,'['+name+'] encrypting...');const ct=chacha(key,nonce,buf),bin=new Uint8Array(12+ct.length);bin.set(nonce);bin.set(ct,12);const sha=(await sha256(bin)).slice(0,16);
-   log(L,'['+name+'] uploading '+(bin.length<1048576?Math.round(bin.length/1024)+' KB':(bin.length/1048576).toFixed(1)+' MB')+'...');const binUrl=await upload('packs/'+id+'.bin',bin,'application/octet-stream');
-   const th=f._th||manual;let thUrl=null;if(th)thUrl=await upload('thumbs/'+id+'.png',th,'image/png');else log(L,'['+name+'] no thumbnail - the card will show an empty picture','bad');
+   const th=f._th||manual;
+   if($('#mode').value==='github'){saveFile(bin,id+'.bin');if(th)saveFile(th,id+'.png');else log(L,'['+name+'] no thumbnail - choose one in the Thumbnail box and convert again, or the card will show an empty picture','bad');
+    PENDING.push({id,name,cat,size:bin.length,sha,key:hex(key),th:!!th});log(L,'['+name+'] converted: '+id+'.bin ('+Math.round(bin.length/1024)+' KB)'+(th?' + '+id+'.png':'')+' saved in your Downloads folder','ok')}
+   else{log(L,'['+name+'] uploading '+(bin.length<1048576?Math.round(bin.length/1024)+' KB':(bin.length/1048576).toFixed(1)+' MB')+'...');const binUrl=await upload('packs/'+id+'.bin',bin,'application/octet-stream');
+   let thUrl=null;if(th)thUrl=await upload('thumbs/'+id+'.png',th,'image/png');else log(L,'['+name+'] no thumbnail - the card will show an empty picture','bad');
    await rpc('plugin_admin_add',{p_secret:SECRET,p_id:id,p_name:name,p_cat:cat,p_size:bin.length,p_sha:sha,p_key:hex(key),p_bin_url:binUrl,p_thumb_url:thUrl});
-   log(L,'['+name+'] LIVE - customers see it next time the panel opens','ok')}catch(e){log(L,'['+name+'] FAILED: '+e.message,'bad')}}
- LIB=await rpc('plugin_admin_list',{p_secret:SECRET});cats();renderLib();$('#files').value='';FILES=[];$('#queue').innerHTML=''};
+   log(L,'['+name+'] LIVE - customers see it next time the panel opens','ok')}}catch(e){log(L,'['+name+'] FAILED: '+e.message,'bad')}}
+ $('#pend').classList.toggle('hide',!PENDING.length);
+ LIB=await rpc('plugin_admin_list',{p_secret:SECRET});cats();renderLib();$('#files').value='';FILES=[];$('#queue').innerHTML='';$('#go').disabled=true};
+$('#pubPend').onclick=async()=>{const L=$('#log');for(const q of PENDING.slice()){try{
+   const r=await fetch(PACK_BASE+q.id+'.bin?'+Date.now(),{method:'HEAD'}).catch(()=>null);if(r&&r.status===404)throw new Error('the file is not online yet (GitHub needs 1-2 minutes after commit). Try again soon.');
+   await rpc('plugin_admin_add',{p_secret:SECRET,p_id:q.id,p_name:q.name,p_cat:q.cat,p_size:q.size,p_sha:q.sha,p_key:q.key,p_bin_url:PACK_BASE+q.id+'.bin',p_thumb_url:q.th?PACK_BASE+q.id+'.png':null});
+   PENDING=PENDING.filter(x=>x!==q);log(L,'['+q.name+'] LIVE - customers see it next time the panel opens','ok')}catch(e){log(L,'['+q.name+'] NOT published: '+e.message,'bad')}}
+ $('#pend').classList.toggle('hide',!PENDING.length);LIB=await rpc('plugin_admin_list',{p_secret:SECRET});cats();renderLib()};
 
 /* ---------- library ---------- */
 function renderLib(){const el=$('#list');if(!LIB.length){el.textContent='Nothing yet.';return}
