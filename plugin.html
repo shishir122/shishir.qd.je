@@ -48,7 +48,7 @@ footer{padding:40px 0;text-align:center;color:var(--mu);font-size:14px}
 <p class="lead">Pick a preset, press Insert, and it lands on your timeline. Clean, bold and stylish titles without building them from scratch.</p>
 <div class="cta"><a class="btn p" href="account.html" id="c1">Start free trial</a><a class="btn" href="#presets">See the presets</a></div>
 <div class="mq"><div class="mt" id="mt"></div></div></div></header>
-<div class="w"><div class="stats rv"><div><b data-n="50">0</b><span>text presets</span></div><div><b data-n="3" id="tn">0</b><span>day free trial</span></div><div><b data-n="1">0</b><span>click to insert</span></div></div></div>
+<div class="w"><div class="stats rv"><div><b data-n="50" id="pn">0</b><span>text presets</span></div><div><b data-n="3" id="tn">0</b><span>day free trial</span></div><div><b data-n="1">0</b><span>click to insert</span></div></div></div>
 <section id="features"><div class="w"><h2 class="rv">Made to save you time</h2><p class="sub rv">Everything lives in one panel inside Premiere Pro.</p>
 <div class="g3"><div class="fc rv"><i>&#9889;</i><h3>One-click insert</h3><p>Choose a preset and it is placed at your playhead on the track you pick.</p></div>
 <div class="fc rv"><i>&#127912;</i><h3>Fully editable</h3><p>Every preset is a Motion Graphics Template, so you change the text and style in Essential Graphics.</p></div>
@@ -83,7 +83,7 @@ async function boot(){let S={};try{S=((await (await fetch(SB+'/rest/v1/site?id=e
  $('#pr').innerHTML=(pl.length?pl:[['','Free trial']]).map((x,i,a)=>x[0]?`<div class="pp rv${x[0]=='pLife'||(a.length>2&&i==2)?' hot':''}"><h3>${x[1]}</h3><b>&#2547;${eh(S[x[0]])}</b><span>${x[0]=='pLife'?'pay once':'full access'}</span><a class="btn p" href="account.html">Get started</a></div>`:`<div class="pp rv hot"><h3>Free trial</h3><b>&#2547;0</b><span>${days} days, all presets</span><a class="btn p" href="account.html">Start free trial</a></div>`).join('');
  $('#fq').innerHTML=FAQ.map(f=>`<div class="fq rv"><button>${eh(f[0])}</button><div>${eh(f[1])}</div></div>`).join('');
  document.querySelectorAll('.fq button').forEach(b=>b.onclick=()=>{const f=b.parentNode,o=f.classList.contains('open');document.querySelectorAll('.fq').forEach(x=>x.classList.remove('open'));if(!o)f.classList.add('open')});
- {const n=P.length;if(n){const c=$('#cnt');if(c)c.textContent=n;document.title='Shishir Text Presets: '+n+' text animations for Premiere Pro'}}
+ {const n=P.length;if(n){$('#pn').dataset.n=n;const c=$('#cnt');if(c)c.textContent=n;document.title='Shishir Text Presets: '+n+' text animations for Premiere Pro'}}
  draw();reveal()}
 function draw(){const cs=['All',...new Set(P.map(p=>p.cat))];$('#cats').innerHTML=cs.map(c=>`<button class="ch${c==cat?' on':''}" data-c="${eh(c)}">${eh(c)}</button>`).join('');
  $('#gal').innerHTML=P.filter(p=>(cat=='All'||p.cat==cat)&&p.name.toLowerCase().includes(Q)).map(p=>`<div class="pc"><img src="${eh(TH(p))}" onerror="this.onerror=null;this.src='plugin-assets/thumbs/${p.id}.png'" alt="${eh(p.name)}" loading="lazy"><div><span>${eh(p.name)}${NEWP(p)?' <b style="background:#ffd23f;color:#111;border-radius:6px;padding:1px 6px;font-size:10px;margin-left:4px">NEW</b>':''}</span><small>${eh(p.cat)}</small></div></div>`).join('')||'<p class="sub">No presets found.</p>'}
