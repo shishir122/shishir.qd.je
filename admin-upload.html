@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shishir Text Presets - Admin</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#14151b;color:#e8e9ef;font:14px system-ui,"Segoe UI","Noto Sans Bengali",sans-serif}
+.w{max-width:860px;margin:0 auto;padding:22px 16px 60px}h1{font-size:20px;margin:0 0 4px}h1 b{color:#ffd23f;letter-spacing:2px}
+.mu{color:#8b91a6}.small{font-size:12px}.card{background:#1c1e27;border:1px solid #2b2e3d;border-radius:12px;padding:14px;margin:12px 0}
+input,select,textarea{background:#12131a;border:1px solid #333646;border-radius:8px;color:#fff;padding:8px 10px;font:inherit;width:100%}
+label{display:block;font-size:12px;color:#8b91a6;margin:10px 0 4px}
+button{background:#8b5cf6;border:0;color:#fff;font:inherit;font-weight:700;padding:9px 16px;border-radius:8px;cursor:pointer}
+button.g{background:#2a2d3c;color:#e8e9ef}button:disabled{opacity:.5;cursor:default}
+.tabs{display:flex;gap:6px;margin:16px 0 4px}.tabs button{background:#1c1e27;color:#9aa0b4}.tabs button.on{background:#2d2f3f;color:#ffd23f}
+.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.row>button{flex:none}
+.item{display:grid;grid-template-columns:96px 1fr 1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid #2b2e3d}
+.item img,.ph{width:96px;height:54px;object-fit:cover;border-radius:6px;background:#0e0f14}
+.ph{display:flex;align-items:center;justify-content:center;color:#555;font-size:11px}
+.log{white-space:pre-wrap;font:12px ui-monospace,Consolas,monospace;background:#0e0f14;border-radius:8px;padding:10px;margin-top:10px;max-height:260px;overflow:auto}
+.ok{color:#5eead4}.bad{color:#ff8a9a}.hide{display:none}.pill{font-size:11px;padding:2px 8px;border-radius:10px;background:#2a2d3c}.pill.off{background:#3d1f26;color:#ff9aa8}
+</style></head><body><div class="w">
+<h1><b>SHISHIR</b> Text Presets &middot; Admin</h1>
+<div class="mu small">Upload .mogrt files here. They are encrypted in your browser and appear inside every customer's plugin automatically. Open this file with Chrome or Edge.</div>
+
+<div class="card" id="login">
+  <label>Admin secret (the one you put in setup.sql)</label>
+  <div class="row"><input id="secret" type="password" placeholder="admin secret"><button id="connect">Connect</button></div>
+  <div class="small" id="loginMsg" style="margin-top:8px"></div>
+</div>
+
+<div id="app" class="hide">
+  <div class="card" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="g" id="feed">Test what customers see</button><span id="feedOut" class="small mu">Checks the exact list the plugin downloads.</span></div>
+  <div class="tabs"><button class="on" data-t="add">Add presets</button><button data-t="lib">Library</button><button data-t="upd">Plugin update</button></div>
+
+  <div id="t_add" class="card">
+    <label>.mogrt files (you can pick many at once)</label>
+    <input id="files" type="file" accept=".mogrt" multiple>
+    <div class="row"><div><label>Category</label><input id="cat" list="cats" placeholder="e.g. Effects"><datalist id="cats"></datalist></div>
+    <div><label>Thumbnail (only if the file has none inside)</label><input id="thumb" type="file" accept="image/png,image/jpeg"></div></div>
+    <div id="queue"></div>
+    <div style="margin-top:12px"><button id="go" disabled>Upload and publish</button></div>
+    <div class="log" id="log" hidden></div>
+  </div>
+
+  <div id="t_lib" class="card hide"><div id="list" class="mu">Loading...</div></div>
+
+  <div id="t_upd" class="card hide">
+    <b>Send a plugin update to every customer</b>
+    <div class="mu small">Customers get it automatically the next time they open the panel. Set the same version number inside main.js (CFG.VERSION) first.</div>
+    <div class="row"><div><label>New version (example 1.2.1)</label><input id="ver" placeholder="1.2.1"></div><div><label>What changed (short)</label><input id="notes" placeholder="Faster search, new design"></div></div>
+    <label>main.js (required)</label><input id="f_main" type="file" accept=".js">
+    <div class="row"><div><label>style.css (optional)</label><input id="f_css" type="file" accept=".css"></div><div><label>host.jsx (optional)</label><input id="f_jsx" type="file" accept=".jsx"></div></div>
+    <div style="margin-top:12px"><button id="pub">Publish update</button></div>
+    <hr style="border:0;border-top:1px solid #2b2e3d;margin:18px 0">
+    <b>Message to all customers</b>
+    <div class="mu small">Shown once inside the plugin. Leave empty and publish to clear.</div>
+    <div class="row"><input id="notice" placeholder="Eid offer: 30% off this week"><button id="sendNotice">Publish message</button></div>
+    <div class="log" id="log2" hidden></div>
+  </div>
+</div>
+
+<script>
+const SB='https://arqdpagnmjypthlskbps.supabase.co',KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFycWRwYWdubWp5cHRobHNrYnBzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE2NjExMzMsImV4cCI6MjEwNzIzNzEzM30.EbVl7soEvTMvXC1-IGB7GXdLD8yA6dPeZa_5G3A5--k';
+const $=s=>document.querySelector(s);let SECRET='',LIB=[];
+const hex=b=>Array.from(b,x=>x.toString(16).padStart(2,'0')).join('');
+async function sha256(b){return hex(new Uint8Array(await crypto.subtle.digest('SHA-256',b)))}
+async function rpc(fn,args){const r=await fetch(SB+'/rest/v1/rpc/'+fn,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json'},body:JSON.stringify(args)});
+ const t=await r.text();let j=null;try{j=JSON.parse(t)}catch(e){}if(!r.ok)throw new Error((j&&(j.message||j.hint||j.error))||t||('HTTP '+r.status));return j}
+async function upload(path,data,type){const r=await fetch(SB+'/storage/v1/object/plugin-packs/'+path,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':type},body:data});
+ if(!r.ok)throw new Error('Upload failed ('+r.status+'): '+(await r.text()));return SB+'/storage/v1/object/public/plugin-packs/'+path}
+
+/* ChaCha20 (RFC 8439, block counter starts at 1) - same format the plugin decrypts */
+function chacha(key,nonce,data){const len=data.length,out=new Uint8Array(len),st=new Uint32Array(16),x=new Uint32Array(16),le=(b,o)=>(b[o]|(b[o+1]<<8)|(b[o+2]<<16)|(b[o+3]<<24))>>>0;
+ st[0]=0x61707865;st[1]=0x3320646e;st[2]=0x79622d32;st[3]=0x6b206574;for(let i=0;i<8;i++)st[4+i]=le(key,i*4);st[12]=1;for(let i=0;i<3;i++)st[13+i]=le(nonce,i*4);
+ const qr=(a,b,c,d)=>{x[a]+=x[b];x[d]=((x[d]^x[a])<<16)|((x[d]^x[a])>>>16);x[c]+=x[d];x[b]=((x[b]^x[c])<<12)|((x[b]^x[c])>>>20);x[a]+=x[b];x[d]=((x[d]^x[a])<<8)|((x[d]^x[a])>>>24);x[c]+=x[d];x[b]=((x[b]^x[c])<<7)|((x[b]^x[c])>>>25)};
+ for(let off=0;off<len;off+=64){x.set(st);for(let r=0;r<10;r++){qr(0,4,8,12);qr(1,5,9,13);qr(2,6,10,14);qr(3,7,11,15);qr(0,5,10,15);qr(1,6,11,12);qr(2,7,8,13);qr(3,4,9,14)}
+  for(let i=0;i<16;i++){const v=(x[i]+st[i])>>>0,p=off+i*4;for(let k=0;k<4;k++){if(p+k<len)out[p+k]=data[p+k]^((v>>>(8*k))&255)}}st[12]=(st[12]+1)>>>0}
+ return out}
+
+/* find a thumbnail picture inside the .mogrt (it is a zip file) */
+async function zipThumb(u8){try{const dv=new DataView(u8.buffer,u8.byteOffset,u8.length);let e=u8.length-22;while(e>=0&&dv.getUint32(e,true)!==0x06054b50)e--;if(e<0)return null;
+ let n=dv.getUint16(e+10,true),p=dv.getUint32(e+16,true),best=null;const td=new TextDecoder();
+ for(let i=0;i<n;i++){if(dv.getUint32(p,true)!==0x02014b50)break;const meth=dv.getUint16(p+10,true),cs=dv.getUint32(p+20,true),nl=dv.getUint16(p+28,true),xl=dv.getUint16(p+30,true),cl=dv.getUint16(p+32,true),lo=dv.getUint32(p+42,true),name=td.decode(u8.subarray(p+46,p+46+nl));
+  const low=name.toLowerCase();if(/\.(png|jpe?g)$/.test(low)&&low.indexOf('/')<0&&(!best||/thumb/.test(low)))best={name,meth,cs,lo};p+=46+nl+xl+cl}
+ if(!best)return null;const ln=dv.getUint16(best.lo+26,true),lx=dv.getUint16(best.lo+28,true),s=best.lo+30+ln+lx,raw=u8.subarray(s,s+best.cs);
+ let bytes=raw;if(best.meth===8){const ds=new Blob([raw]).stream().pipeThrough(new DecompressionStream('deflate-raw'));bytes=new Uint8Array(await new Response(ds).arrayBuffer())}else if(best.meth!==0)return null;
+ return new Blob([bytes],{type:/\.png$/i.test(best.name)?'image/png':'image/jpeg'})}catch(e){return null}}
+async function toThumb(blob){const bm=await createImageBitmap(blob),c=document.createElement('canvas');c.width=256;c.height=144;const g=c.getContext('2d'),r=Math.max(256/bm.width,144/bm.height),w=bm.width*r,h=bm.height*r;
+ g.fillStyle='#0e0f14';g.fillRect(0,0,256,144);g.drawImage(bm,(256-w)/2,(144-h)/2,w,h);return new Promise(res=>c.toBlob(res,'image/png'))}
+const nice=n=>n.replace(/\.mogrt$/i,'').replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim().toUpperCase();
+function log(el,t,c){el.hidden=false;const d=document.createElement('div');if(c)d.className=c;d.textContent=t;el.appendChild(d);el.scrollTop=1e9}
+
+/* ---------- login ---------- */
+async function connect(){const s=$('#secret').value.trim();if(!s)return;$('#loginMsg').textContent='Checking...';
+ try{LIB=await rpc('plugin_admin_list',{p_secret:s});SECRET=s;try{sessionStorage.setItem('sh_admin',s)}catch(e){}$('#login').classList.add('hide');$('#app').classList.remove('hide');cats();renderLib()}
+ catch(e){$('#loginMsg').innerHTML='<span class="bad">'+esc(e.message)+'</span>'}}
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function cats(){$('#cats').innerHTML=[...new Set(LIB.map(p=>p.cat))].map(c=>'<option value="'+esc(c)+'">').join('')}
+$('#connect').onclick=connect;$('#secret').addEventListener('keydown',e=>{if(e.key==='Enter')connect()});
+try{const s=sessionStorage.getItem('sh_admin');if(s){$('#secret').value=s;connect()}}catch(e){}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));['add','lib','upd'].forEach(t=>$('#t_'+t).classList.toggle('hide',t!==b.dataset.t))});
+
+/* ---------- test the customer feed ---------- */
+$('#feed').onclick=async()=>{const o=$('#feedOut');o.className='small';o.textContent='Checking...';
+ try{const c=await rpc('plugin_catalog',{});const ps=(c&&c.presets)||[],online=ps.filter(p=>p.url).length;
+  o.innerHTML='<span class="ok">OK</span> - the plugin receives '+ps.length+' presets ('+online+' uploaded from this page). Newest: <b>'+esc(ps[0]?ps[0].name:'none')+'</b>. Update: '+esc(c.latest?c.latest.version:'none')+'. Message: '+esc(c.notice||'none')+'<br><span class="mu">Now fully close the panel in Premiere and open it again.</span>'}
+ catch(e){o.innerHTML='<span class="bad">FAILED: '+esc(e.message)+'</span><br><span class="mu">Run in Supabase SQL: notify pgrst, \'reload schema\';  then try again.</span>'}};
+
+/* ---------- add presets ---------- */
+let FILES=[];
+$('#files').onchange=async()=>{FILES=[...$('#files').files];$('#go').disabled=!FILES.length;const q=$('#queue');q.innerHTML='';
+ for(const f of FILES){const row=document.createElement('div');row.className='item';row.innerHTML='<div class="ph">...</div><input value="'+esc(nice(f.name))+'"><div class="mu small">'+esc(f.name)+' &middot; '+(f.size/1048576).toFixed(1)+' MB</div><span></span>';q.appendChild(row);f._row=row;
+  zipThumb(new Uint8Array(await f.arrayBuffer())).then(async b=>{if(b){f._th=await toThumb(b);const im=document.createElement('img');im.src=URL.createObjectURL(f._th);row.firstChild.replaceWith(im)}else row.firstChild.textContent='no thumb'})}};
+$('#go').onclick=async()=>{const L=$('#log');L.innerHTML='';$('#go').disabled=true;const cat=($('#cat').value||'').trim()||'Effects';let manual=null;const tf=$('#thumb').files[0];if(tf)manual=await toThumb(tf);
+ for(const f of FILES){const name=f._row.querySelector('input').value.trim()||nice(f.name);
+  try{const buf=new Uint8Array(await f.arrayBuffer());if(buf[0]!==0x50||buf[1]!==0x4b)throw new Error('not a valid .mogrt file');
+   const id='n'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),key=crypto.getRandomValues(new Uint8Array(32)),nonce=crypto.getRandomValues(new Uint8Array(12));
+   log(L,'['+name+'] encrypting...');const ct=chacha(key,nonce,buf),bin=new Uint8Array(12+ct.length);bin.set(nonce);bin.set(ct,12);const sha=(await sha256(bin)).slice(0,16);
+   log(L,'['+name+'] uploading '+(bin.length/1048576).toFixed(1)+' MB...');const binUrl=await upload('packs/'+id+'.bin',bin,'application/octet-stream');
+   const th=f._th||manual;let thUrl=null;if(th)thUrl=await upload('thumbs/'+id+'.png',th,'image/png');else log(L,'['+name+'] no thumbnail - the card will show an empty picture','bad');
+   await rpc('plugin_admin_add',{p_secret:SECRET,p_id:id,p_name:name,p_cat:cat,p_size:bin.length,p_sha:sha,p_key:hex(key),p_bin_url:binUrl,p_thumb_url:thUrl});
+   log(L,'['+name+'] LIVE - customers see it next time the panel opens','ok')}catch(e){log(L,'['+name+'] FAILED: '+e.message,'bad')}}
+ LIB=await rpc('plugin_admin_list',{p_secret:SECRET});cats();renderLib();$('#files').value='';FILES=[];$('#queue').innerHTML=''};
+
+/* ---------- library ---------- */
+function renderLib(){const el=$('#list');if(!LIB.length){el.textContent='Nothing yet.';return}
+ el.innerHTML='<div class="mu small">'+LIB.length+' presets. Old presets (without "online") only support rename/hide.</div>';
+ LIB.forEach(p=>{const r=document.createElement('div');r.className='item';
+  r.innerHTML=(p.thumb?'<img src="'+esc(p.thumb)+'">':'<div class="ph">built-in</div>')+'<input value="'+esc(p.name)+'"><input value="'+esc(p.cat)+'"><div style="display:flex;gap:6px"><button class="g">Save</button><button class="g">'+(p.active?'Hide':'Show')+'</button></div>';
+  const [nm,ct]=r.querySelectorAll('input'),[sv,tg]=r.querySelectorAll('button');
+  sv.onclick=async()=>{try{await rpc('plugin_admin_edit',{p_secret:SECRET,p_id:p.id,p_name:nm.value.trim(),p_cat:ct.value.trim(),p_active:null});p.name=nm.value.trim();p.cat=ct.value.trim();sv.textContent='Saved'}catch(e){alert(e.message)}};
+  tg.onclick=async()=>{try{await rpc('plugin_admin_edit',{p_secret:SECRET,p_id:p.id,p_name:null,p_cat:null,p_active:!p.active});p.active=!p.active;renderLib()}catch(e){alert(e.message)}};
+  if(!p.active){r.style.opacity='.55'}el.appendChild(r)})}
+
+/* ---------- plugin update + message ---------- */
+$('#pub').onclick=async()=>{const L=$('#log2');L.innerHTML='';const ver=$('#ver').value.trim();if(!/^\d+\.\d+\.\d+$/.test(ver))return log(L,'Version must look like 1.2.1','bad');
+ const sel=[['main.js',$('#f_main').files[0]],['style.css',$('#f_css').files[0]],['host.jsx',$('#f_jsx').files[0]]].filter(x=>x[1]);if(!sel.find(x=>x[0]==='main.js'))return log(L,'main.js is required','bad');
+ try{const files=[];for(const [name,f] of sel){const b=new Uint8Array(await f.arrayBuffer());log(L,'uploading '+name+'...');const url=await upload('update/'+ver+'/'+name,b,'application/octet-stream');files.push({name,url,sha:await sha256(b)})}
+  await rpc('plugin_admin_set_meta',{p_secret:SECRET,p_key:'latest',p_value:{version:ver,notes:$('#notes').value.trim(),files}});log(L,'Update '+ver+' published. Customers get it automatically.','ok')}catch(e){log(L,'FAILED: '+e.message,'bad')}};
+$('#sendNotice').onclick=async()=>{const L=$('#log2');try{await rpc('plugin_admin_set_meta',{p_secret:SECRET,p_key:'notice',p_value:$('#notice').value.trim()});log(L,'Message published.','ok')}catch(e){log(L,'FAILED: '+e.message,'bad')}};
+</script></div></body></html>
