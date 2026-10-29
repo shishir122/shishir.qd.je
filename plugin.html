@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0e1118">
-<title>Shishir Text Presets: 50 text animations for Premiere Pro</title>
-<meta name="description" content="A Premiere Pro panel with 50 ready text animation presets. Insert any of them on your timeline in one click. Try it free.">
-<meta property="og:type" content="website"><meta property="og:title" content="Shishir Text Presets for Premiere Pro"><meta property="og:description" content="50 text animation presets. One click on your timeline. Free trial."><meta property="og:image" content="https://shishir.qd.je/og.png"><meta name="twitter:card" content="summary_large_image"><link rel="canonical" href="https://shishir.qd.je/plugin.html">
+<title>Shishir Text Presets: text animations for Premiere Pro</title>
+<meta name="description" content="A Premiere Pro panel with ready-made text animation presets. Insert any of them on your timeline in one click. Try it free.">
+<meta property="og:type" content="website"><meta property="og:title" content="Shishir Text Presets for Premiere Pro"><meta property="og:description" content="Text animation presets. One click on your timeline. Free trial."><meta property="og:image" content="https://shishir.qd.je/og.png"><meta name="twitter:card" content="summary_large_image"><link rel="canonical" href="https://shishir.qd.je/plugin.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23161a24'/%3E%3Ctext x='32' y='45' font-size='40' font-weight='800' text-anchor='middle' fill='%23ffd23f' font-family='Arial'%3ES%3C/text%3E%3C/svg%3E">
 <style>
 :root{--bg:#0e1118;--pn:#171b26;--pn2:#1d2230;--ln:#2a3144;--tx:#eef0f6;--mu:#98a1b8;--y:#ffd23f;--g:#5eead4;--v:#8b5cf6;--m:#f72585}
@@ -44,7 +44,7 @@ footer{padding:40px 0;text-align:center;color:var(--mu);font-size:14px}
 </style></head><body><div class="bgfx"></div>
 <nav><div class="w"><b>Shishir<span style="color:var(--y)">.</span> Text Presets</b><div class="nl"><a href="#features">Features</a><a href="#presets">Presets</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><a class="btn" href="account.html" style="padding:10px 18px;font-size:15px">Sign in</a></div></div></nav>
 <header class="hero"><div class="w"><span class="tag" id="tag">FREE TRIAL INCLUDED</span>
-<h1>50 text animations for <em>Premiere Pro</em>, one click away</h1>
+<h1><span id="cnt">50</span> text animations for <em>Premiere Pro</em>, one click away</h1>
 <p class="lead">Pick a preset, press Insert, and it lands on your timeline. Clean, bold and stylish titles without building them from scratch.</p>
 <div class="cta"><a class="btn p" href="account.html" id="c1">Start free trial</a><a class="btn" href="#presets">See the presets</a></div>
 <div class="mq"><div class="mt" id="mt"></div></div></div></header>
@@ -83,6 +83,7 @@ async function boot(){let S={};try{S=((await (await fetch(SB+'/rest/v1/site?id=e
  $('#pr').innerHTML=(pl.length?pl:[['','Free trial']]).map((x,i,a)=>x[0]?`<div class="pp rv${x[0]=='pLife'||(a.length>2&&i==2)?' hot':''}"><h3>${x[1]}</h3><b>&#2547;${eh(S[x[0]])}</b><span>${x[0]=='pLife'?'pay once':'full access'}</span><a class="btn p" href="account.html">Get started</a></div>`:`<div class="pp rv hot"><h3>Free trial</h3><b>&#2547;0</b><span>${days} days, all presets</span><a class="btn p" href="account.html">Start free trial</a></div>`).join('');
  $('#fq').innerHTML=FAQ.map(f=>`<div class="fq rv"><button>${eh(f[0])}</button><div>${eh(f[1])}</div></div>`).join('');
  document.querySelectorAll('.fq button').forEach(b=>b.onclick=()=>{const f=b.parentNode,o=f.classList.contains('open');document.querySelectorAll('.fq').forEach(x=>x.classList.remove('open'));if(!o)f.classList.add('open')});
+ {const n=P.length;if(n){const c=$('#cnt');if(c)c.textContent=n;document.title='Shishir Text Presets: '+n+' text animations for Premiere Pro'}}
  draw();reveal()}
 function draw(){const cs=['All',...new Set(P.map(p=>p.cat))];$('#cats').innerHTML=cs.map(c=>`<button class="ch${c==cat?' on':''}" data-c="${eh(c)}">${eh(c)}</button>`).join('');
  $('#gal').innerHTML=P.filter(p=>(cat=='All'||p.cat==cat)&&p.name.toLowerCase().includes(Q)).map(p=>`<div class="pc"><img src="${eh(TH(p))}" onerror="this.onerror=null;this.src='plugin-assets/thumbs/${p.id}.png'" alt="${eh(p.name)}" loading="lazy"><div><span>${eh(p.name)}${NEWP(p)?' <b style="background:#ffd23f;color:#111;border-radius:6px;padding:1px 6px;font-size:10px;margin-left:4px">NEW</b>':''}</span><small>${eh(p.cat)}</small></div></div>`).join('')||'<p class="sub">No presets found.</p>'}
