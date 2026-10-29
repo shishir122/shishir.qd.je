@@ -114,7 +114,7 @@ $('#go').onclick=async()=>{const L=$('#log');L.innerHTML='';$('#go').disabled=tr
   try{const buf=new Uint8Array(await f.arrayBuffer());if(buf[0]!==0x50||buf[1]!==0x4b)throw new Error('not a valid .mogrt file');
    const id='n'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),key=crypto.getRandomValues(new Uint8Array(32)),nonce=crypto.getRandomValues(new Uint8Array(12));
    log(L,'['+name+'] encrypting...');const ct=chacha(key,nonce,buf),bin=new Uint8Array(12+ct.length);bin.set(nonce);bin.set(ct,12);const sha=(await sha256(bin)).slice(0,16);
-   log(L,'['+name+'] uploading '+(bin.length/1048576).toFixed(1)+' MB...');const binUrl=await upload('packs/'+id+'.bin',bin,'application/octet-stream');
+   log(L,'['+name+'] uploading '+(bin.length<1048576?Math.round(bin.length/1024)+' KB':(bin.length/1048576).toFixed(1)+' MB')+'...');const binUrl=await upload('packs/'+id+'.bin',bin,'application/octet-stream');
    const th=f._th||manual;let thUrl=null;if(th)thUrl=await upload('thumbs/'+id+'.png',th,'image/png');else log(L,'['+name+'] no thumbnail - the card will show an empty picture','bad');
    await rpc('plugin_admin_add',{p_secret:SECRET,p_id:id,p_name:name,p_cat:cat,p_size:bin.length,p_sha:sha,p_key:hex(key),p_bin_url:binUrl,p_thumb_url:thUrl});
    log(L,'['+name+'] LIVE - customers see it next time the panel opens','ok')}catch(e){log(L,'['+name+'] FAILED: '+e.message,'bad')}}
