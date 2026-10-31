@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://shishir.qd.je/</loc></url>
-<url><loc>https://shishir.qd.je/shop.html</loc></url>
-<url><loc>https://shishir.qd.je/policy.html</loc></url>
-<url><loc>https://shishir.qd.je/blog.html</loc></url>
-<url><loc>https://shishir.qd.je/plugin.html</loc></url>
+<url><loc>https://shishir.qd.je/</loc><lastmod>2026-10-31</lastmod><priority>1.0</priority></url>
+<url><loc>https://shishir.qd.je/shop.html</loc><lastmod>2026-10-31</lastmod><priority>0.8</priority></url>
+<url><loc>https://shishir.qd.je/plugin.html</loc><lastmod>2026-10-31</lastmod><priority>0.8</priority></url>
+<url><loc>https://shishir.qd.je/blog.html</loc><lastmod>2026-10-31</lastmod><priority>0.7</priority></url>
+<url><loc>https://shishir.qd.je/policy.html</loc><lastmod>2026-10-31</lastmod><priority>0.3</priority></url>
 </urlset>
