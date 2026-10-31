@@ -68,13 +68,13 @@ footer{padding:40px 0;text-align:center;color:var(--mu);font-size:14px}
 const SB='https://arqdpagnmjypthlskbps.supabase.co',KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFycWRwYWdubWp5cHRobHNrYnBzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE2NjExMzMsImV4cCI6MjEwNzIzNzEzM30.EbVl7soEvTMvXC1-IGB7GXdLD8yA6dPeZa_5G3A5--k',$=s=>document.querySelector(s),eh=x=>String(x??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let P=[],cat='All',Q='';
 const FAQ=[['Which Premiere Pro do I need?','Premiere Pro 2020 or newer, on Windows or Mac. A one-click installer is included, and you do not need any special Adobe account or developer mode.'],['How does the free trial work?','Create an account and sign in inside the plugin. Your free trial starts then and lasts a few days. All presets are included.'],['What happens when the trial or license ends?','The plugin stops inserting presets, and preset clips already on your timeline are turned off until you unlock. Upgrade and they come back.'],['Can I use it on more than one computer?','A license works on a small number of computers, shown in your account. You can free a computer from your account page.'],['Can I share the presets?','No. The license is for you only. Sharing or reselling the presets or your key is not allowed.'],['Do I need internet?','Yes. The plugin checks your license and loads each preset when you use it.']];
-const TH=p=>p.thumb||('plugin-assets/thumbs/'+p.id+'.png'),NEWP=p=>!!(p&&p.added&&(Date.now()-new Date(p.added).getTime())<14*864e5);
+const dedupeP=a=>{const s=new Set();return(a||[]).filter(p=>{const k=String((p&&p.name)||'').toLowerCase().replace(/[^a-z0-9]+/g,'');if(!k)return true;if(s.has(k))return false;s.add(k);return true})}; const TH=p=>p.thumb||('plugin-assets/thumbs/'+p.id+'.png'),NEWP=p=>!!(p&&p.added&&(Date.now()-new Date(p.added).getTime())<14*864e5);
 async function loadPresets(){let S=[],L=[];const H={apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json'};
  try{S=await (await fetch('plugin-assets/presets.json')).json()}catch(e){}
  try{const r=await fetch(SB+'/rest/v1/rpc/plugin_catalog',{method:'POST',headers:H,body:'{}',cache:'no-store'});if(r.ok){const j=await r.json();L=(j&&j.presets)||[]}}catch(e){}
  if(!L.length){try{const r=await fetch(SB+'/rest/v1/presets?select=*&active=eq.true&order=sort.asc,id.asc',{headers:H,cache:'no-store'});if(r.ok)L=await r.json()}catch(e){}}
  if(!L.length)return S;const ids=new Set(L.map(p=>p.id));
- return S.some(p=>ids.has(p.id))?L:S.filter(p=>!ids.has(p.id)).concat(L)}
+ return dedupeP(S.some(p=>ids.has(p.id))?L:S.filter(p=>!ids.has(p.id)).concat(L))}
 async function boot(){let S={};try{S=((await (await fetch(SB+'/rest/v1/site?id=eq.2&select=data',{headers:{apikey:KEY,Authorization:'Bearer '+KEY}})).json())[0]||{}).data||{}}catch(e){}
  try{P=await loadPresets()}catch(e){P=[]}
  const days=+S.trialDays||3;$('#tn').dataset.n=days;$('#tag').textContent='FREE '+days+'-DAY TRIAL INCLUDED';
