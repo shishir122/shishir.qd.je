@@ -3,7 +3,7 @@
 <title>Shishir Text Presets: text animations for Premiere Pro</title>
 <meta name="description" content="A Premiere Pro panel with ready-made text animation presets. Insert any of them on your timeline in one click. Try it free.">
 <meta property="og:type" content="website"><meta property="og:title" content="Shishir Text Presets for Premiere Pro"><meta property="og:description" content="Text animation presets. One click on your timeline. Free trial."><meta property="og:image" content="https://shishir.qd.je/og.png"><meta name="twitter:card" content="summary_large_image"><link rel="canonical" href="https://shishir.qd.je/plugin.html">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23161a24'/%3E%3Ctext x='32' y='45' font-size='40' font-weight='800' text-anchor='middle' fill='%23ffd23f' font-family='Arial'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="logo.png">
 <style>
 :root{--bg:#0e1118;--pn:#171b26;--pn2:#1d2230;--ln:#2a3144;--tx:#eef0f6;--mu:#98a1b8;--y:#ffd23f;--g:#5eead4;--v:#8b5cf6;--m:#f72585}
 *{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}body{background:var(--bg);color:var(--tx);font:17px/1.65 system-ui,-apple-system,'Segoe UI',Arial,sans-serif;overflow-x:hidden}
@@ -42,7 +42,7 @@ footer{padding:40px 0;text-align:center;color:var(--mu);font-size:14px}
 @media(max-width:820px){.g3,.steps{grid-template-columns:1fr}.nl a:not(.btn){display:none}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
 </style></head><body><div class="bgfx"></div>
-<nav><div class="w"><b>Shishir<span style="color:var(--y)">.</span> Text Presets</b><div class="nl"><a href="#features">Features</a><a href="#presets">Presets</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><a class="btn" href="account.html" style="padding:10px 18px;font-size:15px">Sign in</a></div></div></nav>
+<nav><div class="w"><a href="index.html" style="display:flex;align-items:center;gap:10px;color:inherit"><img src="logo.png" alt="Shishir" width="44" height="36" style="height:36px;width:auto;display:block"><b>Text Presets</b></a><div class="nl"><a href="#features">Features</a><a href="#presets">Presets</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><a class="btn" href="account.html" style="padding:10px 18px;font-size:15px">Sign in</a></div></div></nav>
 <header class="hero"><div class="w"><span class="tag" id="tag">FREE TRIAL INCLUDED</span>
 <h1><span id="cnt">50</span> text animations for <em>Premiere Pro</em>, one click away</h1>
 <p class="lead">Pick a preset, press Insert, and it lands on your timeline. Clean, bold and stylish titles without building them from scratch.</p>
@@ -91,4 +91,5 @@ $('#q').oninput=e=>{Q=e.target.value.toLowerCase();draw()};$('#cats').onclick=e=
 function reveal(){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);const c=e.target.querySelectorAll('[data-n]');c.forEach(n=>count(n))}}),{threshold:.12});document.querySelectorAll('.rv').forEach((el,i)=>{el.style.transitionDelay=(i%3)*90+'ms';io.observe(el)})}
 function count(n){const to=+n.dataset.n,t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/1100);n.textContent=Math.round(to*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(f)})(t0)}
 boot();
-</script></body></html>
+</script><script src="session-nav.js" defer></script>
+</body></html>

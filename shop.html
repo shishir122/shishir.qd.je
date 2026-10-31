@@ -3,7 +3,7 @@
 <title>Shop | Ebadul Islam Shishir</title>
 <meta name="description" content="LUTs, transitions, sound packs and templates for video editors, made by Ebadul Islam Shishir.">
 <meta property="og:type" content="website"><meta property="og:title" content="Editing assets | Ebadul Islam Shishir"><meta property="og:description" content="LUTs, transitions, sound packs and templates for video editors."><meta property="og:image" content="https://shishir.qd.je/og.png"><meta property="og:url" content="https://shishir.qd.je/shop.html"><meta name="twitter:card" content="summary_large_image"><link rel="canonical" href="https://shishir.qd.je/shop.html">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23161a24'/%3E%3Ctext x='32' y='45' font-size='40' font-weight='800' text-anchor='middle' fill='%23ffd23f' font-family='Arial'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
@@ -39,7 +39,7 @@ footer{border-top:1px solid var(--ln);margin-top:50px;padding:26px 0;text-align:
 .ba{position:relative;aspect-ratio:16/10;border-radius:12px;overflow:hidden;background:#242b3e}.ba .a0,.ba .a1{position:absolute;inset:0;background:center/cover}.ba .a1{clip-path:inset(0 50% 0 0)}.ba input{position:absolute;left:0;right:0;bottom:6px;width:100%;background:none;border:0;padding:0 10px;accent-color:var(--y)}.ba em{position:absolute;top:10px;font:700 11px var(--mono);background:#000a;padding:3px 8px;border-radius:99px;font-style:normal}
 .thumbs{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}.thumbs span{width:64px;height:48px;border-radius:8px;background:center/cover;border:1px solid var(--ln);cursor:pointer}.stars{color:var(--y);letter-spacing:2px}
 </style></head><body>
-<nav><div class="w"><a href="index.html">&larr; Portfolio</a><b style="font-family:var(--d)">Shop</b><span style="display:flex;gap:20px"><a href="#" id="cb">Cart <b id="cn"></b></a><a href="#" id="dn">My download</a><a href="#" id="trk">Track my order</a></span></div></nav>
+<nav><div class="w"><a href="index.html" style="display:inline-flex;align-items:center;gap:12px"><img src="logo.png" alt="Shishir" width="44" height="36" style="height:36px;width:auto;display:block"><span>&larr; Portfolio</span></a><b style="font-family:var(--d)">Shop</b><span style="display:flex;gap:20px"><a href="#" id="cb">Cart <b id="cn"></b></a><a href="#" id="dn">My download</a><a href="#" id="trk">Track my order</a></span></div></nav>
 <header class="hero"><div class="w"><span class="eyebrow">Made by me</span><h1>Editing assets</h1><p class="sub">LUTs, transitions, sound packs and templates I use in my own edits.</p>
 <div class="trust"><span><b>&#10003;</b> Instant delivery after payment check</span><span><b>&#10003;</b> License key with every order</span><span><b>&#10003;</b> Support on WhatsApp</span></div></div></header>
 <main class="w"><div id="fs" class="sec" hidden><h2>Featured</h2><div class="grid" id="fg"></div></div>
@@ -143,4 +143,5 @@ $('#trk').onclick=e=>{e.preventDefault();track()};
  addEventListener('error',e=>{if(e.filename&&location.protocol!='file:'&&!e.filename.startsWith(location.origin))return;send((e.message||'Error')+' ('+String(e.filename||'').split('/').pop()+':'+(e.lineno||0)+')')});
  addEventListener('unhandledrejection',e=>send('Promise: '+((e.reason&&e.reason.message)||e.reason)))})();
 init();
-</script></body></html>
+</script><script src="session-nav.js" defer></script>
+</body></html>

@@ -340,7 +340,6 @@ html:has(dialog[open]){overflow:hidden}
 <p class="lead"><b>Video editor, 3+ years in.</b> I turn raw footage into clean, well-paced videos for YouTubers, brands and agencies, delivered on time and ready to publish.</p>
 <div class="cta"><a class="btn pri" href="#work">See my work</a><a class="btn" id="hw" target="_blank" rel="noopener"></a></div></div>
 <div class="pf" id="pf"><div class="ini">ES</div><span class="chip" style="left:-22px;bottom:34px">3+ years editing</span></div>
-<div class="tl" id="tl" role="img" aria-label="Editing timeline showing my skills. Move your cursor across it to scrub."></div>
 </div></header>
 
 <div class="mq" aria-hidden="true"><div id="mq"></div><div class="r o" id="mq2"></div></div>
@@ -500,16 +499,9 @@ $('#sv').innerHTML=SV.map(([t,d],i)=>`<div class="row"><h3>${t}</h3><p>${d}</p><
 $('#st').innerHTML=ST.map(([t,d],i)=>`<li><div><b>${t}</b><span>${d}</span></div></li>`).join('');
 $('#cm').innerHTML=CM.map(([t,d],i)=>`<div><b>${t}</b><span>${d}</span></div>`).join('');
 
-/* Timeline: shows skills as clips, scrub with the cursor */
+/* The timeline is no longer shown on the page. Its default content and the 2-digit helper stay because the admin editor and the maintenance countdown use them. */
 const TR=[['V2','var(--m)',[['Titles',3],['Captions',4],['Lower thirds',3],['Logo reveal',2]]],['V1','var(--cy)',[['Hook',2],['Rough cut',4],['Pacing',3],['Color grade',3],['Final cut',2]]],['A1','var(--g)',[['Music sync',4],['Voice cleanup',4],['SFX',3],['Mix',2]]]];
-const tl=$('#tl');
-tl.innerHTML='<div class="rl">'+['00:00','00:15','00:30','00:45','01:00'].map(x=>`<span>${x}</span>`).join('')+'</div>'+TR.map(([n,c,cl],k)=>`<div class="tk" data-n="${n}" style="--tc:${c}">${cl.map(([t,f],j)=>`<span style="flex:${f};--i:${j+k*2}">${t}</span>`).join('')}</div>`).join('')+'<div class="ph" id="ph"><b id="tc">00:00:00</b></div>';
-const ph=$('#ph'),tc=$('#tc'),z=n=>String(n).padStart(2,'0');
-function set(p){p=Math.max(0,Math.min(1,p));ph.style.left=`calc(var(--o) + (100% - var(--o) - 14px)*${p})`;const t=p*59.9,s=Math.floor(t);tc.textContent=`00:${z(s)}:${z(Math.floor((t-s)*30))}`}
-let go=1,p0=0;
-function sweep(){if(!go)return;p0+=.004;set(p0);if(p0<.62)requestAnimationFrame(sweep)}
-tl.addEventListener('pointermove',e=>{go=0;const r=tl.getBoundingClientRect(),o=parseFloat(getComputedStyle(tl).getPropertyValue('--o'));set((e.clientX-r.left-o)/(r.width-o-14))});
-matchMedia('(prefers-reduced-motion:reduce)').matches?set(.62):sweep();
+const z=n=>String(n).padStart(2,'0');
 
 /* Video modal */
 const BR=CFG.brand||'Ebadul Islam Shishir';
@@ -1053,7 +1045,7 @@ const pover=()=>{const now=Date.now(),ok=LC.filter(l=>l.status=='active'&&(!l.ex
  +(OWN&&OWN.key?`<div class="keybox2"><b>${esc(OWN.key)}</b><br><small>${esc(OWN.plan)} &middot; ${OWN.expires_at?'until '+new Date(OWN.expires_at).toLocaleDateString():'never expires'} &middot; computers ${OWN.machines.length} of ${OWN.max}</small></div><p class="am">Sign in inside the plugin with your admin email, or paste this key. It never expires.</p>`:'<p class="am">Run update-accounts.sql in Supabase to get your owner license.</p>')
  +`${B}Quick links</h3><div class="bt"><a class="btn" href="plugin.html" target="_blank">Plugin page</a><a class="btn" href="account.html" target="_blank">Customer account page</a><a class="btn" href="license.html" target="_blank">License Center</a></div>${B}Latest licenses</h3>`
  +(LC.slice(0,6).map(l=>`<div class="li"><span><b>${esc(l.lkey)}</b><br><small>${esc(l.email||l.name||'')} &middot; ${esc(l.plan)} &middot; ${exps(l)}</small></span><span>${(l.machines||[]).length}/${l.max_machines}</span></div>`).join('')||'<p class="am">No licenses yet.</p>')};
-const pset=()=>`<h3 style="font-size:19px;margin-top:14px">Plugin download and prices</h3>${fi('pu','Plugin download link (Google Drive link or any link)',S.pluginUrl)}<p class="am">Customers see this Download button in their account after they sign in.</p>${fi('pv2','Plugin version (for example 1.0.0)',S.pluginVersion)}${fi('std2','Free trial length in days',S.trialDays,'number')}<h3 style="font-size:19px;margin-top:20px">Prices in taka (leave empty to hide)</h3><div class="r2"><div>${fi('pm1','1 month',S.pMonth,'number')}</div><div>${fi('pm3','3 months',S.pQuarter,'number')}</div></div><div class="r2"><div>${fi('py1','1 year',S.pYear,'number')}</div><div>${fi('pl1','Lifetime',S.pLife,'number')}</div></div><label>Message for customers about payment</label><textarea id="pnt" rows="3">${esc(S.payNote||'')}</textarea><div class="bt"><button class="btn pri" data-s="psv">Save plugin settings</button></div><p class="am">Payment numbers (bKash, Nagad, bank) are in Shop, Settings.</p>`;
+const pset=()=>`<h3 style="font-size:19px;margin-top:14px">Plugin download and prices</h3><label>Upload the plugin file here (.zip, .zxp or .ccx)</label><input type="file" id="pfile" accept=".zip,.zxp,.ccx,.rar"><div class="bt"><button class="btn pri" data-s="pfup">Upload plugin file</button></div><p class="am">The file is stored online and the download link and version below are filled in for you. Customers get it from their account page.</p>${fi('pu','Plugin download link (Google Drive link or any link)',S.pluginUrl)}<p class="am">Customers see this Download button in their account after they sign in.</p>${fi('pv2','Plugin version (for example 1.0.0)',S.pluginVersion)}${fi('std2','Free trial length in days',S.trialDays,'number')}<h3 style="font-size:19px;margin-top:20px">Prices in taka (leave empty to hide)</h3><div class="r2"><div>${fi('pm1','1 month',S.pMonth,'number')}</div><div>${fi('pm3','3 months',S.pQuarter,'number')}</div></div><div class="r2"><div>${fi('py1','1 year',S.pYear,'number')}</div><div>${fi('pl1','Lifetime',S.pLife,'number')}</div></div><label>Message for customers about payment</label><textarea id="pnt" rows="3">${esc(S.payNote||'')}</textarea><div class="bt"><button class="btn pri" data-s="psv">Save plugin settings</button></div><p class="am">Payment numbers (bKash, Nagad, bank) are in Shop, Settings.</p>`;
 const hex2b=h=>{const o=new Uint8Array(h.length/2);for(let i=0;i<o.length;i++)o[i]=parseInt(h.substr(i*2,2),16);return o};
 function chachaX(key,nonce,data){const out=new Uint8Array(data.length),st=new Uint32Array(16),x=new Uint32Array(16),le=(b,o)=>(b[o]|(b[o+1]<<8)|(b[o+2]<<16)|(b[o+3]<<24))>>>0,rotl=(v,n)=>(v<<n)|(v>>>(32-n));
  st[0]=0x61707865;st[1]=0x3320646e;st[2]=0x79622d32;st[3]=0x6b206574;for(let i=0;i<8;i++)st[4+i]=le(key,i*4);st[12]=1;for(let i=0;i<3;i++)st[13+i]=le(nonce,i*4);
@@ -1129,6 +1121,10 @@ function draw(){const E=P.find(x=>x.id===eid)||{},top=d.scrollTop,B='<h3 style="
   else if(s=='lrv'){const l=LC.find(x=>x.id==id);act(()=>R('PATCH','licenses?id=eq.'+id,{status:l.status=='active'?'revoked':'active'}),'Updated.')}
   else if(s=='lrm')act(()=>R('PATCH','licenses?id=eq.'+id,{machines:[]}),'Machines reset.');
   else if(s=='ldl'){if(confirm('Delete this license?'))act(()=>R('DELETE','licenses?id=eq.'+id),'Deleted.')}
+  else if(s=='pfup'){const f=q('#pfile').files[0];if(!f){msg='Choose the plugin file first.';draw();return}if(f.size>45*1048576){msg='This file is bigger than 45 MB.';draw();return}
+   act(async()=>{const name=f.name.replace(/[^A-Za-z0-9._-]+/g,'_'),buf=new Uint8Array(await f.arrayBuffer());await upStorage('plugin/'+name,buf,f.type||'application/octet-stream');
+    const url=SB+'/storage/v1/object/public/pack/plugin/'+name+'?download='+encodeURIComponent(name),m=f.name.match(/(\d+(?:[._]\d+){1,3})/),ver=(m?m[1].replace(/_/g,'.'):'')||S.pluginVersion||'';
+    await R('POST','site',{id:2,data:{...S,pluginUrl:url,pluginVersion:ver}},'resolution=merge-duplicates,return=minimal')},'Plugin file uploaded. Customers can now download it from their account page.')}
   else if(s=='psv')act(()=>R('POST','site',{id:2,data:{...S,pluginUrl:g('pu'),pluginVersion:g('pv2'),trialDays:+g('std2')||3,pMonth:g('pm1'),pQuarter:g('pm3'),pYear:g('py1'),pLife:g('pl1'),payNote:q('#pnt').value.trim()}},'resolution=merge-duplicates,return=minimal'),'Plugin settings saved.');
   else if(s=='prup'){const fl=[...q('#prf').files],lg=q('#prlog'),log=t=>{lg.innerHTML+=esc(t)+'<br>'};if(!fl.length){msg='Choose at least one .mogrt file.';draw();return}let cat=q('#prc').value;if(cat=='__new')cat=q('#prc2').value.trim()||'New';lg.innerHTML='';
    (async()=>{const r=await addPresets(fl,cat,log);try{await ld()}catch(e){}let tot='';try{const c=await adminRpc('plugin_catalog');tot=' Total now live for customers: '+(((c&&c.presets)||[]).length)+' presets.'}catch(e){}msg=r.done+' preset'+(r.done==1?'':'s')+' published'+(r.fail?', '+r.fail+' failed (see above)':'. Customers get them automatically.')+tot;draw()})()}
@@ -1198,5 +1194,6 @@ if(!L.length)return S;const ids=new Set(L.map(p=>p.id));return S.some(p=>ids.has
 fetch(SB+'/rest/v1/site?id=eq.2&select=data',{headers:sbh(tok()),cache:'no-store'}).then(r=>r.ok?r.json():[]).then(j=>{const on=!!(j[0]&&j[0].data&&j[0].data.on);try{localStorage.setItem('sh_shop',on?'1':'0')}catch(e){}window.__mail=(j[0]&&j[0].data&&j[0].data.gas)?{url:j[0].data.gas,secret:j[0].data.gsec}:{};try{const D=(j[0]&&j[0].data)||{},ps=[D.pMonth,D.pQuarter,D.pYear].filter(Boolean).map(Number).sort((a,b)=>a-b)[0];$('#ppr').textContent=(D.trialDays||3)+'-day free trial'+(D.pMonth?' \u00b7 plans from \u09f3'+D.pMonth+'/month':'')+' \u00b7 sign in with your email';$('#pms').textContent=(window.__PN||50)+' ready-made text animations. Pick one, press Insert, and it lands on your timeline. Try everything free for '+(D.trialDays||3)+' days.'}catch(e){}sh(on,j[0]&&j[0].data)}).catch(()=>{});
 })();
 </script>
+<script src="session-nav.js" defer></script>
 </body>
 </html>
