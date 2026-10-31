@@ -883,7 +883,7 @@ function apply(S){S=S||{};const E=k=>S[k]!==undefined?S[k]:DEF[k],R=document.doc
  const rv=E('rv');sr('#rv',rv.map(x=>`<blockquote><p>${esc(x.q)}</p><b style="display:block;margin-top:16px">${esc(x.n)}</b><span style="color:var(--mu);font-size:14px">${esc(x.r)}</span></blockquote>`).join(''));
  sr('#cvg',E('cv').map(g=>`<div class="cg"><h3>${esc(g.g)}</h3>${g.l.split('\n').filter(x=>x.trim()).map(r=>{const[t,s,m]=r.split('||').map(x=>x.trim());return `<div class="ce"><div><b>${esc(t)}</b>${s?`<span>${esc(s)}</span>`:''}</div>${m?`<em>${esc(m)}</em>`:''}</div>`}).join('')}</div>`).join(''));
  $$('#tl .tk').forEach(e=>e.remove());const cs=['var(--m)','var(--cy)','var(--g)','var(--y)'];
- E('tl').forEach((r,k)=>{const h=document.createElement('div');h.className='tk';h.dataset.n=r.n;h.style.setProperty('--tc',cs[k%4]);h.innerHTML=r.l.split('\n').filter(x=>x.trim()).map((c,j)=>{const[t,f]=c.split('|');return `<span style="flex:${+f||2};--i:${j+k*2}">${esc(t.trim())}</span>`}).join('');$('#ph').before(h)});
+ E('tl').forEach((r,k)=>{const h=document.createElement('div');h.className='tk';h.dataset.n=r.n;h.style.setProperty('--tc',cs[k%4]);h.innerHTML=r.l.split('\n').filter(x=>x.trim()).map((c,j)=>{const[t,f]=c.split('|');return `<span style="flex:${+f||2};--i:${j+k*2}">${esc(t.trim())}</span>`}).join('');const pq=$('#ph');if(pq)pq.before(h)});
  const mk=a=>{const h=a.split(',').map(x=>x.trim()).filter(Boolean).map(x=>`<span>${esc(x)}</span><span style="color:var(--y)">&#10022;</span>`).join('');return h+h};
  $('#mq').innerHTML=mk(E('mq1'));$('#mq2').innerHTML=mk(E('mq2'));
  Object.assign(CFG,{email:E('email'),whatsapp:E('whatsapp'),facebook:E('facebook'),instagram:E('instagram'),formspree:E('formspree')});$('#f').action=CFG.formspree;
