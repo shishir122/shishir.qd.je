@@ -84,7 +84,7 @@ footer{padding:40px 0;text-align:center;color:var(--mu);font-size:14px}
 <script>
 const SB='https://arqdpagnmjypthlskbps.supabase.co',KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFycWRwYWdubWp5cHRobHNrYnBzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE2NjExMzMsImV4cCI6MjEwNzIzNzEzM30.EbVl7soEvTMvXC1-IGB7GXdLD8yA6dPeZa_5G3A5--k',$=s=>document.querySelector(s),eh=x=>String(x??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let P=[],cat='All',Q='';
-/* FREE PRESETS. Put preset ids here to make them free. To make one paid again, just delete its id from this list. */
+/* FREE PRESETS. The admin panel (Presets tab, Free button) controls this. The list below is only the default used until you press a Free button once. */
 const FREE_IDS=['p02','p12','p30','p40','p33','p11','p48','p49','p23','p50'];
 let FS=new Set(FREE_IDS);const isFree=p=>!!p&&(FS.has(p.id)||p.free===true);
 /* Cleaner display names (fixes typos, ALL CAPS, Spanish). Only changes what this page shows. */
@@ -100,7 +100,7 @@ async function loadPresets(){let S=[],L=[];const H={apikey:KEY,Authorization:'Be
  return dedupeP(S.some(p=>ids.has(p.id))?L:S.filter(p=>!ids.has(p.id)).concat(L))}
 async function boot(){let S={};try{S=((await (await fetch(SB+'/rest/v1/site?id=eq.2&select=data',{headers:{apikey:KEY,Authorization:'Bearer '+KEY}})).json())[0]||{}).data||{}}catch(e){}
  try{P=await loadPresets()}catch(e){P=[]}
- {const x=S.freeIds,l=Array.isArray(x)?x:String(x||'').split(/[\s,]+/);FS=new Set([...FREE_IDS,...l.filter(Boolean)])}
+ {const x=S.freeIds;if(Array.isArray(x))FS=new Set(x);else if(typeof x=='string'&&x.trim())FS=new Set(x.split(/[\s,]+/).filter(Boolean))}
  const FL=P.filter(isFree);
  const days=+S.trialDays||3;$('#tn').dataset.n=days;$('#tag').textContent=(FL.length?'FREE PRESETS + ':'')+days+'-DAY FREE TRIAL';
  const strip=P.slice(0,24).map(p=>`<img src="${eh(TH(p))}" onerror="this.onerror=null;this.src='plugin-assets/thumbs/${p.id}.png'" alt="${eh(NAME(p))}" loading="lazy">`).join('');$('#mt').innerHTML=strip+strip;
