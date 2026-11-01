@@ -36,6 +36,7 @@ section{padding:70px 0}h2{font-size:clamp(28px,4.6vw,46px);line-height:1.1;lette
 .bar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:22px}.bar input{flex:1 1 240px;max-width:340px;padding:13px 16px;border-radius:12px;border:1px solid var(--ln);background:var(--pn);color:var(--tx);font:inherit}.bar input:focus{outline:0;border-color:var(--y);box-shadow:0 0 0 4px rgba(255,210,63,.12)}
 .ch{padding:10px 16px;border-radius:99px;border:1px solid var(--ln);background:none;color:var(--mu);font:600 14px system-ui;cursor:pointer;transition:.2s}.ch:hover{color:var(--tx)}.ch.on{background:var(--y);color:#10131b;border-color:var(--y)}
 .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}.pc{border-radius:16px;overflow:hidden;border:1px solid var(--ln);background:var(--pn);transition:transform .25s,border-color .25s,box-shadow .25s}.pc:hover{transform:translateY(-5px) scale(1.02);border-color:var(--y);box-shadow:0 20px 40px -24px rgba(255,210,63,.5)}
+.pc{position:relative}a.pc{display:block}.pc .ph0{display:grid;place-items:center;aspect-ratio:16/9;background:#0b0e14;font-weight:800;font-size:28px;color:var(--y)}.fh{text-align:left;font-size:18px;margin:6px 0 12px}.fcta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 .pc img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#0b0e14}.pc div{padding:10px 14px;font-size:14px;display:flex;justify-content:space-between}.pc small{color:var(--mu)}
 .pr{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;max-width:980px;margin:0 auto}.pp{padding:28px;border-radius:22px;border:1px solid var(--ln);background:var(--pn);text-align:center;transition:transform .3s}.pp:hover{transform:translateY(-6px)}.pp.hot{border-color:var(--y);background:linear-gradient(180deg,rgba(255,210,63,.09),var(--pn))}
 .pp h3{font-size:17px;color:var(--mu);font-weight:600}.pp b{display:block;font-size:44px;letter-spacing:-.03em;margin:8px 0}.pp .btn{margin-top:16px;width:100%}.pp span{color:var(--mu);font-size:14px}
@@ -60,12 +61,14 @@ footer{padding:40px 0;text-align:center;color:var(--mu);font-size:14px}
 <p class="lead">Pick a preset, press Insert, and it lands on your timeline. Clean, bold, professional titles in seconds, with no keyframing from scratch.</p>
 <div class="cta"><a class="btn p" href="account.html" id="c1">Start free trial</a><a class="btn" href="#presets">See the presets</a></div>
 <div class="mq"><div class="mt" id="mt"></div></div></div></header>
-<div class="w"><div class="stats rv"><div><b data-n="50" id="pn">0</b><span>text presets</span></div><div><b data-n="0" id="fn">0</b><span>free presets</span></div><div><b data-n="3" id="tn">0</b><span>day free trial</span></div><div><b data-n="1">0</b><span>click to insert</span></div></div></div>
+<div class="w"><div class="stats rv"><div><b data-n="50" id="pn">0</b><span>text presets</span></div><div><b data-n="0" id="fn">0</b><span>free downloads</span></div><div><b data-n="3" id="tn">0</b><span>day free trial</span></div><div><b data-n="1">0</b><span>click to insert</span></div></div></div>
 <section id="free" hidden><div class="w"><div class="gift rv"><span class="tag">FREE GIFT FOR YOU</span>
-<h2>Start with <em>free</em> presets</h2>
-<p class="sub">No payment and no card. Create a free account and use these in your next video.</p>
-<p class="bn">আপনাদের জন্য আমার ভালোবাসা। এই প্রিসেটগুলো একদম ফ্রি।</p>
-<div class="fg" id="fg"></div><a class="btn p" href="account.html">Get the free presets</a></div></div></section>
+<h2>Everything that is <em>free</em></h2>
+<p class="sub">All the free things on this site, in one place. No payment and no card.</p>
+<p class="bn">আপনাদের জন্য আমার ভালোবাসা। এই জিনিসগুলো একদম ফ্রি।</p>
+<h3 class="fh" id="fh1" hidden>Free text presets for Premiere Pro</h3><div class="fg" id="fg"></div>
+<h3 class="fh" id="fh2" hidden>Free packs from the shop</h3><div class="fg" id="fp"></div>
+<div class="fcta"><a class="btn p" id="fcta1" href="account.html" hidden>Get the free presets</a><a class="btn" id="fcta2" href="shop.html" hidden>Open the shop</a></div></div></div></section>
 <section><div class="w"><h2 class="rv">How it works</h2><p class="sub rv">Three steps and you are editing.</p>
 <div class="steps"><div class="st rv"><h3>Create your account</h3><p>Sign up with your email. Your license key is created for you.</p></div><div class="st rv"><h3>Install the plugin</h3><p>Download it, run the one-click installer, open it in Premiere Pro, and sign in.</p></div><div class="st rv"><h3>Insert and edit</h3><p>Pick a preset, press Insert, then change the text in Essential Graphics.</p></div></div></div></section>
 <section id="presets"><div class="w"><h2 class="rv">All the presets</h2><p class="sub rv">Preview every preset. Search by name or pick a category.</p>
@@ -102,7 +105,8 @@ async function boot(){let S={};try{S=((await (await fetch(SB+'/rest/v1/site?id=e
  try{P=await loadPresets()}catch(e){P=[]}
  {const x=S.freeIds;if(Array.isArray(x))FS=new Set(x);else if(typeof x=='string'&&x.trim())FS=new Set(x.split(/[\s,]+/).filter(Boolean))}
  const FL=P.filter(isFree);
- const days=+S.trialDays||3;$('#tn').dataset.n=days;$('#tag').textContent=(FL.length?'FREE PRESETS + ':'')+days+'-DAY FREE TRIAL';
+ let FP=[];try{const r=await fetch(SB+'/rest/v1/products?select=id,name,price,category,img,preview,sale_price,sale_until,soon&active=eq.true&order=pos.asc,id.asc',{headers:{apikey:KEY,Authorization:'Bearer '+KEY}});if(r.ok){const L=await r.json();FP=(L||[]).filter(p=>!p.soon&&(p.sale_price!=null&&p.sale_until&&new Date(p.sale_until)>Date.now()?Number(p.sale_price):Number(p.price))===0)}}catch(e){}
+ const days=+S.trialDays||3;$('#tn').dataset.n=days;$('#tag').textContent=((FL.length||FP.length)?'FREE DOWNLOADS + ':'')+days+'-DAY FREE TRIAL';
  const strip=P.slice(0,24).map(p=>`<img src="${eh(TH(p))}" onerror="this.onerror=null;this.src='plugin-assets/thumbs/${p.id}.png'" alt="${eh(NAME(p))}" loading="lazy">`).join('');$('#mt').innerHTML=strip+strip;
  const pl=[['pMonth','1 month'],['pQuarter','3 months'],['pYear','1 year'],['pLife','Lifetime']].filter(x=>S[x[0]]);
  const freeCard=FL.length?`<div class="pp fr rv"><h3>Free</h3><b>&#2547;0</b><span>${FL.length} presets, free to use</span><a class="btn" href="account.html">Get free presets</a></div>`:'';
@@ -110,7 +114,12 @@ async function boot(){let S={};try{S=((await (await fetch(SB+'/rest/v1/site?id=e
  $('#fq').innerHTML=FAQ.map(f=>`<div class="fq rv"><button>${eh(f[0])}</button><div>${eh(f[1])}</div></div>`).join('');
  document.querySelectorAll('.fq button').forEach(b=>b.onclick=()=>{const f=b.parentNode,o=f.classList.contains('open');document.querySelectorAll('.fq').forEach(x=>x.classList.remove('open'));if(!o)f.classList.add('open')});
  {const n=P.length;if(n){$('#pn').dataset.n=n;const c=$('#cnt');if(c)c.textContent=n;document.title='Shishir Text Presets: '+n+' text animations for Premiere Pro'}}
- if(FL.length){$('#fn').dataset.n=FL.length;$('#free').hidden=false;$('#fg').innerHTML=FL.map(p=>`<div class="pc"><img src="${eh(TH(p))}" onerror="this.onerror=null;this.src='plugin-assets/thumbs/${p.id}.png'" alt="${eh(NAME(p))}" loading="lazy"><div><span>${eh(NAME(p))}</span><small>${eh(p.cat)}</small></div></div>`).join('')}else{const f=$('#fn');if(f)f.parentNode.hidden=true}
+ const ytb=u=>((u||'').match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/)||[])[1],PT=p=>p.img||(ytb(p.preview)?'https://img.youtube.com/vi/'+ytb(p.preview)+'/hqdefault.jpg':''),tot=FL.length+FP.length;
+ if(tot){$('#fn').dataset.n=tot;$('#free').hidden=false;
+  $('#fh1').hidden=!FL.length;$('#fg').innerHTML=FL.map(p=>`<div class="pc"><span class="fbt">FREE</span><img src="${eh(TH(p))}" onerror="this.onerror=null;this.src='plugin-assets/thumbs/${p.id}.png'" alt="${eh(NAME(p))}" loading="lazy"><div><span>${eh(NAME(p))}</span></div></div>`).join('');
+  $('#fh2').hidden=!FP.length;$('#fp').innerHTML=FP.map(p=>`<a class="pc" href="shop.html?p=${encodeURIComponent(p.id)}"><span class="fbt">FREE</span>${PT(p)?`<img src="${eh(PT(p))}" alt="${eh(p.name)}" loading="lazy">`:`<span class="ph0">${eh(String(p.name||'').split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase())}</span>`}<div><span>${eh(p.name)}</span></div></a>`).join('');
+  $('#fcta1').hidden=!FL.length;$('#fcta2').hidden=!FP.length;
+ }else{const f=$('#fn');if(f)f.parentNode.hidden=true}
  draw();reveal()}
 function draw(){const cs=['All',...(P.some(isFree)?['Free']:[]),...new Set(P.map(p=>p.cat))];$('#cats').innerHTML=cs.map(c=>`<button class="ch${c==cat?' on':''}" data-c="${eh(c)}">${eh(c)}</button>`).join('');
  $('#gal').innerHTML=P.filter(p=>(cat=='All'||(cat=='Free'?isFree(p):p.cat==cat))&&NAME(p).toLowerCase().includes(Q)).map(p=>`<div class="pc">${isFree(p)?'<span class="fbt">FREE</span>':''}<img src="${eh(TH(p))}" onerror="this.onerror=null;this.src='plugin-assets/thumbs/${p.id}.png'" alt="${eh(NAME(p))}" loading="lazy"><div><span>${eh(NAME(p))}${NEWP(p)?' <b style="background:#ffd23f;color:#111;border-radius:6px;padding:1px 6px;font-size:10px;margin-left:4px">NEW</b>':''}</span><small>${eh(p.cat)}</small></div></div>`).join('')||'<p class="sub">No presets found.</p>'}
