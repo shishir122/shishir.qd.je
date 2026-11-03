@@ -64,6 +64,7 @@ function login(msg){$('#out').style.display='none';$('#app').innerHTML=`<h1>Your
 async function dash(){const t=await token();if(!t)return login();$('#out').style.display='inline';$('#app').innerHTML='<div class="spin"></div>';
  try{SET=(((await call(SB+'/rest/v1/site?id=eq.2&select=data',{headers:H()}))[0])||{}).data||{}}catch(e){}
  let L,O=[];try{L=await rpc('lic_my',{},t)}catch(x){if(/sign in|JWT/i.test(x.message)){save(null);return login('Please sign in again.')}$('#app').innerHTML='<div class="card"><h2>Something went wrong</h2><p class="er">'+eh(x.message)+'</p></div>';return}
+ if(!L||typeof L!='object'||!L.key){$('#app').innerHTML='<div class="card"><h2>Your profile is not ready yet</h2><p class="mu">You are signed in as '+eh(SES.email||'')+', but no license profile was found for this account. Press the button to try again. If it keeps happening, tell the site owner.</p><div class="row"><button class="btn p" id="rt0">Try again</button><button class="btn" id="so0">Sign out</button></div></div>';$('#rt0').onclick=dash;$('#so0').onclick=()=>$('#out').onclick({preventDefault(){}});return}
  try{O=await rpc('my_orders',{},t)}catch(e){}
  const st=L.status!='active'?['Revoked','r']:L.plan=='owner'?['Owner: lifetime','g']:!L.activated?['Trial not started','y']:L.expired?['Ended','r']:L.expires_at?[L.days_left+' day'+(L.days_left==1?'':'s')+' left','g']:['Lifetime','g'];
  const total=(+L.trial_days||3),pct=L.plan=='trial'&&L.expires_at&&!L.expired?Math.max(4,Math.min(100,(L.days_left/total)*100)):(L.expires_at||L.plan=='owner'||L.plan=='lifetime')&&!L.expired?100:0;
@@ -86,6 +87,6 @@ ${L.plan=='owner'?'':`<div class="card"><h2>Upgrade to full access</h2>${pr.leng
  const rs=$('#rs');if(rs)rs.onclick=async()=>{try{await rpc('lic_my_reset',{},await token());dash()}catch(x){$('#mer').textContent=x.message}};
  const pay=$('#pay');if(pay){const P=[['bKash',SET.bkash],['Nagad',SET.nagad],['Rocket',SET.rocket]].filter(x=>x[1]).map(x=>x[0]+' (Send Money): <b>'+eh(x[1])+'</b>');if(SET.bkno)P.push('Bank: <b>'+eh(SET.bkname||'')+' '+eh(SET.bkno)+'</b>');pay.innerHTML=P.join('<br>')}
  const rf=$('#rf');if(rf)rf.onsubmit=async e=>{e.preventDefault();$('#rer').textContent='';try{await rpc('lic_request',{p_machine:'',p_product:'text-pack',p_name:name,p_contact:SES.email,p_trx:$('#rt').value.trim(),p_msg:'Plan: '+$('#rp').value+'. '+$('#rm').value.trim()},await token());dash()}catch(x){$('#rer').textContent=x.message}}}
-$('#out').onclick=e=>{e.preventDefault();save(null);login()};
+$('#out').onclick=e=>{e.preventDefault();const t=SES&&SES.at;save(null);if(t)fetch(SB+'/auth/v1/logout',{method:'POST',headers:H(t)}).catch(()=>{});login()};
 SES?dash():login();
 </script></body></html>
