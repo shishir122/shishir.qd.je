@@ -66,11 +66,13 @@ async function dash(){const t=await token();if(!t)return login();$('#out').style
  let L,O=[];try{L=await rpc('lic_my',{},t)}catch(x){if(/sign in|JWT/i.test(x.message)){save(null);return login('Please sign in again.')}$('#app').innerHTML='<div class="card"><h2>Something went wrong</h2><p class="er">'+eh(x.message)+'</p></div>';return}
  if(!L||typeof L!='object'||!L.key){$('#app').innerHTML='<div class="card"><h2>Your profile is not ready yet</h2><p class="mu">You are signed in as '+eh(SES.email||'')+', but no license profile was found for this account. Press the button to try again. If it keeps happening, tell the site owner.</p><div class="row"><button class="btn p" id="rt0">Try again</button><button class="btn" id="so0">Sign out</button></div></div>';$('#rt0').onclick=dash;$('#so0').onclick=()=>$('#out').onclick({preventDefault(){}});return}
  try{O=await rpc('my_orders',{},t)}catch(e){}
+ let MS=[];try{MS=await rpc('sh_my_messages',{p_machine:'',p_product:'text-pack'},t)}catch(e){}if(!Array.isArray(MS))MS=[];
  const st=L.status!='active'?['Revoked','r']:L.plan=='owner'?['Owner: lifetime','g']:!L.activated?['Trial not started','y']:L.expired?['Ended','r']:L.expires_at?[L.days_left+' day'+(L.days_left==1?'':'s')+' left','g']:['Lifetime','g'];
  const total=(+L.trial_days||3),pct=L.plan=='trial'&&L.expires_at&&!L.expired?Math.max(4,Math.min(100,(L.days_left/total)*100)):(L.expires_at||L.plan=='owner'||L.plan=='lifetime')&&!L.expired?100:0;
  const pr=[['pMonth','1 month'],['pQuarter','3 months'],['pYear','1 year'],['pLife','Lifetime']].filter(x=>SET[x[0]]);
  const name=SES.name||(SES.email||'').split('@')[0];
  $('#app').innerHTML=`<h1>Hi ${eh(name)} &#128075;</h1><p class="mu">${eh(SES.email)}</p>
+${MS.length?`<div class="card"><h2>Messages</h2>${MS.map(m=>`<div style="margin:8px 0;padding:10px 12px;border-radius:10px;background:${m.kind=='warn'?'rgba(255,210,63,.12)':'rgba(255,255,255,.05)'}"><b>${eh(m.title||'')}</b><div class="mu sm" style="white-space:pre-wrap">${eh(m.body||'')}</div><div class="mu sm">${fmt(m.at)}</div></div>`).join('')}</div>`:''}
 <div class="card"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><h2 style="margin:0">Your license</h2><span class="pill ${st[1]}">${eh(st[0])}</span></div>
 <div class="key"><code id="kc">${eh(L.key)}</code><button class="btn" id="cp">Copy key</button></div>
 <div class="bar"><i id="pb"></i></div>
