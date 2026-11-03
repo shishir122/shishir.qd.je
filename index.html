@@ -1060,7 +1060,7 @@ function chachaX(key,nonce,data){const out=new Uint8Array(data.length),st=new Ui
  return out}
 const shaHex=async u8=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',u8))].map(x=>x.toString(16).padStart(2,'0')).join('');
 async function adminRpc(n,a){const r=await fetch(SB+'/rest/v1/rpc/'+n,{method:'POST',headers:sbh(tok()),body:JSON.stringify(a||{})}),t=await r.text();let j=null;try{j=JSON.parse(t)}catch(e){}if(!r.ok)throw new Error((j&&j.message)||t.slice(0,150));return j}
-async function upStorage(path,bytes,type){const r=await fetch(SB+'/storage/v1/object/pack/'+path,{method:'POST',headers:{apikey:CFG.supabaseKey,Authorization:'Bearer '+tok(),'Content-Type':type,'x-upsert':'true'},body:bytes});if(!r.ok)throw new Error('Upload failed: '+(await r.text()).slice(0,120))}
+async function upStorage(path,bytes,type,keep){const r=await fetch(SB+'/storage/v1/object/pack/'+path,{method:'POST',headers:{apikey:CFG.supabaseKey,Authorization:'Bearer '+tok(),'Content-Type':type,'x-upsert':keep?'false':'true'},body:bytes});if(!r.ok)throw new Error('Upload failed: '+(await r.text()).slice(0,120))}
 async function zipEntry(u8,want){const dv=new DataView(u8.buffer,u8.byteOffset,u8.byteLength);let e=-1;for(let i=u8.length-22;i>=Math.max(0,u8.length-70000);i--){if(dv.getUint32(i,true)===0x06054b50){e=i;break}}if(e<0)return null;
  const n=dv.getUint16(e+10,true);let p=dv.getUint32(e+16,true);
  for(let k=0;k<n;k++){if(dv.getUint32(p,true)!==0x02014b50)break;const meth=dv.getUint16(p+10,true),csz=dv.getUint32(p+20,true),nl=dv.getUint16(p+28,true),xl=dv.getUint16(p+30,true),cl=dv.getUint16(p+32,true),lo=dv.getUint32(p+42,true),name=new TextDecoder().decode(u8.subarray(p+46,p+46+nl));
@@ -1071,7 +1071,11 @@ async function addPresets(files,cat,log){let done=0,fail=0;for(const f of files)
   let known=PRS.slice();try{const c=await adminRpc('plugin_catalog');known=known.concat((c&&c.presets)||[])}catch(e){}
   const same=known.find(x=>(x.sha&&x.sha===sh16)||nk(x.name)===nk(f.name));
   if(same){fail++;log('SKIPPED '+f.name+': this preset already exists ('+same.id+' - '+same.name+'). Nothing was uploaded.');continue}
-  const id=await adminRpc('admin_next_preset_id'),key=hex2b(await adminRpc('admin_file_key',{p_file:id}));let thumb=null;try{thumb=await zipEntry(u8,'thumb.png')||await zipEntry(u8,/^thumb[^\/]*\.(png|jpe?g)$/i)||await zipEntry(u8,/^[^\/]+\.(png|jpe?g)$/i)}catch(e){}
+  let id=await adminRpc('admin_next_preset_id');
+  {const pn=x=>{const m=/^p(\d+)$/i.exec(String((x&&x.id!==undefined)?x.id:x));return m?parseInt(m[1],10):0},pd=n=>'p'+String(n).padStart(2,'0');
+   const rows=await R('GET','presets?select=id'),all=known.concat(rows||[]),taken=new Set(all.map(x=>x.id));
+   if(!id||taken.has(id)){let n=all.reduce((m,x)=>Math.max(m,pn(x)),0)+1;while(taken.has(pd(n)))n++;log('Note: the server suggested '+id+' but that id is already used by another preset, so '+pd(n)+' is used. Nothing was overwritten.');id=pd(n)}}
+  const key=hex2b(await adminRpc('admin_file_key',{p_file:id}));let thumb=null;try{thumb=await zipEntry(u8,'thumb.png')||await zipEntry(u8,/^thumb[^\/]*\.(png|jpe?g)$/i)||await zipEntry(u8,/^[^\/]+\.(png|jpe?g)$/i)}catch(e){}
   if(!thumb)log('Warning: no picture found inside '+f.name+' - the card will have an empty thumbnail.');
   const nonce=crypto.getRandomValues(new Uint8Array(12)),ct=chachaX(key,nonce,u8),out=new Uint8Array(12+ct.length);out.set(nonce);out.set(ct,12);
   log('Publishing '+f.name+' as '+id+' ('+Math.round(u8.length/1024)+' KB)...');await upStorage(id+'.bin',out,'application/octet-stream');if(thumb)await upStorage('thumbs/'+id+'.png',thumb,thumb[0]===0x89?'image/png':'image/jpeg');
