@@ -582,7 +582,7 @@ dl.addEventListener('click',e=>{if(e.target===dl)dl.close()});
 /* Work grid with filters */
 /* Videos added from the owner panel (saved in this browser only) */
 const LS='sh_works_v1';let LOCAL=[];
-const DB=!!(CFG.supabaseUrl&&CFG.supabaseKey),SB=(CFG.supabaseUrl||'').replace(/\/$/,'');
+const DB=!!(CFG.supabaseUrl&&CFG.supabaseKey),SB=(CFG.supabaseUrl||'').replace(/\/$/,'');window.SHCFG={url:SB,key:CFG.supabaseKey};
 if(!DB)try{LOCAL=JSON.parse(localStorage.getItem(LS)||'[]')||[]}catch(e){LOCAL=[]}
 const sbh=(t,x)=>({apikey:CFG.supabaseKey,...(t?{Authorization:'Bearer '+t}:{}),'Content-Type':'application/json',...x});
 const tok=()=>{try{const o=JSON.parse(sessionStorage.getItem('sh_tok')||'null');return o&&o.exp>Date.now()?o.t:''}catch(e){return ''}};
