@@ -936,7 +936,7 @@ const F={text:[['title','Browser title / SEO title'],['desc','SEO description','
  img:[['photo','Your photo'],['logo','Logo'],['favicon','Favicon (small tab icon)'],['before','Before picture'],['after','After picture'],['cvUrl','CV file (PDF)']],
  con:[['email','Email'],['whatsapp','WhatsApp number (country code, no +)'],['facebook','Facebook link'],['instagram','Instagram link'],['formspree','Contact form link (Formspree)'],['waMsg','WhatsApp first message','a']]};
 const T2=[['t','Title'],['d','Description','a']],LD={sv:['Services',T2],st:['Process steps',T2],cm:['What you can count on',T2],fq:['FAQ',[['q','Question'],['a','Answer','a']]],rv:['Client reviews',[['n','Client name'],['r','Role / company'],['q','Feedback','a']]],cv:['Resume groups',[['g','Group title (Experience, Education...)'],['l','One item per line: Title || Subtitle || Date','a']]],tl:['Skills timeline',[['n','Track name (V1, A1...)'],['l','Clips, one per line: Name|size 1-5','a']]],logos:['Client logos',[['n','Client name'],['u','Logo image link']]],stat:['Numbers strip (50+ Projects)',[['n','Number (50+)'],['l','Label (Projects)']]],pk:['Pricing packages',[['n','Package name'],['p','Price text (from 500 BDT)'],['f','Features, one per line','a'],['h','Highlight this package? type yes']]],extra:['Extra social links',[['n','Name (TikTok, YouTube...)'],['u','Link']]]};
-const TB=[['text','Text & SEO'],['img','Images & CV'],['con','Contact'],['ls','Lists'],['lay','Layout & look'],['mt','Maintenance'],['tools','Tools'],['shop','Shop'],['plugin','Plugin and licenses']];
+const TB=[['text','Text & SEO'],['img','Images & CV'],['con','Contact'],['ls','Lists'],['lay','Layout & look'],['mt','Maintenance'],['tools','Tools'],['shorts','Shorts'],['shop','Shop'],['plugin','Plugin and licenses']];
 let D,tab='text',lt='sv',msg='';const d=$('#adm');
 const fld=([k,l,t])=>`<label>${l}</label>${t=='a'?`<textarea rows="3" data-k="${k}">${esc(D[k]||'')}</textarea>`:`<input data-k="${k}" value="${esc(D[k]||'')}">`}`;
 const img=([k,l])=>fld([k,l+' (link or upload)'])+`<input type="file" data-up="${k}" accept="${k=='cvUrl'?'application/pdf':'image/*'}" style="margin-top:6px"><p class="fh"></p>`;
@@ -968,7 +968,7 @@ async function save(){const S={};for(const k in DEF)if(JSON.stringify(D[k])!==JS
  catch(e){msg='Error: '+(/PGRST205|does not exist|relation|404/.test(e.message)?'table "site" is missing. Run the one-time setup SQL in Supabase first.':e.message)}draw()}
 function wire(){const q=s=>d.querySelector(s),sx=q('#sx');
  q('#ac').onclick=()=>d.close();q('#bv').onclick=()=>__adm.panel();
- d.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;tab=='shop'?window.openShop():tab=='plugin'?window.openPlugin():draw()});
+ d.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;tab=='shop'?window.openShop():tab=='plugin'?window.openPlugin():tab=='shorts'?window.openShorts():draw()});
  q('#sv0').onclick=save;q('#rs0').onclick=()=>{if(confirm('Reset all website text, lists and settings to the original? Videos are not touched.')){D=cl(DEF);save()}};
  sx.oninput=e=>{const t=e.target;if(t.dataset.k)D[t.dataset.k]=t.value;else if(t.dataset.l)D[t.dataset.l][+t.dataset.i][t.dataset.f]=t.value};
  sx.onchange=async e=>{const t=e.target;
@@ -1216,5 +1216,6 @@ fetch(SB+'/rest/v1/site?id=eq.2&select=data',{headers:sbh(tok()),cache:'no-store
 })();
 </script>
 <script src="session-nav.js" defer></script>
+<script src="shorts-panel.js" defer></script>
 </body>
 </html>
